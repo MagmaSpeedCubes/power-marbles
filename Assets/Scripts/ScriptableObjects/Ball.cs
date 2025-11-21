@@ -8,4 +8,8 @@ public class Ball : ScriptableObject
     public AudioClip bounceSound;
     public AudioClip specialSound;
     public float gravityScale = 1.0f;
+    public float powerMultiplier = 1.0f;
+    public float sizeMultiplier = 1.0f;
+    [HideInInspector] public int numBounces = 0;
+
 }

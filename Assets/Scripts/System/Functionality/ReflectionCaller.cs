@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 
 public class ReflectionCaller : MonoBehaviour
 {
@@ -33,6 +34,70 @@ public class ReflectionCaller : MonoBehaviour
         }
 
         method.Invoke(instance, null);
+    }
+
+    public static T CallReturnableFunction<T>(string scriptName, string functionName, params object[] args)
+    {
+        Type type = Type.GetType(scriptName);
+        if (type == null)
+        {
+            Debug.LogError("Type not found: " + scriptName);
+            return default;
+        }
+
+        // If you have overloads, you should resolve by parameter types:
+        var paramTypes = args?.Select(a => a?.GetType() ?? typeof(object)).ToArray() ?? Type.EmptyTypes;
+        Debug.Log("Looking for method: " + functionName + " with parameters: " + string.Join(", ", paramTypes.Select(t => t.Name)));
+        MethodInfo method = type.GetMethod(functionName, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance, null, paramTypes, null);
+        if (method == null)
+        {
+            Debug.LogError("Method not found: " + functionName);
+            return default;
+        }
+
+        object instance = null;
+        if (!method.IsStatic)
+        {
+            instance = GameObject.FindObjectOfType(type);
+            if (instance == null)
+            {
+                Debug.LogError("Instance of " + scriptName + " not found in scene.");
+                return default;
+            }
+        }
+
+        try
+        {
+            object raw = method.Invoke(instance, args);
+
+            // Handle Task<T> methods (optional)
+            if (raw is System.Threading.Tasks.Task task)
+            {
+                task.GetAwaiter().GetResult(); // wait synchronously
+                var resultProp = task.GetType().GetProperty("Result");
+                raw = resultProp != null ? resultProp.GetValue(task) : null;
+            }
+
+            if (raw == null)
+                return default;
+
+            // If the return type is already T, direct cast is best (handles UnityEngine.Object types, structs, etc.)
+            if (raw is T t) return t;
+
+            // Otherwise try Convert.ChangeType for primitive/value conversions
+            return (T)Convert.ChangeType(raw, typeof(T));
+        }
+        catch (TargetInvocationException tie)
+        {
+            // unwrap the inner exception to get the real error from the invoked method
+            Debug.LogError($"Invocation error: {tie.InnerException?.Message ?? tie.Message}");
+            return default;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Reflection call failed: {e.Message}");
+            return default;
+        }
     }
 
 
