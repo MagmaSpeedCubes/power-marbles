@@ -10,7 +10,7 @@ public class LevelStats
 
     public static Ball selectedBall;
 
-    public static int energy = 1000;  //debug
+    public static float energy = 1000;  //debug
 
 
 }

@@ -60,7 +60,7 @@ public class ShieldedManager : DamageManager
         base.UpdateInfographics();
         foreach (Infographic bar in shieldBars)
         {
-            bar.setValue(shieldHealth);
+            bar.SetValue(shieldHealth);
         }
     }
 }

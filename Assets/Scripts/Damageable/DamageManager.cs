@@ -51,7 +51,7 @@ public class DamageManager : MonoBehaviour
     {
         foreach (Infographic bar in healthBars)
         {
-            bar.setValue(health);
+            bar.SetValue(health);
         }
     }
 

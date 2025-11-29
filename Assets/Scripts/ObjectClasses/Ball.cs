@@ -26,26 +26,69 @@ public class Ball : MonoBehaviour
         ownable = own;
 
     }
-    void Awake()
+    void Start()
     {
-        float gravityMultiplier = float.Parse(ownable.FindTag("gravityMultiplier"));
+        // Delegate to a reusable initializer so other code can initialize immediately
+        InitializeValues();
+    }
+
+    // Call this to compute values immediately (useful when creating Balls at runtime)
+    public void InitializeValues()
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("Ball prefab is null on " + this.name);
+            return;
+        }
+
+        if (ownable == null)
+        {
+            Debug.LogWarning("Ownable is null for Ball '" + this.name + "' - using default multipliers");
+        }
+
+        float gravityMultiplier = GetMultiplier("gravityMultiplier", 1f);
         gravity = prefab.gravity * gravityMultiplier;
 
-        float powerMultiplier = float.Parse(ownable.FindTag("powerMultiplier"));
+        float powerMultiplier = GetMultiplier("powerMultiplier", 1f);
         power = prefab.power * powerMultiplier;
 
-        float sizeMultiplier = float.Parse(ownable.FindTag("sizeMultiplier"));
+        float sizeMultiplier = GetMultiplier("sizeMultiplier", 1f);
         size = prefab.size * sizeMultiplier;
 
-        float movementSpeedMultiplier = float.Parse(ownable.FindTag("movementSpeedMultiplier"));
+        float movementSpeedMultiplier = GetMultiplier("movementSpeedMultiplier", 1f);
         movementSpeed = prefab.movementSpeed * movementSpeedMultiplier;
 
-        float priceMultiplier = float.Parse(ownable.FindTag("priceMultiplier"));
-        price = (int)(prefab.price * priceMultiplier);
+        float priceMultiplier = GetMultiplier("priceMultiplier", 1f);
 
-        sprite = ownable.sprite;
+        price = Mathf.Max(0, (int)(prefab.price * priceMultiplier));
+
+        sprite = ownable != null ? ownable.sprite : null;
 
         bounceSound = prefab.bounceSound;
         specialSound = prefab.specialSound;
+    }
+
+    private float GetMultiplier(string tagName, float defaultValue = 1f)
+    {
+        if (ownable == null)
+        {
+            return defaultValue;
+        }
+
+        string raw = ownable.FindTag(tagName);
+        if (string.IsNullOrEmpty(raw))
+        {
+            Debug.LogWarning($"Tag '{tagName}' missing for '{this.name}' - using default {defaultValue}");
+            return defaultValue;
+        }
+
+        float parsed;
+        if (!float.TryParse(raw, out parsed))
+        {
+            Debug.LogWarning($"Tag '{tagName}' value '{raw}' is not a number for '{this.name}' - using default {defaultValue}");
+            return defaultValue;
+        }
+
+        return parsed;
     }
 }

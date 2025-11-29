@@ -12,9 +12,10 @@ public class SceneText : Infographic
     {
         type = "SceneText";
     }
-    override protected void updateInfo(float oldValue)
+    override protected void UpdateInfo(float oldValue)
     {
-        base.updateInfo(oldValue);
+        float roundingPrecision = GetRoundingPrecision();
+        base.UpdateInfo(oldValue);
         sceneText.text = prefix + Mathf.Floor(value / roundingPrecision + 0.5f) * roundingPrecision + suffix;
     }
 }

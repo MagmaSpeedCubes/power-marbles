@@ -10,7 +10,7 @@ public class TankManager : DamageManager
     {
         foreach(Infographic tank in tankDisplays)
         {
-            tank.setValue(tankAmount);
+            tank.SetValue(tankAmount);
         }
     }
     override public void Damage(float amount, string type, BallManager source = null)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class ProfileCustomization : MonoBehaviour
 {
 
-    public static float infoLevel = 0;
+    public static string infoLevel = "technical";
     //-1 = aesthetic
     // 0 = balanced
     // 1 = technical
@@ -38,13 +38,13 @@ public class ProfileCustomization : MonoBehaviour
 
     public static void LoadPrefs()
     {
-        infoLevel = PlayerPrefs.GetInt("infoLevel", 0);
+        infoLevel = PlayerPrefs.GetString("infoLevel");
         masterVolume = PlayerPrefs.GetFloat("masterVolume", 1f);
     }
 
     public static void SavePrefs()
     {
-        PlayerPrefs.SetInt("infoLevel", (int)infoLevel);
+        PlayerPrefs.SetString("infoLevel", infoLevel);
         Debug.Log("Saved infoLevel as " + infoLevel);
         PlayerPrefs.SetFloat("masterVolume", masterVolume);
         // Debug.Log("Saved masterVolume as " + masterVolume);

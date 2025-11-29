@@ -8,16 +8,11 @@ public class CardManager : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI cardTitle;
     [SerializeField] protected TextMeshProUGUI cardCost;
 
-    void LateUpdate()
+    void Update()
     {
         cardImage.sprite = subject.sprite;
         cardTitle.text = subject.name;
         cardCost.text = ""+subject.price;
-    }
-
-    void Start()
-    {
-
     }
 
     public void OnClick()

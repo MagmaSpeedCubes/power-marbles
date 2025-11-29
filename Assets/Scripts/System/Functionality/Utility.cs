@@ -26,7 +26,7 @@ public class Utility : MonoBehaviour
         if (!method.IsStatic)
         {
             // Find the first active instance in the scene
-            instance = GameObject.FindObjectOfType(type);
+            instance = GameObject.FindFirstObjectByType(type);
             if (instance == null)
             {
                 Debug.LogError("Instance of " + scriptName + " not found in scene.");
@@ -59,7 +59,7 @@ public class Utility : MonoBehaviour
         object instance = null;
         if (!method.IsStatic)
         {
-            instance = GameObject.FindObjectOfType(type);
+            instance = GameObject.FindFirstObjectByType(type);
             if (instance == null)
             {
                 Debug.LogError("Instance of " + scriptName + " not found in scene.");
@@ -132,7 +132,7 @@ public class Utility : MonoBehaviour
         bool isStatic = field != null ? field.IsStatic : property.GetGetMethod(true).IsStatic;
         if (!isStatic)
         {
-            instance = GameObject.FindObjectOfType(type);
+            instance = GameObject.FindFirstObjectByType(type);
             if (instance == null)
             {
                 Debug.LogError("Instance of " + scriptName + " not found in scene.");
@@ -177,7 +177,7 @@ public class Utility : MonoBehaviour
             object instance = null;
             if (!isStatic)
             {
-                instance = GameObject.FindObjectOfType(type);
+                instance = GameObject.FindFirstObjectByType(type);
                 if (instance == null)
                 {
                     Debug.LogError("Instance of " + scriptName + " not found in scene.");

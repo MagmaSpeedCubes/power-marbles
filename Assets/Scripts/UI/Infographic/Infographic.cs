@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 
@@ -10,40 +11,41 @@ public class Infographic : MonoBehaviour
 
     [HideInInspector]public string type;
     protected float value;
-    [SerializeField] protected float roundingPrecision = 1.0f;
-    public void setValue(float newValue)
+    [SerializeField] protected List<Tag> roundingPrecisionList;
+
+    public void SetValue(float newValue)
     {
         float oldValue = value;
         value = newValue;
-        updateInfo(oldValue);
+        UpdateInfo(oldValue);
     }
 
-    public float getValue()
+    public float GetValue()
     {
         return value;
     }
 
-    public void changeValue(float difference)
+    public void ChangeValue(float difference)
     {
-        setValue(value + difference);
+        SetValue(value + difference);
     }
 
-    virtual protected void updateInfo(float oldValue)
+    virtual protected void UpdateInfo(float oldValue)
     {
 
     }
-}
-[System.Serializable]
-public class Interval
-{
-    public float lowerBound;
-    public float upperBound;
-}
 
-[System.Serializable]
-public class IntervalFloat : Interval
-{
-    public float valueInInterval;
+    protected float GetRoundingPrecision()
+    {
 
+        foreach (Tag rp in roundingPrecisionList)
+        {
+            if(rp.name.Equals(ProfileCustomization.infoLevel))
+            {
+                return float.Parse(rp.value);
+            }
+        }
+        return 1;
+    }
 }
 

@@ -38,13 +38,22 @@ public class CardDeckManager : MonoBehaviour
                 (i / cardsPerRow) * (prefabRect.rect.height + separationDistance)
             );
             
-            Vector2 spawnPosition = new Vector2(beginPosition.x + offset.x, beginPosition.y + offset.y);
-
-            GameObject newCard = Instantiate(cardPrefab, spawnPosition, Quaternion.identity);
+            // Instantiate as child of cardParent to preserve layout and dimensions
+            GameObject newCard = Instantiate(cardPrefab, cardParent.transform);
             RectTransform newCardRect = newCard.GetComponent<RectTransform>();
-            newCardRect.parent = cardParent.GetComponent<RectTransform>();
+            
+            // Set anchored position relative to parent
+            newCardRect.anchoredPosition = beginPosition + offset;
+            
             CardManager cm = newCard.GetComponent<CardManager>();
-            cm.subject = ballPrefabs[i];
+            
+            // Initialize the Ball prefab's values immediately before assignment
+            Ball ballToAssign = ballPrefabs[i];
+            if (ballToAssign != null)
+            {
+                ballToAssign.InitializeValues();
+            }
+            cm.subject = ballToAssign;
             Debug.Log("New card created");
         }
         Debug.Log("Created " + ballPrefabs.Length + " cards");

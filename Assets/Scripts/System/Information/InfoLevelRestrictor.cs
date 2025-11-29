@@ -5,9 +5,9 @@ using System.Collections.Generic;
 [RequireComponent(typeof(CanvasGroup))]
 public class InfoLevelRestrictor : MonoBehaviour
 {
-    public List<Interval> infoIntervals = new List<Interval>();
-    //first number is the first lower bound
-    //next is the upper bound that closes it
+    [Tooltip("The info level values that something will be shown for")]
+    public List<string> showValues = new List<string>();
+
     private CanvasGroup parent;
 
     void Awake()
@@ -18,9 +18,9 @@ public class InfoLevelRestrictor : MonoBehaviour
 
     void Update()
     {
-        float infoLevel = ProfileCustomization.infoLevel;
+        string infoLevel = ProfileCustomization.infoLevel;
 
-        if (!inBounds(infoLevel, infoIntervals))
+        if (showValues.IndexOf(infoLevel)==-1)
         {
             parent.alpha = 0f;
         }
@@ -31,26 +31,5 @@ public class InfoLevelRestrictor : MonoBehaviour
 
     }
     
-    bool inBounds(float infoLevel, List<Interval> infoIntervals)
-    {
-        bool output = false;
-        foreach (Interval range in infoIntervals)
-        {
-            bool withinLowerBound = range.lowerBound == null || infoLevel >= range.lowerBound;
-            bool withinUpperBound = range.upperBound == null || infoLevel <= range.upperBound;
-
-            output = withinLowerBound && withinUpperBound;
-            if (output)
-            {
-                break;
-            }
-        }
-        return output;
-    }
-    
-
-
-
-
 }
 

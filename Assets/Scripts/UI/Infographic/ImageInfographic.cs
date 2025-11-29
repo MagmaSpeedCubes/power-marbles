@@ -9,10 +9,11 @@ public class ImageInfographic : Infographic
 
     [SerializeField] protected List<NumberedSprite> infoSprites = new List<NumberedSprite>();
     [SerializeField] protected TextMeshProUGUI subtitle;
+    [SerializeField] protected Tag[] roundingPrecision;
 
 
 
-    override protected void updateInfo(float oldValue)
+    override protected void UpdateInfo(float oldValue)
     {
 
         int spriteIndex = 0;
