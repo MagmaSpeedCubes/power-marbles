@@ -403,7 +403,7 @@ Transform:
   m_GameObject: {fileID: 133934924}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.56, y: -1.41, z: 0}
+  m_LocalPosition: {x: 0, y: -1.41, z: 0}
   m_LocalScale: {x: 8.984975, y: 2.2579, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -502,7 +502,7 @@ MonoBehaviour:
   armorBars: []
   shieldHitSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   shieldBreakSound: {fileID: 8300000, guid: b7c442eeec4da4e1da7ce7b5971acbe8, type: 3}
-  shieldPercentage: 40
+  maxShield: 400
   shieldBars:
   - {fileID: 794824140}
 --- !u!1 &147659512
@@ -3414,7 +3414,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 401411057}
   m_HandleRect: {fileID: 401411056}
   m_Direction: 0
-  m_Value: 0.000019210478
+  m_Value: 0.000019210476
   m_Size: 0.17734635
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4689,7 +4689,7 @@ Transform:
   m_GameObject: {fileID: 1582368715}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.86, z: 0}
+  m_LocalPosition: {x: 0, y: -4.12, z: 0}
   m_LocalScale: {x: 8.984975, y: 2.2579, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6178,7 +6178,7 @@ MonoBehaviour:
   ballPrefabs:
   - {fileID: 220274576674302396, guid: 90c0e83057800450f89765cfe6a0c676, type: 3}
   - {fileID: 2946566345089461630, guid: df5b44661c4b14a07a728c1565ae8799, type: 3}
-  - {fileID: 552730151248049484, guid: 63f16af81b8194cb9896669244b0435c, type: 3}
+  - {fileID: 3965511907429211646, guid: e4a0c23f67596489a925191a1fae9538, type: 3}
   - {fileID: 1865955542312111035, guid: 6f299affcb10a40d4b5d71ca9283427a, type: 3}
   - {fileID: 6251271069341776728, guid: e8e8f49c7c02b4c27a30429235c17176, type: 3}
   - {fileID: 4844062343958198234, guid: be3d4ce9c6f0e4c6f8d2dfc6c4812669, type: 3}
@@ -6196,11 +6196,6 @@ MonoBehaviour:
   separationDistance: 100
   cardsPerRow: 999999
   dropdownText: {fileID: 1455449955}
-  normal: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-  highlighted: {r: 0.9, g: 0.9, b: 0.9, a: 1}
-  pressed: {r: 0.4862745, g: 0.9882354, b: 0, a: 1}
-  selected: {r: 0.4862745, g: 0.9882354, b: 0, a: 1}
-  disabled: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2031453544
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,8 @@ public class CardDeckManager : MonoBehaviour
     
     [SerializeField] private int cardsPerRow;
     [SerializeField] private TextMeshProUGUI dropdownText;
+
+    public Color normal, highlighted, pressed, selected, disabled;
     private List<GameObject> cards = new List<GameObject>();
 
 
@@ -69,6 +71,12 @@ public class CardDeckManager : MonoBehaviour
             Destroy(card);
         }
         Initialize();
+    }
+
+    public void RefreshColors(){
+        foreach(GameObject card in cards){
+            card.GetComponent<Image>().color = normal;
+        }
     }
 
     void SortByName(bool ascending)

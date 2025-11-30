@@ -61,13 +61,16 @@ public class DamageFormulas : MonoBehaviour
 
     public float Coin(BallManager ball)
     {
-        return 0;
+        return ball.ballData.power;
+        //energy gained from each bounce
+        
     }
 
     public float Chisel(BallManager ball)
     {
-        return ball.ballData.power * 0.1f;
-        //chisel is very weak but damages armor
+        return ball.ballData.power / 100;
+        //amount armor is damaged
+        //by percentage so /100
     }
 
     public float Slammed(BallManager ball)

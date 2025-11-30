@@ -45,7 +45,7 @@ public class LevelManager : MonoBehaviour
     public void StartLevel()
     {
         InvokeRepeating("AbilityTick", LevelStats.ABILITY_TICK_INTERVAL, LevelStats.ABILITY_TICK_INTERVAL);
-        LevelStats.energy = 100;
+        LevelStats.energy = 50;
     }
 
     public void EndLevel()

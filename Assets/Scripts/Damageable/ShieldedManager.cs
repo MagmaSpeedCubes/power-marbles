@@ -4,7 +4,8 @@ public class ShieldedManager : DamageManager
 {
     [SerializeField] protected AudioClip shieldHitSound;
     [SerializeField] protected AudioClip shieldBreakSound;
-    [SerializeField] protected float maxShield;
+    [SerializeField] protected float shieldPercentage;
+    protected float maxShield;
     public Infographic[] shieldBars;
     protected float shieldHealth;
 
@@ -12,6 +13,7 @@ public class ShieldedManager : DamageManager
     void Awake()
     {
         health = maxHealth;
+        maxShield = maxHealth * shieldPercentage / 100f;
         shieldHealth = maxShield;
         UpdateInfographics();
 

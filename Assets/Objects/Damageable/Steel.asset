@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0fe1326b17104874964b05d848dc690, type: 3}
   m_Name: Steel
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
-  armor: 75
+  armor: 0.75
   maxHealth: 100
   regenRate: 0
   damageSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   deathSound: {fileID: 8300000, guid: b7c442eeec4da4e1da7ce7b5971acbe8, type: 3}
   sprites:
-  - {fileID: 21300000, guid: f82b0d6b1231f4dbab7f9f8648377795, type: 3}
+  - {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}

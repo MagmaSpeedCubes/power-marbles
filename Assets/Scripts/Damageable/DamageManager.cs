@@ -13,6 +13,7 @@ public class DamageManager : MonoBehaviour
     protected Sprite[] sprites;
 
     public Infographic[] healthBars;
+    public Infographic[] armorBars;
     protected float health;
     
 
@@ -58,7 +59,20 @@ public class DamageManager : MonoBehaviour
 
     virtual public void Damage(float amount, string type, BallManager source = null)
     {
-        health -= amount * (1-armor);
+        switch (type)
+        {
+            case "Chisel":
+                armor -= amount;
+                if (armor < 0)
+                {
+                    armor = 0;
+                }
+                break;
+            default:
+                health -= amount * (1-armor);
+                break;
+        }
+        
 
         if (health <= 0)
         {
@@ -71,11 +85,17 @@ public class DamageManager : MonoBehaviour
         }
     }
 
+    
+
     virtual protected void UpdateInfographics()
     {
         foreach (Infographic bar in healthBars)
         {
             bar.SetValue(health);
+        }
+        foreach (Infographic bar in armorBars)
+        {
+            bar.SetValue(armor * 100);
         }
     }
 
