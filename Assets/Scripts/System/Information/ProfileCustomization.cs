@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ProfileCustomization : MonoBehaviour
 {
 
+    public static ProfileCustomization instance;
     public enum InfoLevel
     {
         aesthetic = -1,
@@ -30,20 +31,30 @@ public class ProfileCustomization : MonoBehaviour
     public static float worldVolume = 1f;
 
 
-    public static LinkedList<Color> rarityColors;
-    public List<Color> assignRarityColors;
+    [Header("UI Colors")]
+    public Color normal, highlighted, pressed, selected, disabled;
+    [Header("Rarity Colors")]
+    public Color common, uncommon, rare, epic, legendary, mythic;
+    [Header("Alert Colors")]
+    public Color info, warning, error, success;
 
 
     void Awake()
     {
-        
-        DontDestroyOnLoad(this.gameObject);
-        rarityColors = new LinkedList<Color>();
-        foreach(Color color in assignRarityColors)
+        if(instance == null)
         {
-            rarityColors.AddLast(color);
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+
+            LoadPrefs();
         }
-        LoadPrefs();
+        else
+        {
+            Debug.LogWarning("Multiple instances of ProfileCustomization detected. Destroying duplicate.");   
+            Destroy(this);
+        }
+        
+
 
     }
 

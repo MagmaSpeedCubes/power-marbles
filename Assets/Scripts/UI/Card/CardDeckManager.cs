@@ -15,7 +15,9 @@ public class CardDeckManager : MonoBehaviour
     
     [SerializeField] private int cardsPerRow;
     [SerializeField] private TextMeshProUGUI dropdownText;
-
+    
+    [SerializeField] protected bool useDefaultColors;
+    [ShowIf("useDefaultColors", false)]
     public Color normal, highlighted, pressed, selected, disabled;
     private List<GameObject> cards = new List<GameObject>();
 
@@ -23,13 +25,22 @@ public class CardDeckManager : MonoBehaviour
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    void Start()
     {
         Initialize();
     }
 
     void Initialize()
     {
+        if (useDefaultColors)
+        {
+            normal = ProfileCustomization.instance.normal;
+            highlighted = ProfileCustomization.instance.highlighted;
+            pressed = ProfileCustomization.instance.pressed;
+            selected = ProfileCustomization.instance.selected;
+            disabled = ProfileCustomization.instance.disabled;
+        }
+
         if(cardsPerRow <= 0)
         {
             throw new ArithmeticException("Cards per row needs to be positive");

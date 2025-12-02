@@ -25,7 +25,7 @@ public class CardHandler : UIElementHandler
     void Start()
     {
         
-        Image subjectSprite = subjectImage.GetComponent<Image>();
+        Image subjectSprite = subjectGameObject.GetComponent<Image>();
         subjectSprite.sprite = subject.sprite;
         subjectSprite.color = subject.spriteColor;
         cardTitle.text = subject.name;

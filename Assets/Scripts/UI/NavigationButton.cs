@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NavigationButton : MonoBehaviour
+public class NavigationButtonHandler : UIElementHandler
 {
     [SerializeField] private Canvas[] canvasesToClose;
     [SerializeField] private Canvas[] canvasesToOpen;
