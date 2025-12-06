@@ -135,12 +135,12 @@ public class LevelGenerator : MonoBehaviour
             {
                 anySplit = false;
                 var nextSegments = new List<(float a, float b)>();
-                Debug.Log($"Row {r}, iteration {iterCount}: processing {segments.Count} segments");
+                //Debug.Log($"Row {r}, iteration {iterCount}: processing {segments.Count} segments");
 
                 foreach (var seg in segments)
                 {
                     float segWidth = seg.b - seg.a;
-                    Debug.Log($"  Segment [{seg.a}, {seg.b}] width={segWidth}, minPlatformWidth*2={minPlatformWidth * 2f}");
+                    //Debug.Log($"  Segment [{seg.a}, {seg.b}] width={segWidth}, minPlatformWidth*2={minPlatformWidth * 2f}");
 
                     if (segWidth <= minPlatformWidth * 2f)
                     {
@@ -151,7 +151,7 @@ public class LevelGenerator : MonoBehaviour
 
                     if (rng.NextDouble() < splitProb)
                     {
-                        Debug.Log($"    -> SPLIT!");
+                        //Debug.Log($"    -> SPLIT!");
                         anySplit = true;
                         // choose split location with margin so both sides >= minPlatformWidth
                         float minSplit = minPlatformWidth;
@@ -225,7 +225,7 @@ public class LevelGenerator : MonoBehaviour
                 segments = nextSegments;
             }
 
-            Debug.Log($"Row {r} finished with {segments.Count} final platform segments");
+            //Debug.Log($"Row {r} finished with {segments.Count} final platform segments");
 
             // build platforms from final segments
             foreach (var s in segments)

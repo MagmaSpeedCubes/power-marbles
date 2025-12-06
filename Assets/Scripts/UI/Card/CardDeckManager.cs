@@ -5,21 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 
-public class CardDeckManager : MonoBehaviour
+public class CardDeckManager : TiledElementManager
 {
-    [SerializeField] private Vector2 beginPosition;
-    [SerializeField] private GameObject cardPrefab;
+
     [SerializeField] private Ball[] ballPrefabs;
-    [SerializeField] private GameObject cardParent;
-    [SerializeField] private float separationDistance;
-    
-    [SerializeField] private int cardsPerRow;
     [SerializeField] private TextMeshProUGUI dropdownText;
     
-    [SerializeField] protected bool useDefaultColors;
-    [ShowIf("useDefaultColors", false)]
-    public Color normal, highlighted, pressed, selected, disabled;
-    private List<GameObject> cards = new List<GameObject>();
 
 
 
@@ -27,43 +18,16 @@ public class CardDeckManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Initialize();
+        numElements = ballPrefabs.Length;
+        Instantiate();
     }
 
-    void Initialize()
+    override public void Instantiate()
     {
-        if (useDefaultColors)
+        base.Instantiate();
+        for(int i=0; i<items.Count; i++)
         {
-            normal = ProfileCustomization.instance.normal;
-            highlighted = ProfileCustomization.instance.highlighted;
-            pressed = ProfileCustomization.instance.pressed;
-            selected = ProfileCustomization.instance.selected;
-            disabled = ProfileCustomization.instance.disabled;
-        }
-
-        if(cardsPerRow <= 0)
-        {
-            throw new ArithmeticException("Cards per row needs to be positive");
-        }
-
-        for(int i=0; i<ballPrefabs.Length; i++)
-        {
-            //Debug.Log("Creating new card");
-            RectTransform prefabRect = cardPrefab.GetComponent<RectTransform>();
-            Vector2 offset = new Vector2(
-                (i % cardsPerRow) * (prefabRect.rect.width + separationDistance),
-                (i / cardsPerRow) * (prefabRect.rect.height + separationDistance)
-            );
-            
-            // Instantiate as child of cardParent to preserve layout and dimensions
-            GameObject newCard = Instantiate(cardPrefab, cardParent.transform);
-            cards.Add(newCard);
-            RectTransform newCardRect = newCard.GetComponent<RectTransform>();
-            
-            // Set anchored position relative to parent
-            newCardRect.anchoredPosition = beginPosition + offset;
-            
-            CardHandler cm = newCard.GetComponent<CardHandler>();
+            CardHandler cm = items[i].GetComponent<CardHandler>();
             
             // Initialize the Ball prefab's values immediately before assignment
             Ball ballToAssign = ballPrefabs[i];
@@ -72,23 +36,9 @@ public class CardDeckManager : MonoBehaviour
                 ballToAssign.InitializeValues();
             }
             cm.subject = ballToAssign;
-            //Debug.Log("New card created");
         }
-        //Debug.Log("Created " + ballPrefabs.Length + " cards");
     }
 
-    void Reinitialize(){
-        foreach(GameObject card in cards){
-            Destroy(card);
-        }
-        Initialize();
-    }
-
-    public void RefreshColors(){
-        foreach(GameObject card in cards){
-            card.GetComponent<Image>().color = normal;
-        }
-    }
 
     void SortByName(bool ascending)
     {
@@ -175,7 +125,7 @@ public class CardDeckManager : MonoBehaviour
                 Debug.LogError("No sorting method found for " + method);
                 break;
         }
-        Reinitialize();
+        base.Reinitialize();
     }
 
 

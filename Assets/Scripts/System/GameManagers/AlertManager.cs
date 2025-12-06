@@ -51,6 +51,11 @@ public class AlertManager : MonoBehaviour
         return null;
     }
 
+    public void ThrowDataError(string title, string[] messages)
+    {
+        
+    }
+
     public void ThrowUIError(string title, string[] messages)
     {
         AlertHandler ah = ThrowUIAlert("error", title, messages);

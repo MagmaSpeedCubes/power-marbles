@@ -2,11 +2,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System;
 public class CardHandler : UIElementHandler
 {
     public Ball subject;
     [SerializeField] private TextMeshProUGUI cardTitle;
     [SerializeField] private TextMeshProUGUI cardCost;
+    [SerializeField] private GameObject marbleImage;
 
     
 
@@ -14,7 +16,7 @@ public class CardHandler : UIElementHandler
     void Awake()
     {
         originalScale = transform.localScale;
-        cdm = Object.FindFirstObjectByType<CardDeckManager>();
+        cdm = UnityEngine.Object.FindFirstObjectByType<CardDeckManager>();
         
         normal = cdm.normal;
         highlighted = cdm.highlighted;
@@ -27,11 +29,20 @@ public class CardHandler : UIElementHandler
     void Start()
     {
         
-        Image subjectSprite = subjectGameObject.GetComponent<Image>();
-        subjectSprite.sprite = subject.mainSprite;
-        subjectSprite.color = subject.spriteColor;
-        cardTitle.text = subject.name;
-        cardCost.text = ""+subject.price;
+        
+        if(marbleImage.GetComponent<UIElementHandler>().type != UIElement.imageElement)
+        {
+            throw new Exception("UIElement is not defined as UIElement.imageElement so cannot modify image");
+        }
+        else
+        {
+            Image subjectSprite = marbleImage.GetComponent<Image>();
+            subjectSprite.sprite = subject.mainSprite;
+            subjectSprite.color = subject.spriteColor;
+            cardTitle.text = subject.name;
+            cardCost.text = ""+subject.price;
+        }
+
     }
 
     public void OnClick()

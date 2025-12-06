@@ -1,15 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
+
+[System.Serializable]
+public enum UIElement
+{
+    background,
+    foreground,
+    imageElement,
+    textElement,
+    inputElement,
+    canvasBackground
+}
 public class UIElementHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
-    [SerializeField] protected GameObject backgroundGameObject, foregroundGameObject, subjectGameObject;
-    [SerializeField] protected float hoverExpandAmount;
+    [SerializeField] protected GameObject element;
+
+
+
+    public UIElement type;
     protected Vector3 originalScale;
 
-    
-    [SerializeField] protected bool useDefaultColors;
+    [SerializeField] protected bool expandOnHover = false;
+    [ShowIf("expandOnHover", true)]
+    [SerializeField] protected float hoverExpandAmount = 0f;
+    [SerializeField] protected bool changeColorOnHover = false;
+
+    [ShowIf("changeColorOnHover", true)]
+    [SerializeField] protected bool useDefaultColors = true;
     [ShowIf("useDefaultColors", false)]
     [SerializeField] protected Color normal, highlighted, pressed, selected, disabled;
     //[ShowIf("useDefaultColors", false)]
@@ -30,14 +50,29 @@ public class UIElementHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
     virtual public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.localScale = originalScale * (1 + hoverExpandAmount);
-        backgroundGameObject.GetComponent<Image>().color = highlighted;
+            
+            
+        if (expandOnHover)
+        {
+            transform.localScale = originalScale * (1 + hoverExpandAmount);
+        }
+        if (changeColorOnHover)
+        {
+            element.GetComponent<Image>().color = highlighted;
+        }
+
     }
 
     virtual public void OnPointerExit(PointerEventData eventData)
     {
-        transform.localScale = originalScale;
-        backgroundGameObject.GetComponent<Image>().color = normal;
+        if (expandOnHover)
+        {
+            transform.localScale = originalScale;
+        }
+        if (changeColorOnHover)
+        {
+            element.GetComponent<Image>().color = normal;
+        }
     }
 
 

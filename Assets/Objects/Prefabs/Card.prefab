@@ -41,7 +41,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -299.70352, y: 142.87152}
+  m_AnchoredPosition: {x: -462.04977, y: -118.87976}
   m_SizeDelta: {x: 300, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4016264575497311622
@@ -150,11 +150,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba313f658855448cab3dd51d3e3a1873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardManager
-  backgroundGameObject: {fileID: 176731060299634978}
-  foregroundGameObject: {fileID: 7227530039875230468}
-  subjectGameObject: {fileID: 8615955075845430892}
+  element: {fileID: 176731060299634978}
+  type: 1
+  expandOnHover: 1
   hoverExpandAmount: 0.2
-  useDefaultColors: 0
+  changeColorOnHover: 1
+  useDefaultColors: 1
   normal: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
   pressed: {r: 0, g: 0, b: 0, a: 0}
@@ -163,6 +164,7 @@ MonoBehaviour:
   subject: {fileID: 4844062343958198234, guid: be3d4ce9c6f0e4c6f8d2dfc6c4812669, type: 3}
   cardTitle: {fileID: 2816235521534350341}
   cardCost: {fileID: 521429307804383809}
+  marbleImage: {fileID: 8615955075845430892}
 --- !u!1 &2798522540767043314
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +177,7 @@ GameObject:
   - component: {fileID: 8333373248469919257}
   - component: {fileID: 5438696700153217773}
   - component: {fileID: 1615461951628476655}
+  - component: {fileID: 1032643160426634388}
   m_Layer: 5
   m_Name: EnergyIcon
   m_TagString: Untagged
@@ -251,6 +254,29 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1032643160426634388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2798522540767043314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d1b9a3b618946d682fdece6d57deea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIElementHandler
+  element: {fileID: 2798522540767043314}
+  type: 2
+  expandOnHover: 0
+  hoverExpandAmount: 0
+  changeColorOnHover: 0
+  useDefaultColors: 1
+  normal: {r: 0, g: 0, b: 0, a: 0}
+  highlighted: {r: 0, g: 0, b: 0, a: 0}
+  pressed: {r: 0, g: 0, b: 0, a: 0}
+  selected: {r: 0, g: 0, b: 0, a: 0}
+  disabled: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &6564128872098843508
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +289,7 @@ GameObject:
   - component: {fileID: 8103455365529315625}
   - component: {fileID: 521429307804383809}
   - component: {fileID: 111050802433797092}
+  - component: {fileID: 5225395689686148041}
   m_Layer: 5
   m_Name: Cost
   m_TagString: Untagged
@@ -400,6 +427,29 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &5225395689686148041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6564128872098843508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d1b9a3b618946d682fdece6d57deea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIElementHandler
+  element: {fileID: 6564128872098843508}
+  type: 3
+  expandOnHover: 0
+  hoverExpandAmount: 0
+  changeColorOnHover: 0
+  useDefaultColors: 1
+  normal: {r: 0, g: 0, b: 0, a: 0}
+  highlighted: {r: 0, g: 0, b: 0, a: 0}
+  pressed: {r: 0, g: 0, b: 0, a: 0}
+  selected: {r: 0, g: 0, b: 0, a: 0}
+  disabled: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &7212341548399946665
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,6 +462,7 @@ GameObject:
   - component: {fileID: 6245303662175947208}
   - component: {fileID: 2816235521534350341}
   - component: {fileID: 2374435974839685871}
+  - component: {fileID: 5595090742545486285}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -549,6 +600,29 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &5595090742545486285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7212341548399946665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d1b9a3b618946d682fdece6d57deea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIElementHandler
+  element: {fileID: 7212341548399946665}
+  type: 3
+  expandOnHover: 0
+  hoverExpandAmount: 0
+  changeColorOnHover: 0
+  useDefaultColors: 1
+  normal: {r: 0, g: 0, b: 0, a: 0}
+  highlighted: {r: 0, g: 0, b: 0, a: 0}
+  pressed: {r: 0, g: 0, b: 0, a: 0}
+  selected: {r: 0, g: 0, b: 0, a: 0}
+  disabled: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &7227530039875230468
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,6 +635,7 @@ GameObject:
   - component: {fileID: 1477903739556989553}
   - component: {fileID: 6328179599620400743}
   - component: {fileID: 6210749069929110634}
+  - component: {fileID: 7126194984960887646}
   m_Layer: 5
   m_Name: Foreground
   m_TagString: Untagged
@@ -637,6 +712,29 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &7126194984960887646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7227530039875230468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d1b9a3b618946d682fdece6d57deea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIElementHandler
+  element: {fileID: 7227530039875230468}
+  type: 1
+  expandOnHover: 0
+  hoverExpandAmount: 0
+  changeColorOnHover: 0
+  useDefaultColors: 1
+  normal: {r: 0, g: 0, b: 0, a: 0}
+  highlighted: {r: 0, g: 0, b: 0, a: 0}
+  pressed: {r: 0, g: 0, b: 0, a: 0}
+  selected: {r: 0, g: 0, b: 0, a: 0}
+  disabled: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &8615955075845430892
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +747,7 @@ GameObject:
   - component: {fileID: 3150144436618787400}
   - component: {fileID: 8708676597116683794}
   - component: {fileID: 7906328688673115208}
+  - component: {fileID: 1598180595712461529}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -725,3 +824,26 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1598180595712461529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8615955075845430892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d1b9a3b618946d682fdece6d57deea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIElementHandler
+  element: {fileID: 8615955075845430892}
+  type: 2
+  expandOnHover: 0
+  hoverExpandAmount: 0
+  changeColorOnHover: 0
+  useDefaultColors: 1
+  normal: {r: 0, g: 0, b: 0, a: 0}
+  highlighted: {r: 0, g: 0, b: 0, a: 0}
+  pressed: {r: 0, g: 0, b: 0, a: 0}
+  selected: {r: 0, g: 0, b: 0, a: 0}
+  disabled: {r: 0, g: 0, b: 0, a: 0}
