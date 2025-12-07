@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class NavigationButtonHandler : UIElementHandler
 {
-    [SerializeField] private Canvas[] canvasesToClose;
-    [SerializeField] private Canvas[] canvasesToOpen;
+    [SerializeField] protected Canvas[] canvasesToClose;
+    [SerializeField] protected Canvas[] canvasesToOpen;
 
-    public void OnClick()
+    virtual public void OnClick()
     {
         foreach(Canvas c in canvasesToClose)
         {

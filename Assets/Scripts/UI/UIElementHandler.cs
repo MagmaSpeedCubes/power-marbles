@@ -35,7 +35,7 @@ public class UIElementHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     //[ShowIf("useDefaultColors", false)]
     //[SerializeField] protected Color backgroundColor, foregroundColor, subjectColor;
         
-    void Start()
+    virtual protected void Start()
     {
         originalScale = transform.localScale;
 

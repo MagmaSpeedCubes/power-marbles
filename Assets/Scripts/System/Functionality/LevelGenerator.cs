@@ -30,15 +30,50 @@ public class LevelGenerator : MonoBehaviour
         }else{
             Debug.LogWarning("Multiple instances of LevelGenerator detected. Destroying duplicate.");
         }
+
+
     }
-    void Start(){
-        TestGenerateLevel();
+
+
+
+    public void TestLevelDifficulties(){
+        int normal = 0;
+        int difficult = 0;
+        float difficultCutoff = 185f;
+        int testDuration = 300;
+
+        float sum = 0;
+
+        Debug.Log("Testing levels 1-" + testDuration );
+        for(int i=0; i<testDuration; i++){
+            float td = GetLevelDifficulty(i+1);
+            if(td > difficultCutoff){
+                difficult++;
+                Debug.Log("Level " + (i+1) + " is a difficult level with a difficulty of " + td);
+            }else{
+                normal++;
+                Debug.Log("Level " + (i+1) + " is a normal level with a difficulty of " + td);
+            }
+            sum += td;
+
+        }
+
+        Debug.Log("Tested levels 1-" + testDuration );
+        Debug.Log("# of normal levels: " + normal);
+        Debug.Log("# of difficult levels: " + difficult);
+        Debug.Log("Average difficulty: " + sum/testDuration);
+
+        
     }
     public void TestGenerateLevel(){
         GenerateLevel(1);
     }
 
-    
+    public float GetLevelDifficulty(int levelNumber){
+        System.Random rng = new System.Random(levelNumber * 73856093 ^ 19349663); // better seed mixing
+        float difficulty = 100 * levelNumber / (levelNumber + 40) + rng.Next(0, 101) + 50;
+        return difficulty;
+    }
     
     public GameObject GenerateLevel(int levelNumber)
     {
@@ -47,8 +82,10 @@ public class LevelGenerator : MonoBehaviour
         /// </summary>
         /// <param name="levelNumber">The number of the level. Level difficulty increases over time but plateaus.</param>
 
-        System.Random rng = new System.Random(levelNumber);
-        float difficulty = 100 * levelNumber / (levelNumber + 40);
+        System.Random rng = new System.Random(levelNumber * 73856093 ^ 19349663);
+        float difficulty = 100 * levelNumber / (levelNumber + 40) + rng.Next(-50, 51);
+
+
 
         //difficulty determined by random generation
         

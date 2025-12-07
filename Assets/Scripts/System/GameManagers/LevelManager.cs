@@ -72,6 +72,13 @@ public class LevelManager : MonoBehaviour
         currentLevel = LevelGenerator.instance.GenerateLevel(levelNumber); 
     }
 
+    public void LoadLevel(int number)
+    {
+        Destroy(currentLevel);
+        levelNumber = number;
+        currentLevel = LevelGenerator.instance.GenerateLevel(number); 
+    }
+
     public void EndLevel()
     {
         active = false;

@@ -7,7 +7,7 @@ using System.Linq;
 
 public class TiledElementManager : MonoBehaviour
 {
-    [SerializeField] protected Vector2 beginPosition;
+    [SerializeField] protected Transform beginPosition;
     [SerializeField] protected GameObject elementPrefab;
     [SerializeField] protected int numElements;
     [SerializeField] protected GameObject parentObject;
@@ -50,10 +50,12 @@ public class TiledElementManager : MonoBehaviour
         {
             //Debug.Log("Creating new item");
             RectTransform prefabRect = elementPrefab.GetComponent<RectTransform>();
-            Vector2 offset = new Vector2(
+            Vector3 offset = new Vector3(
                 (i % itemsPerRow) * (prefabRect.rect.width + separationDistance),
-                (i / itemsPerRow) * (prefabRect.rect.height + separationDistance)
+                -(int)(i / itemsPerRow) * (prefabRect.rect.height + separationDistance), 0
             );
+
+            //Debug.Log("Y offset: " + -(int)(i / itemsPerRow) * (prefabRect.rect.height + separationDistance));
             
             // Instantiate as child of parentObject to preserve layout and dimensions
             GameObject newItem = Instantiate(elementPrefab, parentObject.transform);
@@ -61,7 +63,7 @@ public class TiledElementManager : MonoBehaviour
             RectTransform newItemRect = newItem.GetComponent<RectTransform>();
             
             // Set anchored position relative to parent
-            newItemRect.anchoredPosition = beginPosition + offset;
+            newItemRect.localPosition = beginPosition.localPosition + offset;
             
         }
 
