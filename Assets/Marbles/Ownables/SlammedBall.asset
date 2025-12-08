@@ -15,7 +15,7 @@ MonoBehaviour:
   sprite: {fileID: 432040059503290001, guid: c4541d88662b245e0a72baa59dd702c4, type: 3}
   tags:
   - name: rarity
-    value: uncommon
+    value: common
   - name: gravityMultiplier
     value: 1
   - name: powerMultiplier
@@ -26,3 +26,5 @@ MonoBehaviour:
     value: 1
   - name: priceMultiplier
     value: 1
+  - name: powerTowerDropChance
+    value: 0

@@ -110,7 +110,7 @@ public class Ownable : ScriptableObject
 
 
         string combined = this.name + "|" + sprite.name + "|" + combinedNames + "|" + combinedValues;
-        Debug.Log("Serialized Ownable: " + combined);
+        //Debug.Log("Serialized Ownable: " + combined);
         return combined;
 
     }

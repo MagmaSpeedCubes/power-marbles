@@ -74,6 +74,10 @@ public class LevelGenerator : MonoBehaviour
         float difficulty = 100 * levelNumber / (levelNumber + 40) + rng.Next(0, 101) + 50;
         return difficulty;
     }
+
+    public bool IsDifficultLevel(int levelNumber){
+        return GetLevelDifficulty(levelNumber) > 185;
+    }
     
     public GameObject GenerateLevel(int levelNumber)
     {

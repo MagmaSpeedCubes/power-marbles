@@ -51,6 +51,11 @@ public class ClickManager : MonoBehaviour
                 
                 if(hit.name == "SpawnZone")
                 {
+                    if(LevelManager.instance.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
+                    {
+                        AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
+                        break;
+                    }
                     //continue spawning process if and only if clicked in spawn zone
                     if(LevelStats.selectedBall.price <= LevelStats.energy)
                     {
@@ -64,6 +69,9 @@ public class ClickManager : MonoBehaviour
                         newBall.name = LevelStats.selectedBall.ballPrefabObject.name;
                         newBall.GetComponent<SpriteRenderer>().color = LevelStats.selectedBall.prefab.defaultColor;
                         newBall.transform.parent = ballParent.transform;
+                        Vector3 liftPosition = new Vector3(newBall.transform.position.x, newBall.transform.position.y, 
+                        newBall.transform.position.z - LevelManager.instance.activeBalls.Count * 0.01f);
+                        newBall.transform.position = liftPosition;
 
                         
                         
@@ -74,6 +82,8 @@ public class ClickManager : MonoBehaviour
 
 
         }
+
+        
     }
 }
 

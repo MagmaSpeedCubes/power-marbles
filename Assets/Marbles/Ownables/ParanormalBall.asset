@@ -26,3 +26,5 @@ MonoBehaviour:
     value: 1
   - name: priceMultiplier
     value: 1
+  - name: powerTowerDropChance
+    value: 0.4

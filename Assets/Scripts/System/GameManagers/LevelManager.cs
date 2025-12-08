@@ -94,16 +94,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
-        {
-            AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
-            for(int i=activeBalls.Count-1; i>=LevelStats.MAX_BALL_COUNT; i--)
-            {
-                BallHandler ball = activeBalls[i];
-                Destroy(ball.gameObject);
-                activeBalls.Remove(ball);
-            }
-        }
+ 
         if (active)
         {
             levelTimer -= Time.deltaTime;

@@ -32,6 +32,7 @@ public class TiledElementManager : MonoBehaviour
 
     virtual public void Instantiate()
     {
+        items = new List<GameObject>();
         if (useDefaultColors)
         {
             normal = ProfileCustomization.instance.normal;
@@ -48,7 +49,7 @@ public class TiledElementManager : MonoBehaviour
 
         for(int i=0; i<numElements; i++)
         {
-            //Debug.Log("Creating new item");
+            Debug.Log("Creating new item");
             RectTransform prefabRect = elementPrefab.GetComponent<RectTransform>();
             Vector3 offset = new Vector3(
                 (i % itemsPerRow) * (prefabRect.rect.width + separationDistance),

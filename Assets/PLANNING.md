@@ -6,31 +6,23 @@ all balls:
 
 Basic most basic ball
 
-Sticky sticks to damageables for a short period of time
-
 Speedy bounces much faster
 
 Random deals a random amount of damage each hit
 
---Uncommon--
-
-Mace deals more damage when falling from higher
-
-Grower increases in size on each bounce
-
 Coin deals no damage, generates coins on each bounce
 
-Chisel deals no damage, destroys armor over time
+Slammed deals increasing damage on each bounce
 
 --Rare--
-
-Slammed deals increasing damage on each bounce
 
 Mitosis starts off as smaller than a basic ball increases in size to a basic ball divides into two clones of the initial mitosis ball
 
 Grenade every ability tick, releases a number of small balls each dealing 1 damage
 
 Pickaxe has a rotating pickaxe that deals damage when in collision with a damageable
+
+Chisel deals no damage, destroys armor over time
 
 --Epic--
 
@@ -47,7 +39,7 @@ Laser has a rotating laser that deals damage in its direction regardless of dist
 
 Fibonacci damage on hit N is equal to combined damage of hit N-2 and N-1
 
---Mythical--
+--Mythic--
 
 Derivative deals the difference in damage between the weakest and strongest balls discounting Integral and copies of itself.
 

@@ -25,7 +25,9 @@ public class CardDeckManager : TiledElementManager
     override public void Instantiate()
     {
         base.Instantiate();
-        for(int i=0; i<items.Count; i++)
+        // Ensure we don't access out of bounds; use the minimum of items and ballPrefabs length
+        int count = Mathf.Min(items.Count, ballPrefabs.Length);
+        for(int i = 0; i < count; i++)
         {
             CardHandler cm = items[i].GetComponent<CardHandler>();
             
