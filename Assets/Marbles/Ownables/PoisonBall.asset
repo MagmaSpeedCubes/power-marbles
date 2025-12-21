@@ -28,3 +28,7 @@ MonoBehaviour:
     value: 1
   - name: powerTowerDropChance
     value: 0.4
+  - name: poisonCooldown
+    value: 0.5
+  - name: poisonCycles
+    value: 5

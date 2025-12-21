@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ToolBallManager : MonoBehaviour
 {
-    [SerializeReference] protected ToolManager tool;
+    [SerializeReference] protected ToolHandler tool;
     void Update()
     {
         

@@ -14,15 +14,15 @@ public class BallHandler : MonoBehaviour
     protected float debounce = DEBOUNCE_TIME;
 
     [SerializeField] protected SpriteRenderer iconSprite;
-    void Start()
+    protected void Start()
     {
         Initialize();
 
     }
 
-    void Update()
+    protected void Update()
     {
-        debounce += Time.deltaTime;
+        OnUpdate();   
     }
 
     virtual protected void Initialize()
@@ -50,6 +50,11 @@ public class BallHandler : MonoBehaviour
         LevelManager.instance.AddBall(this);
 
 
+    }
+
+    virtual protected void OnUpdate()
+    {
+        debounce += Time.deltaTime;
     }
 
     protected void ApplyRandomForce()

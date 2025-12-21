@@ -50,19 +50,19 @@ public class Ball : MonoBehaviour
             Debug.LogWarning("Ownable is null for Ball '" + this.name + "' - using default multipliers");
         }
 
-        float gravityMultiplier = GetMultiplier("gravityMultiplier", 1f);
+        float gravityMultiplier = GetFloat("gravityMultiplier", 1f);
         gravity = prefab.gravity * gravityMultiplier;
 
-        float powerMultiplier = GetMultiplier("powerMultiplier", 1f);
+        float powerMultiplier = GetFloat("powerMultiplier", 1f);
         power = prefab.power * powerMultiplier;
 
-        float sizeMultiplier = GetMultiplier("sizeMultiplier", 1f);
+        float sizeMultiplier = GetFloat("sizeMultiplier", 1f);
         size = prefab.size * sizeMultiplier;
 
-        float movementSpeedMultiplier = GetMultiplier("movementSpeedMultiplier", 1f);
+        float movementSpeedMultiplier = GetFloat("movementSpeedMultiplier", 1f);
         movementSpeed = prefab.movementSpeed * movementSpeedMultiplier;
 
-        float priceMultiplier = GetMultiplier("priceMultiplier", 1f);
+        float priceMultiplier = GetFloat("priceMultiplier", 1f);
 
         price = Mathf.Max(0, (int)(prefab.price * priceMultiplier));
 
@@ -77,7 +77,7 @@ public class Ball : MonoBehaviour
 
 
 
-    private float GetMultiplier(string tagName, float defaultValue = 1f)
+    public string GetTag(string tagName, string defaultValue = "")
     {
         if (ownable == null)
         {
@@ -90,14 +90,19 @@ public class Ball : MonoBehaviour
             Debug.LogWarning($"Tag '{tagName}' missing for '{this.name}' - using default {defaultValue}");
             return defaultValue;
         }
+        return raw;
 
-        float parsed;
-        if (!float.TryParse(raw, out parsed))
+
+    }
+
+    public float GetFloat(string tagName, float defaultValue = 1f)
+    {
+        string raw = GetTag(tagName, defaultValue.ToString());
+        if (float.TryParse(raw, out float result))
         {
-            Debug.LogWarning($"Tag '{tagName}' value '{raw}' is not a number for '{this.name}' - using default {defaultValue}");
-            return defaultValue;
+            return result;
         }
-
-        return parsed;
+        Debug.LogWarning($"Tag '{tagName}' not a valid float for '{this.name}' - using default {defaultValue}");
+        return defaultValue;
     }
 }
