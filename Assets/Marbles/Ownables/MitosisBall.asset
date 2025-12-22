@@ -28,3 +28,5 @@ MonoBehaviour:
     value: 1
   - name: powerTowerDropChance
     value: 1.5
+  - name: type
+    value: marble

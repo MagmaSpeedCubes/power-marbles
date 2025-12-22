@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: FibonacciBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: 573597476507942261, guid: 43b5bc3a48d1444af97f7e3c790c02d0, type: 3}
+  sprite: {fileID: -7388630832420301080, guid: f27d2691f81264bd4b57420af6478f94, type: 3}
   tags:
   - name: rarity
     value: legendary
@@ -28,3 +28,5 @@ MonoBehaviour:
     value: 1
   - name: powerTowerDropChance
     value: 0
+  - name: type
+    value: marble

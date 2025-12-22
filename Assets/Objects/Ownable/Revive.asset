@@ -20,3 +20,5 @@ MonoBehaviour:
     value: 1
   - name: powerTowerDropChance
     value: 1
+  - name: type
+    value: consumable

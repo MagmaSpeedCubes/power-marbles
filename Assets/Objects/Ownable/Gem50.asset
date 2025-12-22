@@ -18,3 +18,5 @@ MonoBehaviour:
     value: legendary
   - name: powerTowerDropChance
     value: .08
+  - name: type
+    value: claimable

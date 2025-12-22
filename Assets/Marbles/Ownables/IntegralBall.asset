@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: IntegralBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -7896866065208103479, guid: 661e1d753c06c481ab6ac5a7926865c3, type: 3}
+  sprite: {fileID: -1002883583475731000, guid: 1485e948767f743d6821e084f6e13288, type: 3}
   tags:
   - name: rarity
     value: mythic
@@ -28,3 +28,5 @@ MonoBehaviour:
     value: 1
   - name: powerTowerDropChance
     value: 0
+  - name: type
+    value: marble

@@ -18,3 +18,5 @@ MonoBehaviour:
     value: rare
   - name: powerTowerDropChance
     value: 1
+  - name: type
+    value: claimable

@@ -11,6 +11,7 @@ public enum AnimationType
 public class OpenCloseAnimation : MonoBehaviour
 {
     private RectTransform parent;
+    private Canvas parentCanvas;
     
     [SerializeField] private AnimationType openAnimation;
     [SerializeField] private Vector3 openPosition;
@@ -25,6 +26,7 @@ public class OpenCloseAnimation : MonoBehaviour
     void Awake()
     {
         parent = GetComponent<RectTransform>();
+        parentCanvas = GetComponentInParent<Canvas>();
     }
 
     public void Open()
@@ -32,6 +34,7 @@ public class OpenCloseAnimation : MonoBehaviour
         if (!isOpen)
         {
             isOpen = true;
+            parentCanvas.enabled = true;
             if (openAnimation == AnimationType.Slide)
             {
                 StartCoroutine(Slide(openPosition, duration));
@@ -57,6 +60,7 @@ public class OpenCloseAnimation : MonoBehaviour
                 StartCoroutine(Fade(1, 0, duration));
             }
         }
+        
     }
 
     public void Toggle()

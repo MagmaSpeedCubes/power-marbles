@@ -20,6 +20,7 @@ public class ButtonHandler : UIElementHandler
 
     protected IEnumerator PopCoroutine()
     {
+        AudioManager.instance.PlaySound("pop", ProfileCustomization.uiVolume);
         Vector3 originalScale = transform.localScale;
         Vector3 targetScale = originalScale * popScale;
 

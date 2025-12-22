@@ -18,3 +18,5 @@ MonoBehaviour:
     value: epic
   - name: powerTowerDropChance
     value: 0.5
+  - name: type
+    value: claimable
