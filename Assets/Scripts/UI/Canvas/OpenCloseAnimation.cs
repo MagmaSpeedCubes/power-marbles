@@ -10,16 +10,19 @@ public enum AnimationType
 [RequireComponent(typeof(CanvasGroup))]
 public class OpenCloseAnimation : MonoBehaviour
 {
-    private RectTransform parent;
-    private Canvas parentCanvas;
+    protected RectTransform parent;
+    protected Canvas parentCanvas;
+    protected CanvasGroup canvasGroup;
+    private Coroutine currentAnimation;
     
     [SerializeField] private AnimationType openAnimation;
     [SerializeField] private Vector3 openPosition;
     
     [SerializeField] private AnimationType closeAnimation;
     [SerializeField] private Vector3 closePosition;
-    [SerializeField] private float duration = 1f;
-    private bool isOpen = false;
+    [SerializeField] protected float duration = 0.5f;
+
+    protected bool isOpen = false;
 
 
 
@@ -27,43 +30,76 @@ public class OpenCloseAnimation : MonoBehaviour
     {
         parent = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
-    }
+        canvasGroup = GetComponent<CanvasGroup>();
 
-    public void Open()
-    {
+        // Initialize to closed state to avoid jumps on first Open
         if (!isOpen)
         {
-            isOpen = true;
-            parentCanvas.enabled = true;
-            if (openAnimation == AnimationType.Slide)
+            // set to configured close position and alpha using anchoredPosition (safer for UI)
+            parent.anchoredPosition = new Vector2(closePosition.x, closePosition.y);
+            if (closeAnimation == AnimationType.Fade && canvasGroup != null)
             {
-                StartCoroutine(Slide(openPosition, duration));
+                canvasGroup.alpha = 0f;
             }
-            else if (openAnimation == AnimationType.Fade)
-            {
-                StartCoroutine(Fade(0, 1, duration));
-            }
+            if (parentCanvas != null)
+                parentCanvas.enabled = false;
         }
     }
 
-    public void Close()
+    virtual public void Open()
+    {
+        if (!isOpen)
+        {
+            Debug.Log("Beginning open animation");
+            isOpen = true;
+            if (parentCanvas != null)
+            {
+                parentCanvas.enabled = true;
+                // Force all descendants' layouts to rebuild immediately
+                // This ensures grandchildren and deeper elements are properly positioned before animation starts
+                Canvas.ForceUpdateCanvases();
+            }
+
+            // stop any ongoing animation
+            if (currentAnimation != null) StopCoroutine(currentAnimation);
+
+            if (openAnimation == AnimationType.Slide)
+            {
+                // ensure starting anchored position matches closePosition before animating
+                parent.anchoredPosition = new Vector2(closePosition.x, closePosition.y);
+                // Start slide animation immediately (now that all layouts are updated)
+                currentAnimation = StartCoroutine(Slide(openPosition, duration));
+            }
+            else if (openAnimation == AnimationType.Fade)
+            {
+                currentAnimation = StartCoroutine(Fade(0, 1, duration));
+            }
+
+        }
+    }
+
+    virtual public void Close()
     {
         if (isOpen)
         {
             isOpen = false;
+            // stop any ongoing animation
+            if (currentAnimation != null) StopCoroutine(currentAnimation);
+
             if (closeAnimation == AnimationType.Slide)
             {
-                StartCoroutine(Slide(closePosition, duration));
+                currentAnimation = StartCoroutine(Slide(closePosition, duration));
             }
             else if (closeAnimation == AnimationType.Fade)
             {
-                StartCoroutine(Fade(1, 0, duration));
+                currentAnimation = StartCoroutine(Fade(1, 0, duration));
             }
+
         }
         
     }
 
-    public void Toggle()
+    virtual public void Toggle()
     {
         if (isOpen)
         {
@@ -89,6 +125,10 @@ public class OpenCloseAnimation : MonoBehaviour
         }
         parent.localPosition = endPosition;
         Debug.Log("End Position: " + parent.localPosition);
+        // if we just closed, disable the canvas to avoid showing the panel
+        if (!isOpen && parentCanvas != null)
+            parentCanvas.enabled = false;
+        currentAnimation = null;
     }
 
     public IEnumerator Fade(float startAlpha, float endAlpha, float duration)
@@ -96,12 +136,32 @@ public class OpenCloseAnimation : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            parent.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(startAlpha, endAlpha, EaseInOutCubic(elapsedTime / duration));
+            if (canvasGroup != null)
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, EaseInOutCubic(elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        parent.GetComponent<CanvasGroup>().alpha = endAlpha;
+        if (canvasGroup != null)
+            canvasGroup.alpha = endAlpha;
+
+        // disable canvas when faded out
+        if (endAlpha <= 0f && parentCanvas != null)
+            parentCanvas.enabled = false;
+        currentAnimation = null;
     }
+
+    public IEnumerator Fade(Canvas canvas, float startAlpha, float endAlpha, float duration)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            canvas.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(startAlpha, endAlpha, EaseInOutCubic(elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        canvas.GetComponent<CanvasGroup>().alpha = endAlpha;
+    }
+
 
 
 

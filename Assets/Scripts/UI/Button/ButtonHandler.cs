@@ -11,8 +11,15 @@ public class ButtonHandler : UIElementHandler
 
     virtual public void OnClick()
     {
-        if(popOnClick){StartCoroutine(PopCoroutine());}
-        else{LateOnClick();}
+        if(popOnClick)
+        {
+            StartCoroutine(PopCoroutine());
+        }
+        else
+        {
+            // If there's no pop animation, invoke LateOnClick immediately
+            LateOnClick();
+        }
     }
 
     virtual public void LateOnClick()

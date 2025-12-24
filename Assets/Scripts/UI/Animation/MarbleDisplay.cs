@@ -49,8 +49,8 @@ public class MarbleDisplay : MonoBehaviour, IDragHandler, IEndDragHandler
         temp.sprite = newSprite;
         while(elapsedTime < duration){
             elapsedTime += Time.deltaTime;
-            main.color = Color.Lerp(Color.clear, Color.white, elapsedTime / duration);
-            temp.color = Color.Lerp(Color.white, Color.clear, elapsedTime / duration);
+            main.color = Color.Lerp(Color.white, Color.clear, elapsedTime / duration);
+            temp.color = Color.Lerp(Color.clear, Color.white, elapsedTime / duration);
             yield return null;
         }
         main.sprite = newSprite;
