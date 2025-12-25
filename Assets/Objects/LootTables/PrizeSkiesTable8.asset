@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2eea07139c7c4e9181a3483b4ebaa3b, type: 3}
+  m_Name: PrizeSkiesTable8
+  m_EditorClassIdentifier: Assembly-CSharp::LootTable
+  name: prizeSkiesTable9
+  items:
+  - item: {fileID: 11400000, guid: ac573de834c7e4d88a83cb6812396378, type: 2}
+    probability: 0.1
+  - item: {fileID: 11400000, guid: 5bbe84db207b0481f93605c11368ab44, type: 2}
+    probability: 0.1
+  - item: {fileID: 11400000, guid: 2efff5f0606bd472283bd0c9c0d5d818, type: 2}
+    probability: 0.1
+  - item: {fileID: 11400000, guid: cf1e7e2afa7bd494db77f21b5347117a, type: 2}
+    probability: 0.05
+  - item: {fileID: 11400000, guid: 9432167d31b1e43fd82856cbcca648a5, type: 2}
+    probability: 0.05
+  - item: {fileID: 11400000, guid: db28e5c3a782b4ca58ace43fe4bdf974, type: 2}
+    probability: 0.05
+  - item: {fileID: 11400000, guid: f10a8421f3ac04479b5e1b903dc45f9e, type: 2}
+    probability: 0.05
+  - item: {fileID: 11400000, guid: 040e7fc03ba53488586d9b8507c0a9bc, type: 2}
+    probability: 0.1
+  - item: {fileID: 11400000, guid: c454fb19bc62747409f454e7dd5ef2b7, type: 2}
+    probability: 0.1

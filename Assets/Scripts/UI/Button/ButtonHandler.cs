@@ -9,8 +9,15 @@ public class ButtonHandler : UIElementHandler
     [ShowIf("popOnClick", true)]
     [SerializeField] protected float popScale = 1.2f;
 
+    private bool debounce = false;
+
     virtual public void OnClick()
     {
+        if(debounce)
+        {
+            return;
+        }
+        debounce = true;
         if(popOnClick)
         {
             StartCoroutine(PopCoroutine());
@@ -23,7 +30,9 @@ public class ButtonHandler : UIElementHandler
     }
 
     virtual public void LateOnClick()
-    {}
+    {
+        debounce = false;
+    }
 
     protected IEnumerator PopCoroutine()
     {

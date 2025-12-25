@@ -11,6 +11,8 @@ public class LevelGenerator : MonoBehaviour
 
     public DamageablePrefab[] damageablePrefabs;
 
+    public GameObject[] prebuiltLevels;
+
     float[] rowYs = new float[] { 100f, 300f, 500f, 700f };
     const float platformHeight = 100f;
     const double splitProb = 0.2;    // chance a platform segment will split into two
@@ -77,6 +79,21 @@ public class LevelGenerator : MonoBehaviour
 
     public bool IsDifficultLevel(int levelNumber){
         return GetLevelDifficulty(levelNumber) > 185;
+    }
+
+    public GameObject LoadLevel(int levelNumber)
+    {
+        /// <summary>
+        /// Loads a prebuilt level if it exists; otherwise generates a new level
+        /// </summary>
+        /// <param name="levelNumber">The number of the level. Level difficulty increases over time but plateaus.</param>
+
+        if(levelNumber-1 < prebuiltLevels.Length){
+            GameObject lp = Instantiate(prebuiltLevels[levelNumber-1], new Vector3(0,2,0), Quaternion.identity);
+            return lp;
+        }else{
+            return GenerateLevel(levelNumber);
+        }
     }
     
     public GameObject GenerateLevel(int levelNumber)

@@ -9,15 +9,11 @@ public class NavigationButtonHandler : ButtonHandler
     
     override public void OnClick()
     {
-        base.OnClick();
         AnimateCanvases();
-    }
-
-    override public void LateOnClick()
-    {
-        // Called after pop animation completes (or immediately if popOnClick is disabled)
+        base.OnClick();
         
     }
+
 
     public void AnimateCanvases()
     {

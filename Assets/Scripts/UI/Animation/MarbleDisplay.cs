@@ -7,7 +7,8 @@ public class MarbleDisplay : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     [Header("Place marble in the center of intended bounce area")]
     [SerializeField] private GameObject fakeMarble;
-    [SerializeField] private Image main, temp;
+    [SerializeField] private Image main, temp, background;
+    [SerializeField] private BallPrefab[] prefabs;
     private Vector3 defaultPosition;
     private Vector3 targetPosition;
     public List<Sprite> marbleSprites;

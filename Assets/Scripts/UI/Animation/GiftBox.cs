@@ -6,11 +6,15 @@ using UnityEngine.UI;
 public class GiftBox : TiledElementManager
 {
     [SerializeField] private GameObject box, lid;
+    [SerializeField] private Image boxImage, lidImage, boxRibbonImage, lidRibbonImage;
     [SerializeField] private GameObject rewardIconPrefab;
     [SerializeField] private float maxHorizontalSize;
 
     [SerializeField] private Ownable[] rewards;
     private GameObject rewardIconsWrapper;
+    [SerializeField] private float openDistance = 2400f;
+    [SerializeField] private float openTime = 1f;
+    private bool isOpen = false;
 
     public void OnClick()
     {
@@ -18,7 +22,9 @@ public class GiftBox : TiledElementManager
     }
     public IEnumerator Open()
     {
-        yield return StartCoroutine(LiftLid(2400, 1f));
+        if(isOpen){yield return null;}
+        isOpen = true;
+        yield return StartCoroutine(LiftLid(openDistance, openTime));
         //open the gift box by lifting the lid
 
         rewardIconsWrapper = GenerateRewardIcons();
@@ -40,6 +46,14 @@ public class GiftBox : TiledElementManager
         
 
 
+    }
+
+    public IEnumerator Close()
+    {
+        if(!isOpen){yield return null;}
+        isOpen = false;
+        Destroy(rewardIconsWrapper);
+        yield return StartCoroutine(LiftLid(-openDistance, openTime));
     }
 
     IEnumerator LiftLid(float distance, float time)
@@ -89,6 +103,24 @@ public class GiftBox : TiledElementManager
             items.Add(rewardIcon);
         }
         return wrapper;
+    }
+
+    public void SetColor(Color boxColor, Color ribbonColor)
+    {
+        boxImage.color = boxColor;
+        lidImage.color = boxColor;
+        boxRibbonImage.color = ribbonColor;
+        lidRibbonImage.color = ribbonColor;
+    }
+
+    public void SetRewards(Ownable[] newRewards)
+    {
+        rewards = newRewards;
+    }
+
+    public Ownable[] GetRewards()
+    {
+        return rewards;
     }
 
     
