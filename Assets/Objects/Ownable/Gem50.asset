@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: Gem50
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -7557626626865159247, guid: 37c95787f666c4991bde7c41f6b55248, type: 3}
+  sprite: {fileID: 573757893033992269, guid: d0e3df2b9a4f64dad84abc094f44d8bc, type: 3}
   tags:
   - name: rarity
     value: legendary

@@ -22,6 +22,8 @@ public class OpenCloseAnimation : MonoBehaviour
     [SerializeField] private Vector3 closePosition;
     [SerializeField] protected float duration = 0.5f;
 
+    [SerializeField] protected bool isEntireCanvas = true;
+
     protected bool isOpen = false;
 
 
@@ -78,6 +80,8 @@ public class OpenCloseAnimation : MonoBehaviour
         }
     }
 
+
+
     virtual public void Close()
     {
         if (isOpen)
@@ -126,7 +130,7 @@ public class OpenCloseAnimation : MonoBehaviour
         parent.localPosition = endPosition;
         Debug.Log("End Position: " + parent.localPosition);
         // if we just closed, disable the canvas to avoid showing the panel
-        if (!isOpen && parentCanvas != null)
+        if (!isOpen && parentCanvas != null && isEntireCanvas)
             parentCanvas.enabled = false;
         currentAnimation = null;
     }
@@ -145,8 +149,11 @@ public class OpenCloseAnimation : MonoBehaviour
             canvasGroup.alpha = endAlpha;
 
         // disable canvas when faded out
-        if (endAlpha <= 0f && parentCanvas != null)
+        if (endAlpha <= 0f && parentCanvas != null && isEntireCanvas){
             parentCanvas.enabled = false;
+
+        }
+            
         currentAnimation = null;
     }
 

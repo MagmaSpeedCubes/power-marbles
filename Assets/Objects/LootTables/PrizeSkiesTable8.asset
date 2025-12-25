@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2eea07139c7c4e9181a3483b4ebaa3b, type: 3}
   m_Name: PrizeSkiesTable8
   m_EditorClassIdentifier: Assembly-CSharp::LootTable
-  name: prizeSkiesTable9
+  name: prizeSkiesTable8
   items:
-  - item: {fileID: 11400000, guid: ac573de834c7e4d88a83cb6812396378, type: 2}
+  - item: {fileID: 11400000, guid: 21e73bbbb39cb46eb8c455703e2b69e1, type: 2}
     probability: 0.1
-  - item: {fileID: 11400000, guid: 5bbe84db207b0481f93605c11368ab44, type: 2}
+  - item: {fileID: 11400000, guid: 5a8157b355c2e41669d1881885f56e2c, type: 2}
     probability: 0.1
-  - item: {fileID: 11400000, guid: 2efff5f0606bd472283bd0c9c0d5d818, type: 2}
+  - item: {fileID: 11400000, guid: 6f6222d5d087c48f984deca09f5ab0e2, type: 2}
     probability: 0.1
-  - item: {fileID: 11400000, guid: cf1e7e2afa7bd494db77f21b5347117a, type: 2}
-    probability: 0.05
-  - item: {fileID: 11400000, guid: 9432167d31b1e43fd82856cbcca648a5, type: 2}
-    probability: 0.05
-  - item: {fileID: 11400000, guid: db28e5c3a782b4ca58ace43fe4bdf974, type: 2}
-    probability: 0.05
+  - item: {fileID: 11400000, guid: 33df3fc5529364f219a30d70cb886490, type: 2}
+    probability: 0.1
+  - item: {fileID: 11400000, guid: 909cd9d11ed714a7bb3a8f75c3b88498, type: 2}
+    probability: 0.1
   - item: {fileID: 11400000, guid: f10a8421f3ac04479b5e1b903dc45f9e, type: 2}
-    probability: 0.05
+    probability: 0.1
   - item: {fileID: 11400000, guid: 040e7fc03ba53488586d9b8507c0a9bc, type: 2}
-    probability: 0.1
+    probability: 0.15
+  - item: {fileID: 11400000, guid: ab4c3df7b8ed648cb9675c100157b637, type: 2}
+    probability: 0.3
   - item: {fileID: 11400000, guid: c454fb19bc62747409f454e7dd5ef2b7, type: 2}
-    probability: 0.1
+    probability: 0.05

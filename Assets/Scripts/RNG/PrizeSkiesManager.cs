@@ -57,6 +57,7 @@ public class PrizeSkiesManager : AuthorizedModifier
         rng = new System.Random();
         while(level <= superJackpotLevels[superJackpotLevels.Length - 1])
         {
+            yield return new WaitForSeconds(0.5f);
             InitializeLevel();
             int levelToWaitFor = level;
             giftBoxCanvas.Toggle();
@@ -76,6 +77,7 @@ public class PrizeSkiesManager : AuthorizedModifier
                 //end the game early if player decides to end
             }
             giftBoxCanvas.Toggle();
+            yield return new WaitForSeconds(1f);
 
 
 
@@ -145,16 +147,33 @@ public class PrizeSkiesManager : AuthorizedModifier
         }
         else
         {
+            GiftBox randomBox;
+            do{
+                randomBox = giftBoxes[UnityEngine.Random.Range(0, giftBoxes.Length)];
+            }while(randomBox != boxToOpen);
             yield return StartCoroutine(boxToOpen.Open());
             foreach(Ownable reward in boxToOpen.GetRewards())
             {
                 collectedRewards.Add(reward);
                 Debug.Log("Won reward " + reward.name);
             }
+            yield return new WaitForSeconds(0.25f);
+            foreach(GiftBox box in giftBoxes){
+                StartCoroutine(box.Open());
+            }
+            yield return new WaitForSeconds(2f);
+
+            foreach(GiftBox box in giftBoxes){
+                StartCoroutine(box.Close());
+            }
+            yield return new WaitForSeconds(1f);
+
+            
+
 
             InputPlayerDecision("continue");
-            yield return new WaitForSeconds(1f);
-            yield return StartCoroutine(boxToOpen.Close());
+
+
 
         }
         

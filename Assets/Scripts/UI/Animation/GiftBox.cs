@@ -22,7 +22,7 @@ public class GiftBox : TiledElementManager
     }
     public IEnumerator Open()
     {
-        if(isOpen){yield return null;}
+        if(isOpen){yield break;}
         isOpen = true;
         yield return StartCoroutine(LiftLid(openDistance, openTime));
         //open the gift box by lifting the lid
@@ -37,11 +37,9 @@ public class GiftBox : TiledElementManager
             bounds.Encapsulate(renderer.bounds);
         }
 
-        if(bounds.size.x > maxHorizontalSize)
-        {
-            float scaleFactor = maxHorizontalSize / rewardIconsWrapper.GetComponent<RectTransform>().rect.width;
-            rewardIconsWrapper.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1);
-        }
+        float scaleFactor = maxHorizontalSize / rewardIconsWrapper.GetComponent<RectTransform>().rect.width;
+        rewardIconsWrapper.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1);
+
         rewardIconsWrapper.transform.localPosition = new Vector3(-maxHorizontalSize/2 + separationDistance, rewardIconsWrapper.transform.position.y, rewardIconsWrapper.transform.position.z);
         
 
@@ -50,7 +48,7 @@ public class GiftBox : TiledElementManager
 
     public IEnumerator Close()
     {
-        if(!isOpen){yield return null;}
+        if(!isOpen){yield break;}
         isOpen = false;
         Destroy(rewardIconsWrapper);
         yield return StartCoroutine(LiftLid(-openDistance, openTime));

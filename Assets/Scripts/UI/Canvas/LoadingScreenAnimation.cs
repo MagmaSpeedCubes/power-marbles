@@ -20,7 +20,11 @@ public class LoadingScreenAnimation : OpenCloseAnimation
         toCanvas.GetComponent<CanvasGroup>().alpha = 1;
         //add the to canvas
         yield return StartCoroutine(Fade(loadCanvas, 1, 0, duration/4));
-        loadCanvas.enabled = false;
+        if (isEntireCanvas)
+        {
+            loadCanvas.enabled = false;
+        }
+        
         //fade out the loading screen
 
     }
