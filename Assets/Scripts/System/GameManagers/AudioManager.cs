@@ -1,4 +1,5 @@
 using UnityEngine;
+
 using System.Collections.Generic;
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
@@ -7,6 +8,17 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     public AudioClip[] reusableSounds;
+    /*
+    SOUNDS REQUIRED
+    pop
+    select
+    begin
+    marble-clink
+    whoosh
+    loss
+    reward
+    jackpot
+    */
 
     void Awake()
     {
@@ -27,18 +39,37 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(sound, volume);
     }
 
-    public void PlaySound(string soundName, float volume)
+    public void PlaySoundWithPitchShift(string soundName, float volume, float range = 0.2f)
     {
         foreach (AudioClip sound in reusableSounds)
         {
             if (sound.name == soundName)
             {
+
+                audioSource.pitch = Random.value * range + (1-range/2);
                 audioSource.PlayOneShot(sound, volume);
                 return;
             }
         }
         Debug.LogError("Sound not found: " + soundName);
     }
+
+    public void PlaySound(string soundName, float volume)
+    {
+        foreach (AudioClip sound in reusableSounds)
+        {
+            if (sound.name == soundName)
+            {
+
+                audioSource.pitch = 1;
+                audioSource.PlayOneShot(sound, volume);
+                return;
+            }
+        }
+        Debug.LogError("Sound not found: " + soundName);
+    }
+
+    
     
 
 

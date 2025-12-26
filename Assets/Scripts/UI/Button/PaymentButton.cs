@@ -11,10 +11,10 @@ public class PaymentButton : ButtonHandler
         switch (currency)
         {
             case "gems": case "glassMarbles":
-                SecureProfileStats.instance.ModifyGems(-cost, am);
+                SecureProfileStats.instance.ModifyGlassMarbles(-cost, am);
                 break;
-            case "coins":
-                SecureProfileStats.instance.ModifyCoins(-cost, am);
+            case "xp":
+                SecureProfileStats.instance.ModifyXP(-cost, am);
                 break;
             default:
                 throw new FormatException("Unrecognized currency");

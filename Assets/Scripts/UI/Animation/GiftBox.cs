@@ -82,13 +82,27 @@ public class GiftBox : TiledElementManager
         wrapperRect.anchoredPosition = Vector2.zero;
 
         RectTransform prefabRect = elementPrefab.GetComponent<RectTransform>();
+        float prefabW = prefabRect.rect.width;
+        float prefabH = prefabRect.rect.height;
+
+        int rows = Mathf.CeilToInt((float)numElements / itemsPerRow);
+        float totalWidth = itemsPerRow * prefabW + (itemsPerRow - 1) * separationDistance;
+        float totalHeight = rows * prefabH + (rows - 1) * separationDistance;
+
+        // Calculate starting offset so beginPosition is the center anchor
+        float startX = -totalWidth * 0.5f + prefabW * 0.5f;
+        float startY = totalHeight * 0.5f - prefabH * 0.5f;
+
         for (int i = 0; i < numElements; i++)
         {
-            Vector3 offset = new Vector3(
-                (i % itemsPerRow) * (prefabRect.rect.width + separationDistance),
-                -(int)(i / itemsPerRow) * (prefabRect.rect.height + separationDistance), 0
-            );
+            int col = i % itemsPerRow;
+            int row = i / itemsPerRow;
 
+            Vector3 offset = new Vector3(
+                startX + col * (prefabW + separationDistance),
+                startY - row * (prefabH + separationDistance),
+                0f
+            );
 
             // Instantiate without parenting then set parent with worldPositionStays = false
             GameObject rewardIcon = Instantiate(rewardIconPrefab);
@@ -96,7 +110,7 @@ public class GiftBox : TiledElementManager
             rewardIcon.name = rewards[i].name + " Icon";
             rewardIcon.GetComponent<Image>().sprite = rewards[i].sprite;
             RectTransform newItemRect = rewardIcon.GetComponent<RectTransform>();
-            // Position in local space relative to the beginPosition
+            // Position in local space relative to the beginPosition (center anchor)
             newItemRect.localPosition = beginPosition.localPosition + offset;
             items.Add(rewardIcon);
         }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 40317e7227c21474985d6d353dd6bd75
+guid: 149696bf3a452487dab4e39f2a23a331
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6184479772406989016
-    second: glass-marble-temp_0
+      213: -3874118202856712575
+    second: glass-marble_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: glass-marble-temp_0
+      name: glass-marble_0
       rect:
         serializedVersion: 2
-        x: 67
-        y: 64
-        width: 363
-        height: 367
+        x: 7
+        y: 9
+        width: 496
+        height: 496
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 82fb71de9605c2aa0800000000000000
-      internalID: -6184479772406989016
+      spriteID: 186d9dc350e5c3ac0800000000000000
+      internalID: -3874118202856712575
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      glass-marble-temp_0: -6184479772406989016
+      glass-marble_0: -3874118202856712575
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

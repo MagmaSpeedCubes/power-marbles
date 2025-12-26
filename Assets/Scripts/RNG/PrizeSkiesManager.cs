@@ -24,6 +24,10 @@ public class PrizeSkiesManager : AuthorizedModifier
     [SerializeField]private GiftBox[] giftBoxes;
     [SerializeField]private float loseChanceMultiplier = 0.6f;
     [SerializeField]private Ownable lossItem;
+
+    [SerializeField]private Color[] standardColors;
+    [SerializeField]private Color jackpotBoxColor, jackpotRibbonColor;
+    [SerializeField]private Color superJackpotBoxColor, superJackpotRibbonColor;
     private List<Ownable> collectedRewards;
 
     [SerializeField]private Image rewardDisplay;
@@ -34,6 +38,8 @@ public class PrizeSkiesManager : AuthorizedModifier
     private int lastLossLevel;
 
     System.Random rng;
+
+    private bool processingInProgress = false;
 
     void Start(){
         StartCoroutine(LateStart());    
@@ -97,6 +103,10 @@ public class PrizeSkiesManager : AuthorizedModifier
                 giftBox.SetRewards(new Ownable[] {
                     lootTables[Mathf.Min(lootTables.Length - 1, ((level - 1) / levelsPerJackpot) + 4)].GetLoot()
                 });
+                giftBox.SetColor(superJackpotBoxColor,superJackpotRibbonColor);
+
+                
+                
             }
             else if(level % levelsPerJackpot == 0)
             {
@@ -104,6 +114,7 @@ public class PrizeSkiesManager : AuthorizedModifier
                 giftBox.SetRewards(new Ownable[] {
                     lootTables[Mathf.Min(lootTables.Length - 1, ((level - 1) / levelsPerJackpot) + 2)].GetLoot()
                 });
+                giftBox.SetColor(jackpotBoxColor,jackpotRibbonColor);
             }
             else
             {
@@ -111,6 +122,14 @@ public class PrizeSkiesManager : AuthorizedModifier
                 giftBox.SetRewards(new Ownable[] {
                     currentTable.GetLoot()
                 });
+
+                Color rc1, rc2;
+                do{
+                    rc1 = standardColors[UnityEngine.Random.Range(0, standardColors.Length)];
+                    rc2 = standardColors[UnityEngine.Random.Range(0, standardColors.Length)];
+                }while(rc1 == rc2);
+                giftBox.SetColor(rc1, rc2);
+                
             }
             //assign reward to gift box
         }
@@ -150,7 +169,8 @@ public class PrizeSkiesManager : AuthorizedModifier
             GiftBox randomBox;
             do{
                 randomBox = giftBoxes[UnityEngine.Random.Range(0, giftBoxes.Length)];
-            }while(randomBox != boxToOpen);
+            }while(randomBox == boxToOpen);
+            randomBox.SetRewards(new Ownable[] {lossItem});
             yield return StartCoroutine(boxToOpen.Open());
             foreach(Ownable reward in boxToOpen.GetRewards())
             {
@@ -184,8 +204,8 @@ public class PrizeSkiesManager : AuthorizedModifier
 
     public void ReviveWithGlassMarbles(){
         int reviveCost = (int)Math.Pow(2, previousLosses);
-        if(sps.GetGems() >= reviveCost){
-            sps.ModifyGems(-reviveCost, this);
+        if(sps.GetGlassMarbles() >= reviveCost){
+            sps.ModifyGlassMarbles(-reviveCost, this);
             InputPlayerDecision("continue");
         }else{
             Debug.LogError("Do not have enough glass marbles");
@@ -211,19 +231,23 @@ public class PrizeSkiesManager : AuthorizedModifier
 
     public IEnumerator InputPlayerDecisionCoroutine(string choice)
     {
+        if(processingInProgress){yield break;}
         //this is designed to be called in a button
         if(choice == "continue")
         {
+            
             level++;
         }
         else if(choice == "endWin")
         {
+            processingInProgress = true;       
             yield return StartCoroutine(DisplayRewards());
             foreach(Ownable reward in collectedRewards)
             {
                 sps.AddOwnable(reward, this);
             }
             level = 0;
+            processingInProgress = false;
 
         }
         else if(choice == "endLoss")
@@ -240,7 +264,7 @@ public class PrizeSkiesManager : AuthorizedModifier
         foreach(Ownable reward in collectedRewards)
         {
             rewardDisplay.sprite = reward.sprite;
-            AudioManager.instance.PlaySound("reward", ProfileCustomization.uiVolume);
+            AudioManager.instance.PlaySoundWithPitchShift("reward", ProfileCustomization.uiVolume);
             yield return new WaitForSeconds(0.75f);
         }
         rewardDisplay.color = new Color(1,1,1,0);
