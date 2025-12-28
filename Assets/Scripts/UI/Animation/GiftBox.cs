@@ -37,10 +37,18 @@ public class GiftBox : TiledElementManager
             bounds.Encapsulate(renderer.bounds);
         }
 
-        float scaleFactor = maxHorizontalSize / rewardIconsWrapper.GetComponent<RectTransform>().rect.width;
+        RectTransform wrapperRect = rewardIconsWrapper.GetComponent<RectTransform>();
+        float scaleFactor = maxHorizontalSize / wrapperRect.rect.width;
         rewardIconsWrapper.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1);
 
-        rewardIconsWrapper.transform.localPosition = new Vector3(-maxHorizontalSize/2 + separationDistance, rewardIconsWrapper.transform.position.y, rewardIconsWrapper.transform.position.z);
+        // Position the wrapper so its center matches the configured beginPosition
+        // Use transform space conversion so this works regardless of anchor setup
+        Vector3 local = box.transform.InverseTransformPoint(beginPosition.position);
+        wrapperRect.localPosition = new Vector3(local.x, local.y, 0f);
+
+        // Move the wrapper upward so the icons appear above the gift box (not overlapping)
+        float wrapperHeight = wrapperRect.rect.height * scaleFactor;
+        wrapperRect.localPosition += new Vector3(0f, wrapperHeight * 0.5f + separationDistance, 0f);
         
 
 
@@ -89,7 +97,7 @@ public class GiftBox : TiledElementManager
         float totalWidth = itemsPerRow * prefabW + (itemsPerRow - 1) * separationDistance;
         float totalHeight = rows * prefabH + (rows - 1) * separationDistance;
 
-        // Calculate starting offset so beginPosition is the center anchor
+        // Calculate starting offset so the grid is centered on the wrapper's origin
         float startX = -totalWidth * 0.5f + prefabW * 0.5f;
         float startY = totalHeight * 0.5f - prefabH * 0.5f;
 
@@ -98,20 +106,19 @@ public class GiftBox : TiledElementManager
             int col = i % itemsPerRow;
             int row = i / itemsPerRow;
 
-            Vector3 offset = new Vector3(
+            Vector2 offset = new Vector2(
                 startX + col * (prefabW + separationDistance),
-                startY - row * (prefabH + separationDistance),
-                0f
+                startY - row * (prefabH + separationDistance)
             );
 
-            // Instantiate without parenting then set parent with worldPositionStays = false
+            // Instantiate and parent with worldPositionStays = false so local coordinates are used
             GameObject rewardIcon = Instantiate(rewardIconPrefab);
             rewardIcon.transform.SetParent(wrapper.transform, false);
             rewardIcon.name = rewards[i].name + " Icon";
             rewardIcon.GetComponent<Image>().sprite = rewards[i].sprite;
             RectTransform newItemRect = rewardIcon.GetComponent<RectTransform>();
-            // Position in local space relative to the beginPosition (center anchor)
-            newItemRect.localPosition = beginPosition.localPosition + offset;
+            // Position using anchoredPosition relative to wrapper center
+            newItemRect.anchoredPosition = offset;
             items.Add(rewardIcon);
         }
         return wrapper;

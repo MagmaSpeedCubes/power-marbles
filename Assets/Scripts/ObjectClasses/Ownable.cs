@@ -83,7 +83,11 @@ public class Ownable : ScriptableObject
 
     }
 
-
+    public Ownable(string name, Sprite spr)
+    {
+        this.name = name;
+        sprite = spr;
+    }
     virtual public string Serialize()
     {
 
@@ -140,6 +144,18 @@ public class Ownable : ScriptableObject
         }
     }
 
+    virtual public void ModifyTagValue(string label, string value)
+    {
+        foreach(Tag t in tags)
+        {
+            if (t.name.Equals(label))
+            {
+                t.value = value;
+                return;
+            }
+        }
+    }
+
     virtual public void AddTag(string label, string value)
     {
         Tag t = new Tag(label, value);
@@ -157,5 +173,9 @@ public class Ownable : ScriptableObject
         }
         return null;
     }
+
+
+
+    
 
 }

@@ -7,51 +7,39 @@ using System.Linq;
 
 public class LootManager : MonoBehaviour
 {
-    public Ownable[] lootArray;
-    public float[] dropChances;
-    float totalDropChance;
+    public LootTable[] lootTables;
+
+    public LootManager instance;
+
     void Awake()
     {
-        lootArray = lootArray.OrderByDescending(b => float.Parse(b.FindTag("powerTowerDropChance"))).ToArray();
-        foreach(Ownable loot in lootArray)
+        if(instance == null)
         {
-            totalDropChance += float.Parse(loot.FindTag("powerTowerDropChance"));
+            instance = this;
         }
-
-    }
-
-    void Start()
-    {
-        //TestLootDrop();
-    }
-
-    public Ownable GetLootDrop(float luckMultiplier)
-    {
-        System.Random rng = new System.Random();
-        float hammer = (float)(rng.NextDouble() * totalDropChance * luckMultiplier);
-        for(int i=0; i<lootArray.Length; i++)
+        else
         {
-            //check every loot item starting with most common
-            hammer -= float.Parse(lootArray[i].FindTag("powerTowerDropChance"));
-            if(hammer <= 0)
+            Debug.LogWarning("Multiple instances of LootManager detected. Destroying duplicate.");
+            Destroy(this.gameObject);
+        }
+    }
+
+    public Ownable GetLootFromTable(string name)
+    {
+        LootTable table = GetLootTableFromName(name);
+        return table.GetLoot();
+
+    }
+
+    public LootTable GetLootTableFromName(string name)
+    {
+        foreach(LootTable table in lootTables)
+        {
+            if (table.name.Equals(name))
             {
-                return lootArray[i];
-                
+                return table;
             }
         }
-        return lootArray[lootArray.Length - 1];
-        //return the most common item
-    }
-
-    
-
-    void TestLootDrop()
-    {
-        float luckMultiplier = 1f;
-        int numTestsToRun = 300;
-        for(int i=0; i<numTestsToRun; i++)
-        {
-            Debug.Log("Loot Test #" + (i+1) + ": " + GetLootDrop(luckMultiplier).Serialize());
-        }
+        return null;
     }
 }
