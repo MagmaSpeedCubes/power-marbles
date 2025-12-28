@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections;
 using System;
+[RequireComponent(typeof(AuthorizedModifier))]
 public class TreasureHuntManager : MonoBehaviour
 {
     
@@ -9,8 +10,11 @@ public class TreasureHuntManager : MonoBehaviour
     public int energy;
     public DateTime lastRecharge;
     public TreasureHuntTile[] tiles;
-    public Sprite[] relicSprites;
+    public GameObject[] relics;
     public GameObject tileMap;
+    Ownable treasureHuntData, treasureHuntWorldMap, treasureHuntRelicMap;
+    private int season;
+    private Coroutine minuteUpdater;
     
     void Awake()
     {
@@ -32,11 +36,12 @@ public class TreasureHuntManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        int season = (int)(CalculateTotalMonths(Constants.LAUNCH_DATE, DateTime.UtcNow) / 2);
+        season = (int)(CalculateTotalMonths(Constants.LAUNCH_DATE, DateTime.UtcNow) / 2);
 
-        Ownable treasureHuntData = SecureProfileStats.instance.FindFirstOwnableOfName("treasureHuntDataSeason" + season);
-        Ownable treasureHuntWorldMap = SecureProfileStats.instance.FindFirstOwnableOfName("treasureHuntWorldMapSeason" + season);
-        Ownable treasureHuntRelicMap = SecureProfileStats.instance.FindFirstOwnableOfName("treasureHuntRelicMapSeason" + season);
+        treasureHuntData = SecureProfileStats.instance.FindFirstOwnableOfName("treasureHuntDataSeason" + season);
+        treasureHuntWorldMap = SecureProfileStats.instance.FindFirstOwnableOfName("treasureHuntWorldMapSeason" + season);
+        treasureHuntRelicMap = SecureProfileStats.instance.FindFirstOwnableOfName("treasureHuntRelicMapSeason" + season);
+        
 
         if(treasureHuntData == null || treasureHuntWorldMap == null || treasureHuntRelicMap == null)
         {
@@ -45,14 +50,68 @@ public class TreasureHuntManager : MonoBehaviour
             energy = Constants.TREASURE_HUNT_MAX_ENERGY;
             treasureHuntData.AddTag("energy", ""+energy);
             treasureHuntWorldMap = GenerateTreasureHuntWorldMap();
+            treasureHuntRelicMap = GenerateTreasureHuntRelicMap();
+            lastRecharge = DateTime.UtcNow;
+            SerializableDateTime sdt = new SerializableDateTime(DateTime.UtcNow);
+            treasureHuntData.AddTag("lastRecharge", sdt.ToString());
 
         }
+        else
+        {
+            string serialized = treasureHuntData.FindTag("lastRecharge");
+            SerializableDateTime sdt = new SerializableDateTime(serialized);
+            lastRecharge = sdt.ToDateTimeUtc();
+            
+        }
         tileMap = LoadWorldFromOwnable(treasureHuntWorldMap, treasureHuntRelicMap);
+
+        lastRecharge = UpdateEnergy(lastRecharge);
+        
+
+        minuteUpdater = StartCoroutine(MinuteUpdate());
 
 
 
 
     }
+
+    void OnDestroy()
+    {
+        AutoSave();
+    }
+
+    void AutoSave()
+    {
+
+
+        
+        AuthorizedModifier source = GetComponent<AuthorizedModifier>();
+        SecureProfileStats sps = SecureProfileStats.instance;
+        sps.RemoveFirstOwnableOfName("treasureHuntDataSeason" + season, source);
+        sps.AddOwnable(treasureHuntData, source);
+
+        sps.RemoveFirstOwnableOfName("treasureHuntWorldMapSeason" + season, source);
+        sps.AddOwnable(treasureHuntWorldMap, source);
+
+        sps.RemoveFirstOwnableOfName("treasureHuntRelicMapSeason" + season, source);
+        sps.AddOwnable(treasureHuntRelicMap, source);
+
+
+    }
+
+    public void RemoveTileAt(Vector2 coords)
+    {
+        Destroy(tileMap);
+        tileMap = LoadWorldFromOwnable(treasureHuntWorldMap, treasureHuntRelicMap);
+    }
+
+    public void RemoveRelicAt(Vector2 coords)
+    {
+        Destroy(tileMap);
+        tileMap = LoadWorldFromOwnable(treasureHuntWorldMap, treasureHuntRelicMap);
+    }
+
+    
 
     public Ownable GenerateTreasureHuntWorldMap()
     {
@@ -151,7 +210,7 @@ public class TreasureHuntManager : MonoBehaviour
             string tileAtRandom = output.FindTag(""+randX+","+randY);
             if (tileAtRandom == null)
             {
-                output.AddTag(""+randX+","+randY, ""+UnityEngine.Random.Range(0, relicSprites.Length));
+                output.AddTag(""+randX+","+randY, ""+UnityEngine.Random.Range(0, relics.Length));
                 relicsPerWorld--;
             }
 
@@ -189,6 +248,23 @@ public class TreasureHuntManager : MonoBehaviour
                         break;
                     }
                 }
+                if (relicMap.FindTag(""+x+","+y)!=null)
+                {
+                    int index = int.Parse(relicMap.FindTag(""+x+","+y));
+                    Vector3Int cell = new Vector3Int(x, -y, 0);
+                    Vector3 localPos = tilemap.CellToLocalInterpolated((Vector3)cell + new Vector3(0f, 0.5f, 0f));//-
+                    GameObject relic = Instantiate(relics[index], gridGO.transform);
+                    
+                    relic.transform.localPosition = localPos;
+                    RelicManager rm = relic.GetComponent<RelicManager>();
+
+
+                    rm.tileX = x;
+                    rm.tileY = y;
+                    
+
+
+                }
                 //Tile tileToPlace = 
                 
             }
@@ -220,19 +296,43 @@ public class TreasureHuntManager : MonoBehaviour
 
 
 
-    void Update()
+    IEnumerator MinuteUpdate()
     {
+        lastRecharge = UpdateEnergy(lastRecharge);
+        SerializableDateTime sdt = new SerializableDateTime(lastRecharge);
+        treasureHuntData.ModifyTagValue("lastRecharge", ""+sdt.ToString());
+        treasureHuntData.ModifyTagValue("energy", ""+energy);
         
+        
+        AutoSave();
+        yield return new WaitForSeconds(60f);
+        minuteUpdater = StartCoroutine(MinuteUpdate());
     }
 
-    void RefillEnergy()
-    {
-        
-    }
 
     void AddEnergy(int amount)
     {
+        energy += amount;
+        if(energy > Constants.TREASURE_HUNT_MAX_ENERGY)
+        {
+            energy = Constants.TREASURE_HUNT_MAX_ENERGY;
+        }
+    }
+
+    DateTime UpdateEnergy(DateTime last)
+    {
+        TimeSpan timePassed = DateTime.UtcNow - last;
+        int energyToRegen = timePassed.Minutes * Constants.TREASURE_HUNT_ENERGY_REGEN_PER_MINUTE;
+        energy += energyToRegen;
+        if(energy > Constants.TREASURE_HUNT_MAX_ENERGY)
+        {
+            energy = Constants.TREASURE_HUNT_MAX_ENERGY;
+        }
+        AutoSave();
+        return last.AddMinutes(timePassed.Minutes);
         
+
+
     }
 }
 

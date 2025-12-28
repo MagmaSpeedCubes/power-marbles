@@ -233,7 +233,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5d5fff2be69694353af531d6785b76c4, type: 2}
   - {fileID: 11400000, guid: 239c4b2b581af4090bdec1fa554c0662, type: 2}
   - {fileID: 11400000, guid: a92dc749d6c4c48f2882ce78f2d793da, type: 2}
-  relicSprites: []
+  relics:
+  - {fileID: 8370681583098171220, guid: 96daa377cdd854e6ca847e5c2c6c0772, type: 3}
+  - {fileID: 6948567945004277961, guid: 61f5ee036373544a09556644a4a1d104, type: 3}
+  - {fileID: 1896614343385599413, guid: 3c182c92df9a44bf680f5c1cc963e996, type: 3}
+  - {fileID: 2782045728345205612, guid: e27efc984439d430cbbf0a055ab560fc, type: 3}
   tileMap: {fileID: 0}
 --- !u!4 &561388470
 Transform:
@@ -835,6 +839,8 @@ MonoBehaviour:
   closeLoadingScreen: {fileID: 0}
   closeToScreen: {fileID: 0}
   openToScreen: {fileID: 1046686792}
+  openToScene: 
+  closeToScene: 
 --- !u!225 &2024067814
 CanvasGroup:
   m_ObjectHideFlags: 0

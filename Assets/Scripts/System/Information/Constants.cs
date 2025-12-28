@@ -8,5 +8,6 @@ public class Constants : MonoBehaviour
     public static readonly DateTime LAUNCH_DATE = new DateTime(2026, 1, 31);
     public static readonly int TREASURE_HUNT_MAX_ENERGY = 300;
     public static readonly int TREASURE_HUNT_MAP_SIZE = 15;
+    public static readonly int TREASURE_HUNT_ENERGY_REGEN_PER_MINUTE = 2;
 
 }

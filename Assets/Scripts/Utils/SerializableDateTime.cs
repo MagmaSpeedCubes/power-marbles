@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 
 [Serializable]
@@ -20,6 +21,37 @@ public struct SerializableDateTime
         hour = dt.Hour;
         minute = dt.Minute;
         second = dt.Second;
+    }
+
+    public SerializableDateTime(string s)
+    {
+        // Expected format: "yyyy-MM-dd HH:mm:ss UTC" (from ToString)
+        DateTime dt;
+        s = (s ?? string.Empty).Trim();
+        // Try exact parse matching the ToString format
+        if (DateTime.TryParseExact(s, "yyyy-MM-dd HH:mm:ss 'UTC'", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out dt)
+            || DateTime.TryParseExact(s, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out dt)
+            || DateTime.TryParse(s, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out dt))
+        {
+            dt = dt.ToUniversalTime();
+            year = dt.Year;
+            month = dt.Month;
+            day = dt.Day;
+            hour = dt.Hour;
+            minute = dt.Minute;
+            second = dt.Second;
+        }
+        else
+        {
+            // fallback to now (UTC)
+            dt = DateTime.UtcNow;
+            year = dt.Year;
+            month = dt.Month;
+            day = dt.Day;
+            hour = dt.Hour;
+            minute = dt.Minute;
+            second = dt.Second;
+        }
     }
 
     public DateTime ToDateTimeUtc()
