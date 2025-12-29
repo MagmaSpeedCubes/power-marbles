@@ -9,6 +9,7 @@ public class CardHandler : UIElementHandler
     [SerializeField] private TextMeshProUGUI cardTitle;
     [SerializeField] private TextMeshProUGUI cardCost;
     [SerializeField] private GameObject marbleImage;
+    
 
     
 
@@ -66,5 +67,14 @@ public class CardHandler : UIElementHandler
             GetComponent<Image>().color = selected;
         }
         
+    }
+
+    public void RefreshImage()
+{
+        Image subjectSprite = marbleImage.GetComponent<Image>();
+        subjectSprite.sprite = subject.mainSprite;
+        subjectSprite.color = subject.spriteColor;
+        cardTitle.text = subject.name;
+        cardCost.text = ""+subject.price;
     }
 }

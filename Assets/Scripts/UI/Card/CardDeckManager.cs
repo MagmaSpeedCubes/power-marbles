@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System.Collections;
 
 public class CardDeckManager : TiledElementManager
 {
 
-    [SerializeField] private Ball[] ballPrefabs;
+    public List<Ball> ballPrefabs;
     [SerializeField] private TextMeshProUGUI dropdownText;
+    [SerializeField] private GameObject scroller;
+
     
 
 
@@ -18,17 +21,29 @@ public class CardDeckManager : TiledElementManager
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        numElements = ballPrefabs.Length;
+        StartCoroutine(DoubleLateStart());
+    }
+
+    IEnumerator DoubleLateStart(){
+        yield return new WaitForSeconds(0.1f);
+
+        
         Instantiate();
     }
 
     override public void Instantiate()
     {
+        
+        ballPrefabs = OwnableManager.instance.GetOwnedMarblePrefabs();
+        numElements = ballPrefabs.Count;
         base.Instantiate();
-        // Ensure we don't access out of bounds; use the minimum of items and ballPrefabs length
-        int count = Mathf.Min(items.Count, ballPrefabs.Length);
+        // Ensure we don't access out of bounds; use the minimum of items and ballPrefabs count
+        int count = Mathf.Min(items.Count, ballPrefabs.Count);
+        
+        
         for(int i = 0; i < count; i++)
         {
+            
             CardHandler cm = items[i].GetComponent<CardHandler>();
             
             // Initialize the Ball prefab's values immediately before assignment
@@ -39,15 +54,17 @@ public class CardDeckManager : TiledElementManager
             }
             cm.subject = ballToAssign;
         }
+
+        
     }
 
 
     void SortByName(bool ascending)
     {
         if(ascending){
-            ballPrefabs = ballPrefabs.OrderBy(b => b.name).ToArray();
+            ballPrefabs = ballPrefabs.OrderBy(b => b.name).ToList();
         }else{
-            ballPrefabs = ballPrefabs.OrderByDescending(b => b.name).ToArray();
+            ballPrefabs = ballPrefabs.OrderByDescending(b => b.name).ToList();
         }
 
 
@@ -59,9 +76,9 @@ public class CardDeckManager : TiledElementManager
     void SortByCost(bool ascending)
     {
         if(!ascending){
-            ballPrefabs = ballPrefabs.OrderBy(b => b.price).ToArray();
+            ballPrefabs = ballPrefabs.OrderBy(b => b.price).ToList();
         }else{
-            ballPrefabs = ballPrefabs.OrderByDescending(b => b.price).ToArray();
+            ballPrefabs = ballPrefabs.OrderByDescending(b => b.price).ToList();
         }
 
     }
@@ -70,11 +87,11 @@ public class CardDeckManager : TiledElementManager
     {
         if (!ascending)
         {
-            ballPrefabs = ballPrefabs.OrderBy(b => GetRarity(b)).ToArray();
+            ballPrefabs = ballPrefabs.OrderBy(b => GetRarity(b)).ToList();
         }
         else
         {
-            ballPrefabs = ballPrefabs.OrderByDescending(b => GetRarity(b)).ToArray();
+            ballPrefabs = ballPrefabs.OrderByDescending(b => GetRarity(b)).ToList();
         }
 
     }
@@ -127,7 +144,24 @@ public class CardDeckManager : TiledElementManager
                 Debug.LogError("No sorting method found for " + method);
                 break;
         }
-        base.Reinitialize();
+        // Refresh the UI without re-fetching from OwnableManager
+        RefreshCardDisplay();
+    }
+
+    private void RefreshCardDisplay()
+    {
+        int count = Mathf.Min(items.Count, ballPrefabs.Count);
+        for(int i = 0; i < count; i++)
+        {
+            CardHandler cm = items[i].GetComponent<CardHandler>();
+            Ball ballToAssign = ballPrefabs[i];
+            if (ballToAssign != null)
+            {
+                ballToAssign.InitializeValues();
+                cm.subject = ballToAssign;
+                cm.RefreshImage();
+            }
+        }
     }
 
 

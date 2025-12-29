@@ -63,6 +63,11 @@ public class TreasureHuntManager : MonoBehaviour
             lastRecharge = sdt.ToDateTimeUtc();
             
         }
+
+
+
+        
+        
         tileMap = LoadWorldFromOwnable(treasureHuntWorldMap, treasureHuntRelicMap);
 
         lastRecharge = UpdateEnergy(lastRecharge);
@@ -253,7 +258,7 @@ public class TreasureHuntManager : MonoBehaviour
                     int index = int.Parse(relicMap.FindTag(""+x+","+y));
                     Vector3Int cell = new Vector3Int(x, -y, 0);
                     Vector3 localPos = tilemap.CellToLocalInterpolated((Vector3)cell + new Vector3(0f, 0.5f, 0f));//-
-                    GameObject relic = Instantiate(relics[index], gridGO.transform);
+                    GameObject relic = Instantiate(relics[index], tilemapGO.transform);
                     
                     relic.transform.localPosition = localPos;
                     RelicManager rm = relic.GetComponent<RelicManager>();
@@ -269,6 +274,11 @@ public class TreasureHuntManager : MonoBehaviour
                 
             }
         }
+
+        int midpoint = (Constants.TREASURE_HUNT_MAP_SIZE-1)/2;
+        Vector3Int midpointCell = new Vector3Int(midpoint, midpoint, 0);
+        Vector3 midpointPos = tilemap.CellToLocalInterpolated((Vector3)midpointCell);
+        tilemapGO.transform.localPosition = -midpointPos;
         collider.ProcessTilemapChanges();
         return gridGO;
     }

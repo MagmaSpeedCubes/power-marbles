@@ -51,6 +51,7 @@ public class ClickManager : MonoBehaviour
                 
                 if(hit.name == "SpawnZone")
                 {
+                    Debug.Log("Clicked on Spawn Zone");
                     if(LevelManager.instance.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
                     {
                         AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
