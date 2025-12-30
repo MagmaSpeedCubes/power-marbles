@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: DrillBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: 254509965974115023, guid: 92ef0c1e9e9b946f9bc43e869f310625, type: 3}
+  sprite: {fileID: -9127938489256886722, guid: dae1b6c4c1001429299e49ff316edfab, type: 3}
   tags:
   - name: rarity
     value: epic

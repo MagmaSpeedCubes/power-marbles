@@ -67,17 +67,16 @@ public class TreasureHuntManager : MonoBehaviour
 
 
         
-        
+        Debug.Log("Map to string: " + treasureHuntWorldMap.Serialize());
         tileMap = LoadWorldFromOwnable(treasureHuntWorldMap, treasureHuntRelicMap);
 
         lastRecharge = UpdateEnergy(lastRecharge);
         
 
         minuteUpdater = StartCoroutine(MinuteUpdate());
-
-
-
-
+        
+        // Save newly created data immediately
+        AutoSave();
     }
 
     void OnDestroy()
@@ -132,7 +131,6 @@ public class TreasureHuntManager : MonoBehaviour
         
         
         */
-        int season = (int)(CalculateTotalMonths(Constants.LAUNCH_DATE, DateTime.UtcNow) / 2);
         Ownable output = new Ownable("treasureHuntWorldMapSeason" + season, SpriteManager.instance.placeholder);
         int goldPerMap = 30;
         int diamondPerMap = 15;
@@ -144,23 +142,23 @@ public class TreasureHuntManager : MonoBehaviour
             {
                 if (y == 0)
                 {
-                    output.AddTag(""+x+","+y, "grass");
-                    output.AddTag(""+x+","+y+"Health", "3");
+                    output.AddTag(""+x+"-"+y, "grass");
+                    output.AddTag(""+x+"-"+y+"Health", "3");
                 }
                 else if (y < 3)
                 {
-                    output.AddTag(""+x+","+y, "dirt");
-                    output.AddTag(""+x+","+y+"Health", "5");
+                    output.AddTag(""+x+"-"+y, "dirt");
+                    output.AddTag(""+x+"-"+y+"Health", "5");
                 }
                 else if (y < 10)
                 {
-                    output.AddTag(""+x+","+y, "stone");
-                    output.AddTag(""+x+","+y+"Health", "20");
+                    output.AddTag(""+x+"-"+y, "stone");
+                    output.AddTag(""+x+"-"+y+"Health", "20");
                 }
                 else
                 {
-                    output.AddTag(""+x+","+y, "deepslate");
-                    output.AddTag(""+x+","+y+"Health", "100");
+                    output.AddTag(""+x+"-"+y, "deepslate");
+                    output.AddTag(""+x+"-"+y+"Health", "100");
                 }
 
             }
@@ -171,14 +169,14 @@ public class TreasureHuntManager : MonoBehaviour
         {
             int randX = UnityEngine.Random.Range(0, Constants.TREASURE_HUNT_MAP_SIZE);
             int randY = UnityEngine.Random.Range(0, Constants.TREASURE_HUNT_MAP_SIZE);
-            string tileAtRandom = output.FindTag(""+randX+","+randY);
+            string tileAtRandom = output.FindTag(""+randX+"-"+randY);
             if (tileAtRandom.Equals("stone"))
             {
-                output.ModifyTagValue(""+randX+","+randY, "stoneGold");
+                output.ModifyTagValue(""+randX+"-"+randY, "stoneGold");
                 goldPerMap--;
             }else if (tileAtRandom.Equals("deepslate"))
             {
-                output.ModifyTagValue(""+randX+","+randY, "deepslateGold");
+                output.ModifyTagValue(""+randX+"-"+randY, "deepslateGold");
                 goldPerMap--;
             }
 
@@ -189,10 +187,10 @@ public class TreasureHuntManager : MonoBehaviour
         {
             int randX = UnityEngine.Random.Range(0, Constants.TREASURE_HUNT_MAP_SIZE);
             int randY = UnityEngine.Random.Range(0, Constants.TREASURE_HUNT_MAP_SIZE);
-            string tileAtRandom = output.FindTag(""+randX+","+randY);
+            string tileAtRandom = output.FindTag(""+randX+"-"+randY);
             if (tileAtRandom.Equals("deepslate"))
             {
-                output.ModifyTagValue(""+randX+","+randY, "deepslateDiamond");
+                output.ModifyTagValue(""+randX+"-"+randY, "deepslateDiamond");
                 diamondPerMap--;
             }
         }while(diamondPerMap > 0);
@@ -205,17 +203,16 @@ public class TreasureHuntManager : MonoBehaviour
 
     public Ownable GenerateTreasureHuntRelicMap()
     {
-        int season = (int)(CalculateTotalMonths(Constants.LAUNCH_DATE, DateTime.UtcNow) / 2);
         Ownable output = new Ownable("treasureHuntRelicMapSeason" + season, SpriteManager.instance.placeholder);
         int relicsPerWorld = 50;
         do
         {
             int randX = UnityEngine.Random.Range(0, Constants.TREASURE_HUNT_MAP_SIZE);
             int randY = UnityEngine.Random.Range(0, Constants.TREASURE_HUNT_MAP_SIZE);
-            string tileAtRandom = output.FindTag(""+randX+","+randY);
+            string tileAtRandom = output.FindTag(""+randX+"-"+randY);
             if (tileAtRandom == null)
             {
-                output.AddTag(""+randX+","+randY, ""+UnityEngine.Random.Range(0, relics.Length));
+                output.AddTag(""+randX+"-"+randY, ""+UnityEngine.Random.Range(0, relics.Length));
                 relicsPerWorld--;
             }
 
@@ -229,7 +226,7 @@ public class TreasureHuntManager : MonoBehaviour
         Grid grid = gridGO.AddComponent<Grid>();
         grid.cellLayout = GridLayout.CellLayout.Hexagon;
         grid.cellSwizzle = GridLayout.CellSwizzle.XYZ; // or another swizzle if needed
-        grid.cellSize = new Vector3(Mathf.Sqrt(3)/2f, 1f, 1f); // or adjust as needed
+        grid.cellSize = new Vector3(Mathf.Sqrt(3), 2f, 2f) * Constants.TREASURE_HUNT_TILE_SIZE; // or adjust as needed
 
         GameObject tilemapGO = new GameObject("HexTilemap");
         tilemapGO.transform.SetParent(gridGO.transform);
@@ -246,20 +243,22 @@ public class TreasureHuntManager : MonoBehaviour
             for (int y = 0; y < Constants.TREASURE_HUNT_MAP_SIZE; y++)
             {
                 Vector3Int pos = new Vector3Int(x, -y, 0);
-                string tileAt = worldMap.FindTag(""+x+","+y);
+                string tileAt = worldMap.FindTag(""+x+"-"+y);
+                Debug.Log("Tile at "+x+"-"+y+": " + tileAt);
                 Tile tileToPlace;
                 foreach(TreasureHuntTile tile in tiles)
                 {
                     if (tile.name.Equals(tileAt))
                     {
+                        
                         tileToPlace = tile;
                         tilemap.SetTile(pos, tileToPlace);
                         break;
                     }
                 }
-                if (relicMap.FindTag(""+x+","+y)!=null)
+                if (relicMap.FindTag(""+x+"-"+y)!=null)
                 {
-                    int index = int.Parse(relicMap.FindTag(""+x+","+y));
+                    int index = int.Parse(relicMap.FindTag(""+x+"-"+y));
                     Vector3Int cell = new Vector3Int(x, -y, 0);
                     Vector3 localPos = tilemap.CellToLocalInterpolated((Vector3)cell + new Vector3(0f, 0.5f, 0f));//-
                     GameObject relic = Instantiate(relics[index], tilemapGO.transform);
@@ -274,6 +273,7 @@ public class TreasureHuntManager : MonoBehaviour
 
 
                 }
+                Debug.Log("Spawned tile and relic for tile " + x + ", " + y);
                 //Tile tileToPlace = 
                 
             }

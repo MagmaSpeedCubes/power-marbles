@@ -18,18 +18,23 @@ public class Ownable : ScriptableObject
         int thirdBar = serialized.IndexOf("|", secondBar+1);
 
         int fourthBar = serialized.IndexOf("|", thirdBar+1);
-
+        if(firstBar == -1 || secondBar == -1)
+        {
+            Debug.LogWarning("Serious data corruption. Using default values");
+            this.name = "NewOwnable";
+            sprite = SpriteManager.instance.placeholder;
+        }
         if(thirdBar == -1)
         {
             Debug.LogWarning("Data incomplete: Using default values");
             this.name = "NewOwnable";
-            sprite = SpriteManager.instance.GetSpriteByName("default");
+            sprite = SpriteManager.instance.placeholder;
             
         }else if(fourthBar != -1)
         {
             Debug.LogWarning("Data possibly corrupted: Using default values");
             this.name = "NewOwnable";
-            sprite = SpriteManager.instance.GetSpriteByName("default");
+            sprite = SpriteManager.instance.placeholder;
         }
         else
         {
@@ -37,9 +42,9 @@ public class Ownable : ScriptableObject
             string spriteName = serialized.Substring(firstBar+1, secondBar - firstBar - 1);
             sprite = SpriteManager.instance.GetSpriteByName(spriteName);
             
-            Debug.Log("Second Bar +1: " + (secondBar + 1));
-            Debug.Log("Third Bar: " + thirdBar);
-            Debug.Log("Serialized Length: " + serialized.Length);
+            // Debug.Log("Second Bar +1: " + (secondBar + 1));
+            // Debug.Log("Third Bar: " + thirdBar);
+            // Debug.Log("Serialized Length: " + serialized.Length);
 
             string combinedNames = serialized.Substring((secondBar + 1), thirdBar - secondBar - 1);
             string combinedValues = serialized.Substring(thirdBar + 1);
@@ -48,7 +53,7 @@ public class Ownable : ScriptableObject
             List<string> tagValues = new List<string>();
 
 
-            while(combinedNames.IndexOf(",") != -1){
+            while(combinedNames.IndexOf(",") != -1 && combinedValues.IndexOf(",") != -1){
 
                 int nameIndex = combinedNames.IndexOf(",");
                 int valueIndex = combinedValues.IndexOf(",");
@@ -83,6 +88,81 @@ public class Ownable : ScriptableObject
 
     }
 
+    public void LoadFromSerialized(string serialized)
+    {
+       int firstBar = serialized.IndexOf("|");
+        int secondBar = serialized.IndexOf("|", firstBar+1);
+        int thirdBar = serialized.IndexOf("|", secondBar+1);
+
+        int fourthBar = serialized.IndexOf("|", thirdBar+1);
+        if(firstBar == -1 || secondBar == -1)
+        {
+            Debug.LogWarning("Serious data corruption. Using default values");
+            this.name = "NewOwnable";
+            sprite = sprite = SpriteManager.instance.placeholder;
+        }
+        if(thirdBar == -1)
+        {
+            Debug.LogWarning("Data incomplete: Using default values");
+            this.name = "NewOwnable";
+            sprite = sprite = SpriteManager.instance.placeholder;
+            
+        }else if(fourthBar != -1)
+        {
+            Debug.LogWarning("Data possibly corrupted: Using default values");
+            this.name = "NewOwnable";
+            sprite = sprite = SpriteManager.instance.placeholder;
+        }
+        else
+        {
+            this.name = serialized.Substring(0, firstBar);
+            string spriteName = serialized.Substring(firstBar+1, secondBar - firstBar - 1);
+            sprite = SpriteManager.instance.GetSpriteByName(spriteName);
+            
+            // Debug.Log("Second Bar +1: " + (secondBar + 1));
+            // Debug.Log("Third Bar: " + thirdBar);
+            // Debug.Log("Serialized Length: " + serialized.Length);
+
+            string combinedNames = serialized.Substring((secondBar + 1), thirdBar - secondBar - 1);
+            string combinedValues = serialized.Substring(thirdBar + 1);
+
+            List<string> tagNames = new List<string>();
+            List<string> tagValues = new List<string>();
+
+
+            while(combinedNames.IndexOf(",") != -1 && combinedValues.IndexOf(",") != -1){
+
+                int nameIndex = combinedNames.IndexOf(",");
+                int valueIndex = combinedValues.IndexOf(",");
+
+                string nameSegment = combinedNames.Substring(0, nameIndex);
+                string valueSegment = combinedValues.Substring(0, valueIndex);
+
+                tagNames.Add(nameSegment);
+                tagValues.Add(valueSegment);
+
+                combinedNames = combinedNames.Substring(nameIndex + 1);
+                combinedValues = combinedValues.Substring(valueIndex + 1);
+
+
+            }
+            
+            tagNames.Add(combinedNames);
+            tagValues.Add(combinedValues);
+
+
+            List<Tag> initialize = new List<Tag>();
+
+            for(int i=0; i<tagNames.Count; i++)
+            {
+                initialize.Add(new Tag(tagNames[i], tagValues[i]));
+            }
+            tags = initialize;
+
+        }
+
+
+    }
     public Ownable(string name, Sprite spr)
     {
         this.name = name;
@@ -93,8 +173,7 @@ public class Ownable : ScriptableObject
 
         if(sprite == null)
         {
-            this.name = "NewOwnable";
-            sprite = SpriteManager.instance.GetSpriteByName("default");
+            sprite = SpriteManager.instance.placeholder;
         }
 
         List<string> tagNames = new List<string>();
@@ -112,8 +191,10 @@ public class Ownable : ScriptableObject
 
 
 
-
-
+        Debug.Log("Name: " + this.name);
+        Debug.Log("Sprite: " + sprite.name);
+        Debug.Log("Combined Tag Names: " + combinedNames);
+        Debug.Log("Combined Tag Values: " + combinedValues);
         string combined = 
         this.name + 
         "|" + sprite.name + 

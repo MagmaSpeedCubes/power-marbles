@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: LaserBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -3966654026724937289, guid: 548cb7e82859043deb79d755826438a7, type: 3}
+  sprite: {fileID: 3799787474884568883, guid: be5f14ff84c2a4179b7619173f9ffcdd, type: 3}
   tags:
   - name: rarity
     value: legendary

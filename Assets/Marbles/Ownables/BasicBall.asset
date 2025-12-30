@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: BasicBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -2935846804084577621, guid: d69aee9b7d72c46a7b6f2263089c71f3, type: 3}
+  sprite: {fileID: -2935846804084577621, guid: 71c442c1c4b174104a92951df037c24e, type: 3}
   tags:
   - name: rarity
     value: common
