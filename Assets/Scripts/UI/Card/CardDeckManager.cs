@@ -11,7 +11,8 @@ public class CardDeckManager : TiledElementManager
 
     public List<Ball> ballPrefabs;
     [SerializeField] private TextMeshProUGUI dropdownText;
-    [SerializeField] private GameObject scroller;
+    [SerializeField] private RectTransform scrollRect;
+    [SerializeField] private bool autoScaleScrollView = true;
 
     
 
@@ -36,10 +37,19 @@ public class CardDeckManager : TiledElementManager
         
         ballPrefabs = OwnableManager.instance.GetOwnedMarblePrefabs();
         numElements = ballPrefabs.Count;
+
+        // Auto-scale scroll view after spawning cards
+        
+        
         base.Instantiate();
         // Ensure we don't access out of bounds; use the minimum of items and ballPrefabs count
         int count = Mathf.Min(items.Count, ballPrefabs.Count);
         
+        
+        if (autoScaleScrollView && scrollRect != null)
+        {
+            AutoScaleScrollView(count);
+        }
         
         for(int i = 0; i < count; i++)
         {
@@ -54,6 +64,8 @@ public class CardDeckManager : TiledElementManager
             }
             cm.subject = ballToAssign;
         }
+        
+
 
         
     }
@@ -164,6 +176,32 @@ public class CardDeckManager : TiledElementManager
         }
     }
 
+
+    private void AutoScaleScrollView(int items)
+    {
+        if (scrollRect == null || elementPrefab == null)
+        {
+            Debug.LogWarning("ScrollRect or elementPrefab not assigned");
+            return;
+        }
+
+
+         RectTransform prefabRect = elementPrefab.GetComponent<RectTransform>();
+        // Get card dimensions
+        float cardWidth = prefabRect.rect.width * prefabRect.localScale.x;
+        Debug.Log("Card Width:" + cardWidth);
+        
+        // Calculate total width needed based on items per row
+
+        float totalWidth = (items * cardWidth) + ((items + 1) * separationDistance);
+        Debug.Log("Total Width:" + totalWidth);
+
+        float screenWidth = Constants.SCREEN_SIZE.x;
+        float scale = totalWidth / screenWidth;
+        scrollRect.anchorMax = new Vector2(scale, 1f);
+
+
+    }
 
 
 }

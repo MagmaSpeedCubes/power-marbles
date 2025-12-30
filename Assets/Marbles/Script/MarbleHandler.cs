@@ -84,18 +84,21 @@ public class BallHandler : MonoBehaviour
 
         if (damageable != null && debounce >= DEBOUNCE_TIME)
         {
-            Vector2 velocity = rb.linearVelocity;
-            rb.AddForce(velocity * -1, ForceMode2D.Impulse);
+            
+            //rb.AddForce(velocity * -1, ForceMode2D.Impulse);
 
-            rb.linearVelocity = Vector3.zero;
+            
 
-            Debug.Log("Stopped ball, handling collision");
+            //Debug.Log("Stopped ball, handling collision");
  
 
             HandleCollisions(damageable);
 
             Debug.Log("Reinitializing movement with corrected velocity");
+            Vector2 velocity = rb.linearVelocity;
+            rb.linearVelocity = Vector3.zero;
             Vector2 corrected = velocity.normalized * 7.5f * ballData.movementSpeed;
+
             corrected.y = -corrected.y;
             rb.AddForce(corrected, ForceMode2D.Impulse);  
               
@@ -115,6 +118,11 @@ public class BallHandler : MonoBehaviour
 
         numBounces++;
         debounce = 0f;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return rb.linearVelocity;
     }
 
 

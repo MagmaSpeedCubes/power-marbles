@@ -98,7 +98,6 @@ public class LevelManager : MonoBehaviour
         if (active)
         {
             levelTimer -= Time.deltaTime;
-            timeDisplay.SetValue(levelTimer);    
         }
 
 

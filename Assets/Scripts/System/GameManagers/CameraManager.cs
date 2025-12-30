@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
+public class LocalCameraManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float dragSensitivity = 0.01f;
@@ -19,7 +19,6 @@ public class CameraManager : MonoBehaviour, IDragHandler, IPointerDownHandler, I
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
-            DontDestroyOnLoad(gameObject);
     }
 
     void Update()

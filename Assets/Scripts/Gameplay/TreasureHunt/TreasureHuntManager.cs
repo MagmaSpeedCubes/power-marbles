@@ -236,6 +236,10 @@ public class TreasureHuntManager : MonoBehaviour
         Tilemap tilemap = tilemapGO.AddComponent<Tilemap>();
         TilemapRenderer renderer = tilemapGO.AddComponent<TilemapRenderer>();
         TilemapCollider2D collider = tilemapGO.AddComponent<TilemapCollider2D>();
+        Rigidbody2D rb = tilemapGO.AddComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Static;
+        TreasureTilemapHandler handler = tilemapGO.AddComponent<TreasureTilemapHandler>();
+        handler.treasureTilemap = tilemap;
 
         for (int x = 0; x < Constants.TREASURE_HUNT_MAP_SIZE; x++)
         {
@@ -278,6 +282,7 @@ public class TreasureHuntManager : MonoBehaviour
         int midpoint = (Constants.TREASURE_HUNT_MAP_SIZE-1)/2;
         Vector3Int midpointCell = new Vector3Int(midpoint, midpoint, 0);
         Vector3 midpointPos = tilemap.CellToLocalInterpolated((Vector3)midpointCell);
+        
         tilemapGO.transform.localPosition = -midpointPos;
         collider.ProcessTilemapChanges();
         return gridGO;

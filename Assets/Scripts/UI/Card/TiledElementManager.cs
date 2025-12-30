@@ -7,7 +7,7 @@ using System.Linq;
 
 public class TiledElementManager : MonoBehaviour
 {
-    [SerializeField] protected Transform beginPosition;
+    [SerializeField] protected Transform centerPosition;
     [SerializeField] protected GameObject elementPrefab;
     [SerializeField] protected int numElements;
     [SerializeField] protected GameObject parentObject;
@@ -47,25 +47,48 @@ public class TiledElementManager : MonoBehaviour
             throw new ArithmeticException("Items per row needs to be positive");
         }
 
-        for(int i=0; i<numElements; i++)
+        // Position items centered around the provided centerPosition transform.
+        RectTransform prefabRect = elementPrefab.GetComponent<RectTransform>();
+        if (prefabRect == null)
+        {
+            throw new Exception("elementPrefab must have a RectTransform");
+        }
+
+        int totalRows = Mathf.CeilToInt((float)numElements / itemsPerRow);
+        float cellWidth = prefabRect.rect.width + separationDistance;
+        float cellHeight = prefabRect.rect.height + separationDistance;
+
+        for (int i = 0; i < numElements; i++)
         {
             Debug.Log("Creating new item");
-            RectTransform prefabRect = elementPrefab.GetComponent<RectTransform>();
-            Vector3 offset = new Vector3(
-                (i % itemsPerRow) * (prefabRect.rect.width + separationDistance),
-                -(int)(i / itemsPerRow) * (prefabRect.rect.height + separationDistance), 0
-            );
 
-            //Debug.Log("Y offset: " + -(int)(i / itemsPerRow) * (prefabRect.rect.height + separationDistance));
-            
+            int col = i % itemsPerRow;
+            int row = i / itemsPerRow;
+
+            // Determine how many columns are in this row (last row may be partial)
+            int columnsInThisRow;
+            if (row == totalRows - 1)
+            {
+                // Last row: may be partial
+                columnsInThisRow = numElements - row * itemsPerRow;
+                if (columnsInThisRow <= 0) columnsInThisRow = itemsPerRow; // full row
+            }
+            else
+            {
+                columnsInThisRow = itemsPerRow;
+            }
+
+            // Calculate centered offsets for this row: columns go left->right, rows top->bottom
+            float xOffset = (col - (columnsInThisRow - 1) / 2f) * cellWidth;
+            float yOffset = - (row - (totalRows - 1) / 2f) * cellHeight;
+
             // Instantiate as child of parentObject to preserve layout and dimensions
             GameObject newItem = Instantiate(elementPrefab, parentObject.transform);
             items.Add(newItem);
             RectTransform newItemRect = newItem.GetComponent<RectTransform>();
-            
-            // Set anchored position relative to parent
-            newItemRect.localPosition = beginPosition.localPosition + offset;
-            
+
+            Vector3 centerLocal = centerPosition != null ? centerPosition.localPosition : Vector3.zero;
+            newItemRect.localPosition = centerLocal + new Vector3(xOffset, yOffset, 0f);
         }
 
     }

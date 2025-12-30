@@ -42,7 +42,12 @@ public class LoadingScreenAnimation : OpenCloseAnimation
     public IEnumerator SceneLoadingScreen(float duration, Canvas fromCanvas, Canvas loadCanvas, Canvas toCanvas, string sceneName)
     {
         yield return ToLoadingScreen(duration/4, fromCanvas, loadCanvas);
-        SceneManager.LoadScene(sceneName);
+        AsyncOperation asyncLoadLevel =  SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        while (!asyncLoadLevel.isDone)
+        {
+            yield return null;
+        }
+
         yield return FromLoadingScreen(duration/4, toCanvas, loadCanvas);
     }
 

@@ -1,15 +1,44 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-public class ClickManager : MonoBehaviour
+public class LocalClickManager : MonoBehaviour
 {
 
     [SerializeField] private GameObject ballParent;
+
+    private static LocalClickManager localInstance;
+    void Awake()
+    {
+        if (localInstance == null)
+        {
+            localInstance = this;
+        }
+        else if (localInstance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Try to locate a ballParent if it wasn't assigned in the inspector
+        if (ballParent == null)
+        {
+            var found = GameObject.Find("BallParent");
+            if (found != null) ballParent = found;
+        }
+        Debug.Log("Click Manager Created");
+    }
+
+
+
+
     void Update()
     {
+        //Debug.Log("Click Manager Update");
         // Mouse left click
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
+            Debug.Log("Mouse Left Click");
             Vector2 screenPos = Mouse.current.position.ReadValue();
             Vector3 worldPos = ScreenToWorld(screenPos);
             OnTap(worldPos, screenPos);
@@ -33,7 +62,11 @@ public class ClickManager : MonoBehaviour
     Vector3 ScreenToWorld(Vector2 screenPos)
     {
         Camera cam = Camera.main;
-        if (cam == null) return Vector3.zero;
+        if (cam == null)
+        {
+            cam = FindObjectOfType<Camera>();
+            if (cam == null) return Vector3.zero;
+        }
         float z = -cam.transform.position.z; // distance to z=0 plane (works for 2D)
         Vector3 world = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, z));
         world.z = 0f; // keep on 2D plane

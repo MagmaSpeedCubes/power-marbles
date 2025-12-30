@@ -43,7 +43,7 @@ public class GiftBox : TiledElementManager
 
         // Position the wrapper so its center matches the configured beginPosition
         // Use transform space conversion so this works regardless of anchor setup
-        Vector3 local = box.transform.InverseTransformPoint(beginPosition.position);
+        Vector3 local = box.transform.InverseTransformPoint(centerPosition.position);
         wrapperRect.localPosition = new Vector3(local.x, local.y, 0f);
 
         // Move the wrapper upward so the icons appear above the gift box (not overlapping)
