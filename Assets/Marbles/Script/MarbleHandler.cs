@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(AudioSource))]
 public class BallHandler : MonoBehaviour
@@ -10,7 +12,7 @@ public class BallHandler : MonoBehaviour
     protected SpriteRenderer spr;
     protected AudioSource asc;
     [HideInInspector]public int numBounces = 0;
-    protected static readonly float DEBOUNCE_TIME = 0.25f;
+    protected static readonly float DEBOUNCE_TIME = 0.05f;
     protected float debounce = DEBOUNCE_TIME;
 
     [SerializeField] protected SpriteRenderer iconSprite;
@@ -84,19 +86,19 @@ public class BallHandler : MonoBehaviour
 
         if (damageable != null && debounce >= DEBOUNCE_TIME)
         {
-            
-            //rb.AddForce(velocity * -1, ForceMode2D.Impulse);
+            Vector2 velocity = rb.linearVelocity;
+            rb.linearVelocity = Vector3.zero;
+
 
             
 
-            //Debug.Log("Stopped ball, handling collision");
+            Debug.Log("Stopped ball, handling collision");
  
 
             HandleCollisions(damageable);
 
             Debug.Log("Reinitializing movement with corrected velocity");
-            Vector2 velocity = rb.linearVelocity;
-            rb.linearVelocity = Vector3.zero;
+
             Vector2 corrected = velocity.normalized * 7.5f * ballData.movementSpeed;
 
             corrected.y = -corrected.y;
@@ -113,11 +115,18 @@ public class BallHandler : MonoBehaviour
         object damageAmount = Utility.CallReturnableFunction<float>("DamageFormulas", ballData.name, this);
         float damage = Convert.ToSingle(damageAmount);
 
-        Damage(damage, damageable);
+        StartCoroutine(DamageCoroutine(damage, damageable));
+        //delay the damage by one clock cycle so the tilemap can respond first
         asc.PlayOneShot(ballData.bounceSound);
 
         numBounces++;
         debounce = 0f;
+    }
+
+    virtual public IEnumerator DamageCoroutine(float damage, DamageHandler damageable)
+    {
+        yield return null;
+        Damage(damage, damageable);
     }
 
     public Vector3 GetVelocity()

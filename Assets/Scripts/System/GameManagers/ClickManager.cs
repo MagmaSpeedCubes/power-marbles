@@ -85,31 +85,37 @@ public class LocalClickManager : MonoBehaviour
                 if(hit.name == "SpawnZone")
                 {
                     Debug.Log("Clicked on Spawn Zone");
-                    if(LevelManager.instance.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
-                    {
-                        AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
-                        break;
-                    }
-                    //continue spawning process if and only if clicked in spawn zone
-                    if(LevelStats.selectedBall.price <= LevelStats.energy)
-                    {
+                    switch(SceneManager.GetActiveScene().name){
+                        case "MarbleKingdom":
+                            if(LevelManager.instance.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
+                            {
+                                AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
+                                break;
+                            }
+                            LevelStats.energy -= LevelStats.selectedBall.price;
 
-                        if (!LevelManager.instance.active)
-                        {
-                            LevelManager.instance.StartLevel();
-                        }
-                        LevelStats.energy -= LevelStats.selectedBall.price;
-                        GameObject newBall = Instantiate(LevelStats.selectedBall.ballPrefabObject, worldPos, Quaternion.identity);
-                        newBall.name = LevelStats.selectedBall.ballPrefabObject.name;
-                        newBall.GetComponent<SpriteRenderer>().color = LevelStats.selectedBall.prefab.defaultColor;
-                        newBall.transform.parent = ballParent.transform;
-                        Vector3 liftPosition = new Vector3(newBall.transform.position.x, newBall.transform.position.y, 
-                        newBall.transform.position.z - LevelManager.instance.activeBalls.Count * 0.01f);
-                        newBall.transform.position = liftPosition;
+                            if(LevelStats.selectedBall.price <= LevelStats.energy)
+                            {
 
-                        
+                                if (!LevelManager.instance.active)
+                                {
+                                    LevelManager.instance.StartLevel();
+                                }
+                                SpawnMarble(worldPos);
+                                
+                            }
+                            break;
+                        case "TreasureHunt":
+                            if(TreasureHuntManager.instance.UseEnergy(LevelStats.selectedBall.price))
+                            {
+                                SpawnMarble(worldPos); 
+                            }
+                            break;
+                        default:
+                            break;
                         
                     }
+
                     
                 }
             }
@@ -118,6 +124,16 @@ public class LocalClickManager : MonoBehaviour
         }
 
         
+    }
+
+    void SpawnMarble(Vector3 worldPos){
+        GameObject newBall = Instantiate(LevelStats.selectedBall.ballPrefabObject, worldPos, Quaternion.identity);
+        newBall.name = LevelStats.selectedBall.ballPrefabObject.name;
+        newBall.GetComponent<SpriteRenderer>().color = LevelStats.selectedBall.prefab.defaultColor;
+        newBall.transform.parent = ballParent.transform;
+        Vector3 liftPosition = new Vector3(newBall.transform.position.x, newBall.transform.position.y, 
+        newBall.transform.position.z - LevelManager.instance.activeBalls.Count * 0.01f);
+        newBall.transform.position = liftPosition;
     }
 }
 

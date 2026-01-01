@@ -9,7 +9,7 @@ public class Ownable : ScriptableObject
     public Sprite sprite;
 
 
-    public List<Tag> tags = new List<Tag>();
+    public List<Tag> tags = new List<Tag>() {new Tag("type", "claimable"), new Tag("rarity", "common"), new Tag("hideInInventory", "true")};
 
     public Ownable(string serialized)
     {
@@ -191,10 +191,10 @@ public class Ownable : ScriptableObject
 
 
 
-        Debug.Log("Name: " + this.name);
-        Debug.Log("Sprite: " + sprite.name);
-        Debug.Log("Combined Tag Names: " + combinedNames);
-        Debug.Log("Combined Tag Values: " + combinedValues);
+        // Debug.Log("Name: " + this.name);
+        // Debug.Log("Sprite: " + sprite.name);
+        // Debug.Log("Combined Tag Names: " + combinedNames);
+        // Debug.Log("Combined Tag Values: " + combinedValues);
         string combined = 
         this.name + 
         "|" + sprite.name + 

@@ -10,4 +10,11 @@ public class CustomFunctions : MonoBehaviour
     }
     public static float InCubic(float t) => t * t * t;
 
+    public static float EaseOutBack(float t)
+    {
+        const float c1 = 1.70158f;
+        const float c3 = c1 + 1f;
+        return 1 + c3 * Mathf.Pow(t - 1, 3) + c1 * Mathf.Pow(t - 1, 2);
+    }
+
 }

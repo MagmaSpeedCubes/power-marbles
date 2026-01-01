@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections;
 using System;
+using TMPro;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class TreasureHuntManager : MonoBehaviour
 {
@@ -10,11 +11,23 @@ public class TreasureHuntManager : MonoBehaviour
     public int energy;
     public DateTime lastRecharge;
     public TreasureHuntTile[] tiles;
+    
+    public TreasureHuntTile barrier;
     public GameObject[] relics;
+    public GameObject[] relicGiftBoxes;
+    public GameObject lootPrefab;
+    public LootTable[] relicLootTables;
+    public LootTable[] tileLootTables;
+    
+
     public GameObject tileMap;
-    Ownable treasureHuntData, treasureHuntWorldMap, treasureHuntRelicMap;
+    public GameObject gridPrefab;
+    public Ownable treasureHuntData, treasureHuntWorldMap, treasureHuntRelicMap;
     private int season;
     private Coroutine minuteUpdater;
+    [SerializeField] private GameObject textPrefab;
+    [SerializeField] private Color damagedText, lowText;
+
     
     void Awake()
     {
@@ -54,6 +67,7 @@ public class TreasureHuntManager : MonoBehaviour
             lastRecharge = DateTime.UtcNow;
             SerializableDateTime sdt = new SerializableDateTime(DateTime.UtcNow);
             treasureHuntData.AddTag("lastRecharge", sdt.ToString());
+            
 
         }
         else
@@ -84,21 +98,18 @@ public class TreasureHuntManager : MonoBehaviour
         AutoSave();
     }
 
-    void AutoSave()
+    public void AutoSave()
     {
 
 
         
         AuthorizedModifier source = GetComponent<AuthorizedModifier>();
         SecureProfileStats sps = SecureProfileStats.instance;
-        sps.RemoveFirstOwnableOfName("treasureHuntDataSeason" + season, source);
-        sps.AddOwnable(treasureHuntData, source);
+        sps.OverwriteOwnable(treasureHuntData, source);
 
-        sps.RemoveFirstOwnableOfName("treasureHuntWorldMapSeason" + season, source);
-        sps.AddOwnable(treasureHuntWorldMap, source);
+        sps.OverwriteOwnable(treasureHuntWorldMap, source);
 
-        sps.RemoveFirstOwnableOfName("treasureHuntRelicMapSeason" + season, source);
-        sps.AddOwnable(treasureHuntRelicMap, source);
+        sps.OverwriteOwnable(treasureHuntRelicMap, source);
 
 
     }
@@ -140,17 +151,18 @@ public class TreasureHuntManager : MonoBehaviour
         {
             for(int x=0; x<Constants.TREASURE_HUNT_MAP_SIZE; x++)
             {
-                if (y == 0)
+                Func<int, int> Invert = x => Constants.TREASURE_HUNT_MAP_SIZE-x;
+                if (y == Invert(1))
                 {
                     output.AddTag(""+x+"-"+y, "grass");
                     output.AddTag(""+x+"-"+y+"Health", "3");
                 }
-                else if (y < 3)
+                else if (y > Invert(3))
                 {
                     output.AddTag(""+x+"-"+y, "dirt");
                     output.AddTag(""+x+"-"+y+"Health", "5");
                 }
-                else if (y < 10)
+                else if (y > Invert(8))
                 {
                     output.AddTag(""+x+"-"+y, "stone");
                     output.AddTag(""+x+"-"+y+"Health", "20");
@@ -231,38 +243,72 @@ public class TreasureHuntManager : MonoBehaviour
         GameObject tilemapGO = new GameObject("HexTilemap");
         tilemapGO.transform.SetParent(gridGO.transform);
         Tilemap tilemap = tilemapGO.AddComponent<Tilemap>();
+        tilemap.tileAnchor = new Vector3(0, 0, 0);
         TilemapRenderer renderer = tilemapGO.AddComponent<TilemapRenderer>();
         TilemapCollider2D collider = tilemapGO.AddComponent<TilemapCollider2D>();
         Rigidbody2D rb = tilemapGO.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Static;
+        
         TreasureTilemapHandler handler = tilemapGO.AddComponent<TreasureTilemapHandler>();
         handler.treasureTilemap = tilemap;
 
+        TextMeshPro[,] healthText = new TextMeshPro[Constants.TREASURE_HUNT_MAP_SIZE,Constants.TREASURE_HUNT_MAP_SIZE];
+        GameObject[,] relicObjects = new GameObject[Constants.TREASURE_HUNT_MAP_SIZE,Constants.TREASURE_HUNT_MAP_SIZE];
+        for(int y = -1; y <= Constants.TREASURE_HUNT_MAP_SIZE+5; y++)
+        {
+            Vector3Int pos = new Vector3Int(-1, y, 0);
+            tilemap.SetTile(pos, barrier);
+            pos = new Vector3Int(Constants.TREASURE_HUNT_MAP_SIZE, y, 0);
+            tilemap.SetTile(pos, barrier);
+        }
+        
+        for(int x = 0; x <= Constants.TREASURE_HUNT_MAP_SIZE; x++)
+        {
+            Vector3Int pos = new Vector3Int(x, -1, 0);
+            tilemap.SetTile(pos, barrier);
+        }
         for (int x = 0; x < Constants.TREASURE_HUNT_MAP_SIZE; x++)
         {
+
             for (int y = 0; y < Constants.TREASURE_HUNT_MAP_SIZE; y++)
             {
-                Vector3Int pos = new Vector3Int(x, -y, 0);
+                Vector3Int pos = new Vector3Int(x, y, 0);
+
+                Vector3 offset = (y%2==0) ? new Vector3(0f, 0f, 0f) : new Vector3(0f, 0f, 0f);
+                if(y==0){
+                    offset = new Vector3(0.5f, 0f, 0f);
+                    //idk why i need this edge case hardcode the first row is just weird
+                }
+                Vector3 localPos = tilemap.CellToLocalInterpolated((Vector3)pos + offset);
                 string tileAt = worldMap.FindTag(""+x+"-"+y);
-                Debug.Log("Tile at "+x+"-"+y+": " + tileAt);
-                Tile tileToPlace;
+                //Debug.Log("Tile at "+x+"-"+y+": " + tileAt);
+
                 foreach(TreasureHuntTile tile in tiles)
                 {
                     if (tile.name.Equals(tileAt))
                     {
                         
-                        tileToPlace = tile;
-                        tilemap.SetTile(pos, tileToPlace);
+
+                        tilemap.SetTile(pos, tile);
+
+                        GameObject textObject = Instantiate(textPrefab, tilemapGO.transform);
+                        textObject.transform.localPosition = localPos;
+
+
+                        TextMeshPro textComponent = textObject.GetComponent<TextMeshPro>();
+                        textComponent.text = ""+x+", "+y;
+                        healthText[x,y] = textComponent;
+
                         break;
                     }
                 }
+                //place the tile at the desired location
                 if (relicMap.FindTag(""+x+"-"+y)!=null)
                 {
                     int index = int.Parse(relicMap.FindTag(""+x+"-"+y));
-                    Vector3Int cell = new Vector3Int(x, -y, 0);
-                    Vector3 localPos = tilemap.CellToLocalInterpolated((Vector3)cell + new Vector3(0f, 0.5f, 0f));//-
                     GameObject relic = Instantiate(relics[index], tilemapGO.transform);
-                    
+                    relicObjects[x,y] = relic;
+
                     relic.transform.localPosition = localPos;
                     RelicManager rm = relic.GetComponent<RelicManager>();
 
@@ -270,14 +316,22 @@ public class TreasureHuntManager : MonoBehaviour
                     rm.tileX = x;
                     rm.tileY = y;
                     
-
-
                 }
-                Debug.Log("Spawned tile and relic for tile " + x + ", " + y);
+                //spawns relic if exists
+
+
+
+                //Debug.Log("Spawned tile and relic for tile " + x + ", " + y);
                 //Tile tileToPlace = 
                 
             }
         }
+
+        handler.healthGrid = healthText;
+        handler.relicGrid = relicObjects;
+        handler.worldMap = treasureHuntWorldMap;
+        handler.damaged = damagedText;
+        handler.low = lowText;
 
         int midpoint = (Constants.TREASURE_HUNT_MAP_SIZE-1)/2;
         Vector3Int midpointCell = new Vector3Int(midpoint, midpoint, 0);
@@ -309,7 +363,61 @@ public class TreasureHuntManager : MonoBehaviour
         return months;
     }
 
+    public void HandleTileBreak(Tilemap tilemap, Vector3Int tilePos)
+    {
+        string tileAt = treasureHuntWorldMap.FindTag(""+tilePos.x+"-"+tilePos.y);
+        foreach(LootTable lt in tileLootTables)
+        {
+            if (lt.name.Equals(tileAt))
+            {
+                StartCoroutine(OnTileBreak(tilemap, tilePos, lt));
+                break;
+            }
+        }
 
+    }
+    public IEnumerator OnTileBreak(Tilemap tilemap, Vector3Int tilePos, LootTable lt)
+    {
+
+        
+
+        treasureHuntWorldMap.ModifyTagValue(""+tilePos.x+"-"+tilePos.y+"Health", "0");
+        treasureHuntWorldMap.ModifyTagValue(""+tilePos.x+"-"+tilePos.y, "air");
+        tilemap.SetTile(tilePos, null);
+        tilemap.GetComponent<TilemapCollider2D>().ProcessTilemapChanges();
+
+
+        Ownable lootWon = lt.GetLoot();
+        GameObject lootObject = Instantiate(lootPrefab, tilemap.transform);
+        lootObject.GetComponent<SpriteRenderer>().sprite = lootWon.sprite;
+        lootObject.AddComponent<CanvasGroup>();
+
+
+
+
+
+        Vector3Int pos = new Vector3Int(tilePos.x, tilePos.y, 0);
+        Vector3 offset = (tilePos.y%2==0) ? new Vector3(0.5f, 0.5f, 0f) : new Vector3(0.5f, 0.5f, 0f);
+        if(tilePos.y==0){
+            offset = new Vector3(0.5f, 0.5f, 0f);
+            //idk why i need this edge case hardcode the first row is just weird
+        }
+        Vector3 localPos = tilemap.CellToLocalInterpolated((Vector3)pos + offset);
+        lootObject.transform.localPosition = localPos;
+
+        AnimationManager am = AnimationManager.instance;
+        yield return StartCoroutine(am.PopIn(lootObject, 1.15f, 0.5f));
+        SecureProfileStats.instance.AddOwnable(lootWon, GetComponent<AuthorizedModifier>());
+        yield return StartCoroutine(am.FadeSprite(lootObject, 1f, 0f, 1.5f));
+        Destroy(lootObject);
+        
+        
+    }
+
+    public void HandleRelicLoot()
+    {
+        
+    }
 
     IEnumerator MinuteUpdate()
     {
@@ -333,6 +441,25 @@ public class TreasureHuntManager : MonoBehaviour
             energy = Constants.TREASURE_HUNT_MAX_ENERGY;
         }
     }
+
+    public bool UseEnergy(int amount){
+        if(Constants.DEBUG_MODE){
+            return true;
+        }
+        if(amount > energy){
+            return false;
+        }else{
+
+            energy -= amount;
+
+            
+            
+            AutoSave();
+            return true;
+        }
+    }
+
+    
 
     DateTime UpdateEnergy(DateTime last)
     {

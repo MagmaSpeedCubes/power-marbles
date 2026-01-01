@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
-  m_Name: Coin500
+  m_Name: DrawstringSteel
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -1938959282578044743, guid: 363dacae37007478babc37a94e15bc92, type: 3}
+  sprite: {fileID: 0}
   tags:
-  - name: rarity
-    value: uncommon
-  - name: powerTowerDropChance
-    value: 3
   - name: type
     value: claimable
+  - name: rarity
+    value: epic
+  - name: hideInInventory
+    value: true

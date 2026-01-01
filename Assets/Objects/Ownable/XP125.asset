@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
-  m_Name: Coin1000
+  m_Name: XP125
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -4498615865678588490, guid: cd6714c2b5d75495e9054b789c2e081f, type: 3}
+  sprite: {fileID: -7473120119038212156, guid: 48995f5fdee3349579213ace94f6665f, type: 3}
   tags:
   - name: rarity
-    value: rare
+    value: common
   - name: powerTowerDropChance
-    value: 1
+    value: 20
   - name: type
     value: claimable

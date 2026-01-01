@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
-  m_Name: Record
+  m_Name: XP1000
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: 3412461161510467546, guid: 8e8f87a9d4f7f4e45b3e53257a7e6214, type: 3}
+  sprite: {fileID: -4498615865678588490, guid: cd6714c2b5d75495e9054b789c2e081f, type: 3}
   tags:
-  - name: type
-    value: consumable
   - name: rarity
-    value: superior
+    value: rare
+  - name: powerTowerDropChance
+    value: 1
+  - name: type
+    value: claimable

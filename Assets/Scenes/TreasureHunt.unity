@@ -159,12 +159,32 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5d5fff2be69694353af531d6785b76c4, type: 2}
   - {fileID: 11400000, guid: 239c4b2b581af4090bdec1fa554c0662, type: 2}
   - {fileID: 11400000, guid: a92dc749d6c4c48f2882ce78f2d793da, type: 2}
+  barrier: {fileID: 11400000, guid: ec3dbdc63a98742fca20b0cdd9e5aeba, type: 2}
   relics:
   - {fileID: 8370681583098171220, guid: 96daa377cdd854e6ca847e5c2c6c0772, type: 3}
   - {fileID: 6948567945004277961, guid: 61f5ee036373544a09556644a4a1d104, type: 3}
   - {fileID: 1896614343385599413, guid: 3c182c92df9a44bf680f5c1cc963e996, type: 3}
   - {fileID: 2782045728345205612, guid: e27efc984439d430cbbf0a055ab560fc, type: 3}
+  relicGiftBoxes: []
+  lootPrefab: {fileID: 342335872135900248, guid: 0d47537623e504f8aa447de1fe06ffd4, type: 3}
+  relicLootTables: []
+  tileLootTables:
+  - {fileID: 11400000, guid: 1edc235725f8e402e931b70d891b3068, type: 2}
+  - {fileID: 11400000, guid: a2f1e42c709a943b792906f1d3997d74, type: 2}
+  - {fileID: 11400000, guid: fdee88312103647bb8fbdf5de373ea5f, type: 2}
+  - {fileID: 11400000, guid: 43425a50816054a7288316b69e4d004f, type: 2}
+  - {fileID: 11400000, guid: 5994510b6302f40d1b156b06af2952a3, type: 2}
+  - {fileID: 11400000, guid: cd00143e5468b477f9ce005efff56046, type: 2}
+  - {fileID: 11400000, guid: 508639ae215ba4a91b2ac62431a5cbb5, type: 2}
+  - {fileID: 11400000, guid: 987b5099ac2994477bb28274d1d24890, type: 2}
   tileMap: {fileID: 0}
+  gridPrefab: {fileID: 0}
+  treasureHuntData: {fileID: 0}
+  treasureHuntWorldMap: {fileID: 0}
+  treasureHuntRelicMap: {fileID: 0}
+  textPrefab: {fileID: 5908200001778745984, guid: 7875acc073f50443e98bfea623bbdba9, type: 3}
+  damagedText: {r: 1, g: 0.6470588, b: 0, a: 1}
+  lowText: {r: 0.8627452, g: 0.1921569, b: 0.1960784, a: 1}
 --- !u!4 &561388470
 Transform:
   m_ObjectHideFlags: 0
@@ -280,7 +300,7 @@ Transform:
   m_GameObject: {fileID: 598358747}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 16, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -342,13 +362,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28315ee7d11e4594be421111d45166c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraManager
-  mainCamera: {fileID: 598358749}
-  dragSensitivity: 0.01
-  zoomSensitivity: 0.1
-  minOrthographicSize: 1
-  maxOrthographicSize: 20
-  invertX: 0
-  invertY: 0
+  zoomSpeed: 0.04
+  minScale: 0.5
+  maxScale: 2
+  camera: {fileID: 598358747}
 --- !u!1 &1040787311
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,8 +604,8 @@ Transform:
   m_GameObject: {fileID: 1966269692}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.11, y: 3.04, z: 0}
-  m_LocalScale: {x: 8.98498, y: 2.2579, z: 1}
+  m_LocalPosition: {x: 0, y: 16, z: 0}
+  m_LocalScale: {x: 25, y: 7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

@@ -43,7 +43,7 @@ public class DamageFormulas : MonoBehaviour
 {
     public float Basic(BallHandler ball)
     {
-        return ball.ballData.power * 2f;
+        return ball.ballData.power;
     }
 
     public float Speedy(BallHandler ball)

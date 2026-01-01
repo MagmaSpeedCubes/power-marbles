@@ -1,116 +1,118 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class LocalCameraManager : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
+using UnityEngine.InputSystem;
+
+public class CameraManager : MonoBehaviour
 {
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private float dragSensitivity = 0.01f;
-    [SerializeField] private float zoomSensitivity = 0.1f;
-    [SerializeField] private float minOrthographicSize = 1f;
-    [SerializeField] private float maxOrthographicSize = 20f;
-    [SerializeField] private bool invertX = false;
-    [SerializeField] private bool invertY = false;
+    [SerializeField] private float zoomSpeed = 0.1f;
+    [SerializeField] private float minScale = 0.5f;
+    [SerializeField] private float maxScale = 2f;
+    [SerializeField] private GameObject camera;
 
-    private Vector2 dragDelta = Vector2.zero;
-    private bool isDragging = false;
-    private float lastPinchDistance = 0f;
 
-    void Start()
-    {
-        if (mainCamera == null)
-            mainCamera = Camera.main;
-    }
+
+    private float currentScale = 1f;
+    private bool isPanning = false;
+    private Vector2 lastMousePosition;
 
     void Update()
     {
-        // Apply camera movement if dragging
-        if (isDragging && dragDelta.magnitude > 0.01f)
-        {
-            MoveCameraByDrag(dragDelta);
-        }
-
-        // Handle two-finger pinch zoom
-        if (Input.touchCount == 2)
-        {
-            HandlePinchZoom();
-        }
-        else
-        {
-            lastPinchDistance = 0f; // reset when fingers lift
-        }
+        #if UNITY_EDITOR || UNITY_STANDALONE
+        HandleDesktopInput();
+        #endif
+        #if UNITY_IOS || UNITY_ANDROID
+        HandleTouchInput();
+        #endif
     }
 
-    private void HandlePinchZoom()
+        
+    void HandleTouchInput()
     {
-        Touch touch1 = Input.GetTouch(0);
-        Touch touch2 = Input.GetTouch(1);
 
-        // Calculate distance between fingers
-        float currentDistance = Vector2.Distance(touch1.position, touch2.position);
-
-        // On first frame of two-finger touch, initialize lastPinchDistance
-        if (lastPinchDistance == 0f)
-        {
-            lastPinchDistance = currentDistance;
+        if (Touchscreen.current == null)
             return;
+
+        var touches = Touchscreen.current.touches;
+
+        // 1 finger → pan
+        if (touches.Count > 0 && touches[0].isInProgress && touches.Count == 1)
+        {
+            Vector2 delta = touches[0].delta.ReadValue();
+            Pan(delta);
         }
 
-        // Calculate the change in distance
-        float pinchDelta = currentDistance - lastPinchDistance;
-        lastPinchDistance = currentDistance;
+        // 2 fingers → pinch zoom
+        if (touches.Count >= 2 &&
+            touches[0].isInProgress &&
+            touches[1].isInProgress)
+        {
+            Vector2 prevPos1 = touches[0].position.ReadValue() - touches[0].delta.ReadValue();
+            Vector2 prevPos2 = touches[1].position.ReadValue() - touches[1].delta.ReadValue();
 
-        // Adjust camera zoom based on pinch direction
-        if (mainCamera.orthographic)
-        {
-            // For 2D (orthographic camera)
-            float newSize = mainCamera.orthographicSize - (pinchDelta * zoomSensitivity);
-            mainCamera.orthographicSize = Mathf.Clamp(newSize, minOrthographicSize, maxOrthographicSize);
+            float prevDistance = Vector2.Distance(prevPos1, prevPos2);
+            float currentDistance = Vector2.Distance(
+                touches[0].position.ReadValue(),
+                touches[1].position.ReadValue());
+
+            float pinchDelta = (currentDistance - prevDistance) * 0.001f;
+            ApplyZoom(pinchDelta);
         }
-        else
-        {
-            // For 3D (perspective camera) — adjust field of view
-            float newFOV = mainCamera.fieldOfView - (pinchDelta * zoomSensitivity);
-            mainCamera.fieldOfView = Mathf.Clamp(newFOV, 1f, 179f);
-        }
+
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    void HandleDesktopInput()
     {
-        Debug.Log("Pointer Down");
-        if (!EventSystem.current.IsPointerOverGameObject())
+
+        float scroll = Mouse.current.scroll.ReadValue().y;
+        if (scroll != 0)
+            ApplyZoom(scroll > 0 ? zoomSpeed : -zoomSpeed);
+
+        if (Keyboard.current.equalsKey.wasPressedThisFrame ||
+            Keyboard.current.numpadPlusKey.wasPressedThisFrame)
+            ApplyZoom(zoomSpeed);
+
+        if (Keyboard.current.minusKey.wasPressedThisFrame ||
+            Keyboard.current.numpadMinusKey.wasPressedThisFrame)
+            ApplyZoom(-zoomSpeed);
+
+        bool middleMouse = Mouse.current.middleButton.isPressed;
+        bool shiftLeftMouse = Keyboard.current.leftShiftKey.isPressed &&
+                            Mouse.current.leftButton.isPressed;
+
+        if ((middleMouse || shiftLeftMouse) && !isPanning)
         {
-            isDragging = true;
-            dragDelta = Vector2.zero;
+            isPanning = true;
+            lastMousePosition = Mouse.current.position.ReadValue();
         }
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        Debug.Log("Drag");
-        if (isDragging && Input.touchCount <= 1) // disable drag if two fingers
+        else if (!(middleMouse || shiftLeftMouse))
         {
-            dragDelta = eventData.delta;
-
-            float xMove = invertX ? -dragDelta.x : dragDelta.x;
-            float yMove = invertY ? -dragDelta.y : dragDelta.y;
-
-            Vector3 move = new Vector3(xMove, yMove, 0f) * dragSensitivity;
-            mainCamera.transform.Translate(move);
+            isPanning = false;
         }
+
+        if (isPanning)
+        {
+            Vector2 current = Mouse.current.position.ReadValue();
+            Pan(current - lastMousePosition);
+            lastMousePosition = current;
+        }
+
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+
+
+    void Pan(Vector2 delta)
     {
-        Debug.Log("Pointer Up");
-        isDragging = false;
-        dragDelta = Vector2.zero;
+        float panMultiplier =
+            4f * camera.GetComponent<Camera>().orthographicSize
+            / Constants.SCREEN_SIZE.y;
+
+        camera.transform.position -= (Vector3)delta * panMultiplier;
     }
 
-    private void MoveCameraByDrag(Vector2 delta)
+    void ApplyZoom(float delta)
     {
-        float xMove = invertX ? -delta.x : delta.x;
-        float yMove = invertY ? -delta.y : delta.y;
-        Vector3 move = new Vector3(xMove, yMove, 0f) * dragSensitivity;
-        mainCamera.transform.Translate(move);
+        currentScale = Mathf.Clamp(currentScale + delta, minScale, maxScale);
+        camera.GetComponent<Camera>().orthographicSize =
+            currentScale * Constants.CAMERA_DEFAULT_SIZE;
     }
 }

@@ -16,3 +16,5 @@ MonoBehaviour:
   tags:
   - name: type
     value: consumable
+  - name: rarity
+    value: superior
