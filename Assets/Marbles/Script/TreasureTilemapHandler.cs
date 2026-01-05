@@ -21,18 +21,18 @@ public class TreasureTilemapHandler : DamageHandler
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Tilemap Hit");
+        //Debug.Log("Tilemap Hit");
         foreach (ContactPoint2D hit in collision.contacts)
         {
-            Debug.Log("Normal Y: " +  hit.point.y);
+            //Debug.Log("Normal Y: " +  hit.point.y);
             
             Vector2 correctedHitPoint = new Vector2(hit.point.x, hit.point.y);
-            Debug.Log("Adjusted Y: " +  correctedHitPoint.y);
+            //Debug.Log("Adjusted Y: " +  correctedHitPoint.y);
             Vector3 hitPosition = correctedHitPoint + hit.normal * 0.1f;
             Vector3Int cellCoords = treasureTilemap.WorldToCell(hitPosition);
             //Vector3Int correctedCellCoordinates = new Vector3Int(cellCoords.x-1, Constants.TREASURE_HUNT_MAP_SIZE - cellCoords.y, cellCoords.z);
             lastHitCell = cellCoords;
-            Debug.Log("Found center: " + treasureTilemap.CellToWorld(cellCoords));
+            //Debug.Log("Found center: " + treasureTilemap.CellToWorld(cellCoords));
             //Debug.Log("Hit Tile Coordinates: " + cellCoordinates);
         }
     }
@@ -41,7 +41,7 @@ public class TreasureTilemapHandler : DamageHandler
     {
         Vector3Int cellPosition = lastHitCell;
         //cellPosition.y--;
-        Debug.Log("Cell position: " + cellPosition);
+        //Debug.Log("Cell position: " + cellPosition);
 
         TextMeshPro textAtHit;
         try
@@ -58,11 +58,11 @@ public class TreasureTilemapHandler : DamageHandler
 
 
         textAtHit.text = ""+health;
-        Debug.Log("Health: " + health);
+        //Debug.Log("Health: " + health);
         worldMap.ModifyTagValue(""+cellPosition.x+"-"+cellPosition.y+"Health", ""+health);
         if(health <= 0)
         {
-            Debug.Log("Dead");
+            //Debug.Log("Dead");
             textAtHit.text = "";
             
             TreasureHuntManager.instance.HandleTileBreak(treasureTilemap, cellPosition);
@@ -73,11 +73,11 @@ public class TreasureTilemapHandler : DamageHandler
         }
         else if(health < 3)
         {
-            Debug.Log("Low health");
+            //Debug.Log("Low health");
             textAtHit.color = low;
         }else
         {
-            Debug.Log("Damaged");
+            //Debug.Log("Damaged");
             textAtHit.color = damaged;
         }
 

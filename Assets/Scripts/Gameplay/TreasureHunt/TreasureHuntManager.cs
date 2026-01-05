@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 using System.Collections;
 using System;
 using TMPro;
+using System.Collections.Generic;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class TreasureHuntManager : MonoBehaviour
 {
@@ -25,8 +26,12 @@ public class TreasureHuntManager : MonoBehaviour
     public Ownable treasureHuntData, treasureHuntWorldMap, treasureHuntRelicMap;
     private int season;
     private Coroutine minuteUpdater;
+
+    private List<int> queuedRelics = new List<int>();
+    private Coroutine relicHandler;
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private Color damagedText, lowText;
+    [SerializeField] private GameObject giftCanvas;
 
     
     void Awake()
@@ -310,11 +315,12 @@ public class TreasureHuntManager : MonoBehaviour
                     relicObjects[x,y] = relic;
 
                     relic.transform.localPosition = localPos;
-                    RelicManager rm = relic.GetComponent<RelicManager>();
+                    RelicHandler rm = relic.GetComponent<RelicHandler>();
 
 
                     rm.tileX = x;
                     rm.tileY = y;
+                    rm.type = index;
                     
                 }
                 //spawns relic if exists
@@ -413,10 +419,47 @@ public class TreasureHuntManager : MonoBehaviour
         
         
     }
-
-    public void HandleRelicLoot()
+    public void HandleRelicLoot(Vector3Int position, int type)
     {
+        queuedRelics.Add(type);
+        if(relicHandler == null)
+        {
+            relicHandler = StartCoroutine(RelicHandlingCoroutine());
+        }
+    }
+
+    IEnumerator RelicHandlingCoroutine()
+    {
+
+        int index = queuedRelics[0];
+        queuedRelics.Remove(index);
+        LootTable lt = relicLootTables[index];
+        List<Ownable> rewards = new List<Ownable>();
+        for(int i=0; i<5; i++)
+        {
+            rewards.Add(lt.GetLoot());
+        }
         
+        GameObject relicGiftbox = Instantiate(relicGiftBoxes[index], giftCanvas.transform);
+        relicGiftbox.transform.localScale = new Vector3(1, 1, 1);
+        GiftBox gb = relicGiftbox.GetComponent<GiftBox>();
+
+        gb.SetRewards(rewards.ToArray());
+        yield return StartCoroutine(gb.Open());
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(AnimationManager.instance.FadeUI(relicGiftbox, 1f, 0f, 0.5f));
+        Destroy(relicGiftbox);
+
+        if(queuedRelics.Count > 0)
+        {
+            relicHandler = StartCoroutine(RelicHandlingCoroutine());
+        }
+        else
+        {
+            relicHandler = null;
+        }
+        
+        yield break;
     }
 
     IEnumerator MinuteUpdate()

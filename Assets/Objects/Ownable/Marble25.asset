@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
-  m_Name: Gem10
+  m_Name: Marble25
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -2170406655567940700, guid: 617ab41cd082b4d7cb99ba8966f9732a, type: 3}
+  sprite: {fileID: 3827776334925639919, guid: dcb2f0d8554284a98a52251881dc7464, type: 3}
   tags:
   - name: rarity
     value: epic
   - name: powerTowerDropChance
-    value: 0.5
+    value: .2
   - name: type
     value: claimable

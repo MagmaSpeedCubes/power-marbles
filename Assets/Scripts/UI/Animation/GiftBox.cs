@@ -22,12 +22,15 @@ public class GiftBox : TiledElementManager
     }
     public IEnumerator Open()
     {
+
         if(isOpen){yield break;}
         isOpen = true;
-        yield return StartCoroutine(LiftLid(openDistance, openTime));
+        yield return StartCoroutine(LiftLid(openDistance, openTime*1/2f));
         //open the gift box by lifting the lid
 
-        rewardIconsWrapper = GenerateRewardIcons();
+        yield return new WaitForSeconds(openTime*1/4f);
+        AudioManager.instance.PlaySound("ding", ProfileCustomization.uiVolume);
+        rewardIconsWrapper = GenerateRewardIcons(1.15f, openTime*1/4f);
         //generate the reward icons and place them in the box
 
 
@@ -49,6 +52,7 @@ public class GiftBox : TiledElementManager
         // Move the wrapper upward so the icons appear above the gift box (not overlapping)
         float wrapperHeight = wrapperRect.rect.height * scaleFactor;
         wrapperRect.localPosition += new Vector3(0f, wrapperHeight * 0.5f + separationDistance, 0f);
+        yield return new WaitForSeconds(openTime*1/4f);
         
 
 
@@ -77,7 +81,7 @@ public class GiftBox : TiledElementManager
         }
     }
 
-    GameObject GenerateRewardIcons()
+    GameObject GenerateRewardIcons(float popOvershoot, float popDuration)
     {
         items = new List<GameObject>();
         numElements = rewards.Length; 
@@ -119,6 +123,8 @@ public class GiftBox : TiledElementManager
             RectTransform newItemRect = rewardIcon.GetComponent<RectTransform>();
             // Position using anchoredPosition relative to wrapper center
             newItemRect.anchoredPosition = offset;
+            StartCoroutine(AnimationManager.instance.PopIn(rewardIcon, popOvershoot, popDuration));
+
             items.Add(rewardIcon);
         }
         return wrapper;
