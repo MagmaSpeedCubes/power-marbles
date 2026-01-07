@@ -41,10 +41,6 @@ deals 25% of the combined damage of all balls at its spawning. Only one integral
 
 public class DamageFormulas : MonoBehaviour
 {
-    public float Basic(BallHandler ball)
-    {
-        return ball.ballData.power;
-    }
 
     public float Speedy(BallHandler ball)
     {
@@ -55,22 +51,6 @@ public class DamageFormulas : MonoBehaviour
     {
         System.Random rng = new System.Random();
         return (float) rng.NextDouble() * 2 * ball.ballData.power;
-    }
-
-
-
-    public float Coin(BallHandler ball)
-    {
-        return ball.ballData.power;
-        //energy gained from each bounce
-        
-    }
-
-    public float Chisel(BallHandler ball)
-    {
-        return ball.ballData.power / 100;
-        //amount armor is damaged
-        //by percentage so /100
     }
 
     public float Slammed(BallHandler ball)
@@ -97,34 +77,7 @@ public class DamageFormulas : MonoBehaviour
         return f2 * ball.ballData.power;
     }
 
-    public float Derivative(BallHandler ball)
-    {
-        List<BallHandler> activeBalls = LevelManager.instance.activeBalls;
-        float minDamage = float.MaxValue;
-        float maxDamage = float.MinValue;
 
-        foreach(BallHandler otherBall in activeBalls)
-        {
-            if(otherBall == ball){continue;}
-            if(otherBall is IntegralBallHandler){continue;}
-            if(otherBall.ballData.name == "Derivative"){continue;}
-
-            float otherDamage = Utility.CallReturnableFunction<float>("DamageFormulas", otherBall.ballData.name, otherBall);
-            if(otherDamage < minDamage)
-            {
-                minDamage = otherDamage;
-            }
-            if(otherDamage > maxDamage)
-            {
-                maxDamage = otherDamage;
-            }
-        }
-
-        float damageDifference = maxDamage - minDamage;
-        float derivativeDamage = damageDifference * ball.ballData.power;
-        Debug.Log("Weakest damage: " + minDamage + ", Strongest damage: " + maxDamage + ", Difference: " + damageDifference + ", Derivative damage (after multiplier): " + derivativeDamage);
-        return (derivativeDamage > 0) ? derivativeDamage : 0f;
-    }
 
 
 

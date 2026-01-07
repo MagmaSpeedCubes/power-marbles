@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 97040443364006500}
   - component: {fileID: 3524861213627107021}
   - component: {fileID: 8023854266606341764}
-  - component: {fileID: 2056637966117369255}
   - component: {fileID: 6251271069341776728}
+  - component: {fileID: 3870215822030967846}
   m_Layer: 7
   m_Name: Drill
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 189627460378260532}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 419.25, y: 703.34, z: 0}
+  m_LocalPosition: {x: -0.68148, y: -1.99912, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -257,21 +257,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2056637966117369255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189627460378260532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58a9ca74352043ab9facff26f4deebc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BallManager
-  ballData: {fileID: 6251271069341776728}
-  numBounces: 0
-  iconSprite: {fileID: 3634532221208880018}
 --- !u!114 &6251271069341776728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +282,22 @@ MonoBehaviour:
   bounceSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   specialSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   ballPrefabObject: {fileID: 189627460378260532}
+--- !u!114 &3870215822030967846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189627460378260532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 920e2af02eef34bd98ede335299e204f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrillMarbleHandler
+  ballData: {fileID: 6251271069341776728}
+  numBounces: 0
+  iconSprite: {fileID: 3634532221208880018}
+  drillBitPrefab: {fileID: 4698375852054382419, guid: a2d261ed1a77a4fa7bd73a270105cac6, type: 3}
 --- !u!1 &8082041524406007912
 GameObject:
   m_ObjectHideFlags: 0

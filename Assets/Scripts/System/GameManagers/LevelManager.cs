@@ -81,6 +81,7 @@ public class LevelManager : MonoBehaviour
 
     public void EndLevel()
     {
+        Debug.Log("End Level");
         active = false;
         CancelInvoke("AbilityTick");
     }
@@ -88,6 +89,11 @@ public class LevelManager : MonoBehaviour
     public void AddBall(BallHandler ball)
     {
         activeBalls.Add(ball);
+    }
+
+    public void AddEnergy(int amount)
+    {
+        
     }
 
 

@@ -12,7 +12,7 @@ public class BallHandler : MonoBehaviour
     protected SpriteRenderer spr;
     protected AudioSource asc;
     [HideInInspector]public int numBounces = 0;
-    protected static readonly float DEBOUNCE_TIME = 0.05f;
+    protected static readonly float DEBOUNCE_TIME = 0.1f;
     protected float debounce = DEBOUNCE_TIME;
 
     [SerializeField] protected SpriteRenderer iconSprite;
@@ -88,21 +88,14 @@ public class BallHandler : MonoBehaviour
         {
             Vector2 velocity = rb.linearVelocity;
             rb.linearVelocity = Vector3.zero;
-
-
-            
-
             Debug.Log("Stopped ball, handling collision");
- 
-
             HandleCollisions(damageable);
-
             Debug.Log("Reinitializing movement with corrected velocity");
-
             Vector2 corrected = velocity.normalized * 7.5f * ballData.movementSpeed;
-
+            Debug.Log("New velocity: " + corrected);
             corrected.y = -corrected.y;
             rb.AddForce(corrected, ForceMode2D.Impulse);  
+            debounce = 0;
               
         }
  
@@ -112,15 +105,15 @@ public class BallHandler : MonoBehaviour
 
     virtual public void HandleCollisions(DamageHandler damageable)
     {
-        object damageAmount = Utility.CallReturnableFunction<float>("DamageFormulas", ballData.name, this);
-        float damage = Convert.ToSingle(damageAmount);
+        
+        float damage = GetDamage();
 
         StartCoroutine(DamageCoroutine(damage, damageable));
         //delay the damage by one clock cycle so the tilemap can respond first
         asc.PlayOneShot(ballData.bounceSound);
 
         numBounces++;
-        debounce = 0f;
+
     }
 
     virtual public IEnumerator DamageCoroutine(float damage, DamageHandler damageable)
@@ -134,6 +127,11 @@ public class BallHandler : MonoBehaviour
         return rb.linearVelocity;
     }
 
+    virtual public float GetDamage()
+    {
+        return ballData.power * numBounces;
+    }
+
 
     virtual protected void Damage(float damage, DamageHandler other)
     {
@@ -143,7 +141,7 @@ public class BallHandler : MonoBehaviour
 
     virtual public void OnAbilityTick()
     {
-        
+        Debug.Log("Ability Tick Activated");
     }
 }
 

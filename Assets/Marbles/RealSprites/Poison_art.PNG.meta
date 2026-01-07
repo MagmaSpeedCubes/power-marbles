@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: cc30532b0ed6a4366a709860a318ebdd
+guid: 166082ae05bd346d1a429e4c7497b727
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4470910143676276002
-    second: Pickaxe_art_0
+      213: 9145651740944408386
+    second: Poison_art_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -97,6 +97,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -122,24 +135,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pickaxe_art_0
+      name: Poison_art_0
       rect:
         serializedVersion: 2
         x: 7
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ed22c7789e224f1c0800000000000000
-      internalID: -4470910143676276002
+      spriteID: 24f9c6a7dc1ebee70800000000000000
+      internalID: 9145651740944408386
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Pickaxe_art_0: -4470910143676276002
+      Poison_art_0: 9145651740944408386
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -36,6 +36,7 @@ public class DamageHandler : MonoBehaviour
 
         sprites = prefab.sprites;
 
+        maxHealth = prefab.maxHealth;
         health = maxHealth;
         UpdateInfographics();
 

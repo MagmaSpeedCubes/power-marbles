@@ -51,9 +51,9 @@ public class LoadingScreenAnimation : OpenCloseAnimation
         yield return FromLoadingScreen(duration/4, toCanvas, loadCanvas);
     }
 
-    override public void Open()
+    public void Open(bool changeScene)
     {
-        if (openToScene.Equals(""))
+        if (openToScene.Equals("") || !changeScene)
         {
             StartCoroutine(LoadingScreen(duration, closeToScreen, openLoadingScreen, openToScreen));
         }
@@ -66,9 +66,9 @@ public class LoadingScreenAnimation : OpenCloseAnimation
         isOpen = true;
     }
 
-    override public void Close()
+    public void Close(bool changeScene)
     {
-        if(closeToScene.Equals("")){
+        if(closeToScene.Equals("") || !changeScene){
             StartCoroutine(LoadingScreen(duration, openToScreen, closeLoadingScreen, closeToScreen));
         }
         else
@@ -83,11 +83,23 @@ public class LoadingScreenAnimation : OpenCloseAnimation
     {
         if (isOpen)
         {
-            Close();
+            Close(true);
         }
         else
         {
-            Open();
+            Open(true);
+        }
+    }
+
+    public void ToggleWithoutChangingScene()
+    {
+        if (isOpen)
+        {
+            Close(false);
+        }
+        else
+        {
+            Open(false);
         }
     }
 

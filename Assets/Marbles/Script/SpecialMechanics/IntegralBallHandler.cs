@@ -1,9 +1,9 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-public class IntegralBallHandler : BallHandler
+public class IntegralMarbleHandler : BallHandler
 {
-    public static IntegralBallHandler instance;
+    public static IntegralMarbleHandler instance;
     public float damage;
 
     void Awake()

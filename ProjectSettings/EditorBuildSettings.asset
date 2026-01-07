@@ -14,6 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TreasureHunt.unity
     guid: 4cd6536aa32bb4d7cb2888abf7bd30ca
+  - enabled: 1
+    path: Assets/Scenes/MarbleKingdom.unity
+    guid: 9312319c9d6474c8f822a6aac45aead4
+  - enabled: 1
+    path: Assets/Scenes/Millionaire.unity
+    guid: a01068dd7de0e4fb3aa0a8748ffb888d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5258501071664082222}
   - component: {fileID: 526013479284336750}
   - component: {fileID: 8405691424553231735}
-  - component: {fileID: 6743167961895277644}
   - component: {fileID: 1865955542312111035}
+  - component: {fileID: 8206430059162090048}
   m_Layer: 7
   m_Name: Derivative
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1756661936586886392}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 417.87375, y: 703.4, z: 0}
+  m_LocalPosition: {x: -0.68148, y: -1.99912, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -257,21 +257,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6743167961895277644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756661936586886392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58a9ca74352043ab9facff26f4deebc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BallManager
-  ballData: {fileID: 1865955542312111035}
-  numBounces: 0
-  iconSprite: {fileID: 7648062778153542819}
 --- !u!114 &1865955542312111035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +282,21 @@ MonoBehaviour:
   bounceSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   specialSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   ballPrefabObject: {fileID: 1756661936586886392}
+--- !u!114 &8206430059162090048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756661936586886392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81917583ee604a759b68f5b4fc69a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DerivativeMarbleHandler
+  ballData: {fileID: 1865955542312111035}
+  numBounces: 0
+  iconSprite: {fileID: 7648062778153542819}
 --- !u!1 &7033211947007491479
 GameObject:
   m_ObjectHideFlags: 0

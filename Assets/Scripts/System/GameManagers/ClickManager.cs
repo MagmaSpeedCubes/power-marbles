@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 public class LocalClickManager : MonoBehaviour
 {
 
-    [SerializeField] private GameObject ballParent;
+    public GameObject ballParent;
 
-    private static LocalClickManager localInstance;
+    public static LocalClickManager localInstance;
     void Awake()
     {
         if (localInstance == null)
@@ -94,7 +94,7 @@ public class LocalClickManager : MonoBehaviour
                             }
                             LevelStats.energy -= LevelStats.selectedBall.price;
 
-                            if(LevelStats.selectedBall.price <= LevelStats.energy)
+                            if(LevelStats.selectedBall.price <= LevelStats.energy || Constants.DEBUG_MODE)
                             {
 
                                 if (!LevelManager.instance.active)

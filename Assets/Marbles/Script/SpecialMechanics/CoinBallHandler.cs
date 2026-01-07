@@ -1,21 +1,24 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(AudioSource))]
 
-public class CoinBallHandler : BallHandler
+public class CoinMarbleHandler : BallHandler
 {
 
-    override public void HandleCollisions(DamageHandler damageable)
+    override public IEnumerator DamageCoroutine(float damage, DamageHandler damageable)
     {
-        object gainAmount = Utility.CallReturnableFunction<float>("DamageFormulas", ballData.name, this);
-        float gain = Convert.ToSingle(gainAmount);
-
-        LevelStats.energy += gain;
-        asc.PlayOneShot(ballData.bounceSound);
-
-        numBounces++;
-        debounce = 0f;
+        yield return null;
+        LevelManager.instance.AddEnergy((int)damage);
     }
+
+    virtual public float GetDamage()
+    {
+        return ballData.power;
+    }
+
+
 
 }

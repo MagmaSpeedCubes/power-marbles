@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: PoisonBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -5005990984189769374, guid: c1bdb8983a54543e3bfc06cae37850e2, type: 3}
+  sprite: {fileID: 9145651740944408386, guid: 166082ae05bd346d1a429e4c7497b727, type: 3}
   tags:
   - name: rarity
     value: epic

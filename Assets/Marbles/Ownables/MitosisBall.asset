@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: MitosisBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: 2308583736281517313, guid: 6ee37728f7ff645478f37c5a4fee4785, type: 3}
+  sprite: {fileID: 6086433355083063288, guid: da5ab85d5ba794d5398d9a8347aefa65, type: 3}
   tags:
   - name: rarity
     value: rare

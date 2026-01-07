@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6770020659645982026}
   - component: {fileID: 8256544953408360194}
   - component: {fileID: 1823325899082423336}
-  - component: {fileID: 8629592199170548359}
   - component: {fileID: 4844062343958198234}
+  - component: {fileID: 4064092784801982896}
   m_Layer: 7
   m_Name: Fibonacci
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 2076772380349036291}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 420.43, y: 703.41, z: 0}
+  m_LocalPosition: {x: -1.8663399, y: 2.44043, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -257,21 +257,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8629592199170548359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2076772380349036291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58a9ca74352043ab9facff26f4deebc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BallManager
-  ballData: {fileID: 4844062343958198234}
-  numBounces: 0
-  iconSprite: {fileID: 1037149735597052303}
 --- !u!114 &4844062343958198234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81016a7898e948f7bb3d9c4149031f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ball
-  mainSprite: {fileID: 573597476507942261, guid: 43b5bc3a48d1444af97f7e3c790c02d0, type: 3}
+  mainSprite: {fileID: -7388630832420301080, guid: f27d2691f81264bd4b57420af6478f94, type: 3}
   ballSprite: {fileID: -2935846804084577621, guid: d69aee9b7d72c46a7b6f2263089c71f3, type: 3}
   spriteColor: {r: 0.854902, g: 0.6470588, b: 0.1254902, a: 1}
   prefab: {fileID: 11400000, guid: fb90a540b91704fe88b17f631132adc5, type: 2}
@@ -297,6 +282,21 @@ MonoBehaviour:
   bounceSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   specialSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
   ballPrefabObject: {fileID: 2076772380349036291}
+--- !u!114 &4064092784801982896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076772380349036291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e7ebaf05e2ee4712ba982984960082e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FibonacciMarbleHandler
+  ballData: {fileID: 4844062343958198234}
+  numBounces: 0
+  iconSprite: {fileID: 1037149735597052303}
 --- !u!1 &5635086889044968989
 GameObject:
   m_ObjectHideFlags: 0

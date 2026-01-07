@@ -34,8 +34,11 @@ public class CardDeckManager : TiledElementManager
 
     override public void Instantiate()
     {
+        if (!Constants.DEBUG_MODE)
+        {
+            ballPrefabs = OwnableManager.instance.GetOwnedMarblePrefabs();
+        }
         
-        ballPrefabs = OwnableManager.instance.GetOwnedMarblePrefabs();
         numElements = ballPrefabs.Count;
 
         // Auto-scale scroll view after spawning cards
