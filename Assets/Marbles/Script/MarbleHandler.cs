@@ -145,5 +145,10 @@ public class BallHandler : MonoBehaviour
     }
 }
 
+public class MarbleHandler : BallHandler
+{
+    
+}
+
 
 

@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class DrillBit : Projectile
 {
     public Vector2 velocity;
     public float tickRate;
-    private float debounce;
+    Dictionary<DamageHandler, float> debounces = new();
 
 
     public void Launch(Vector2 velocity, float damagePerTick, float tickRate)
@@ -17,21 +19,43 @@ public class DrillBit : Projectile
     }
 
 
-    override public void HandleCollisions(DamageHandler damageable)
+
+
+    public override void HandleCollisions(DamageHandler damageable)
     {
-        Debug.Log("Handling collisions");
-        if(debounce>0){return;}
-        debounce = 1/tickRate;
+        if (debounces.TryGetValue(damageable, out float nextTime))
+        {
+            if (Time.time < nextTime)
+                return;
+        }
+
+        debounces[damageable] = Time.time + (1f / tickRate);
+
         StartCoroutine(DamageCoroutine(damage, damageable));
-        //delay the damage by one clock cycle so the tilemap can respond first
         AudioManager.instance.PlaySound(hitSound, ProfileCustomization.playerVolume);
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        var dmg = col.GetComponent<DamageHandler>();
+        if (dmg != null)
+            debounces.Remove(dmg);
+    }
+    override public IEnumerator DamageCoroutine(float damage, DamageHandler damageable)
+    {
+        yield return null;
+        Damage(damage, damageable);
+
+    }
+
+    override protected void Damage(float damage, DamageHandler other)
+    {
+        other?.Damage(damage, "NegateArmor", null);
 
     }
 
     void FixedUpdate()
     {
-        debounce -= Time.deltaTime;
-        if(debounce<0){debounce=0;}
         Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
         rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
     }

@@ -1086,7 +1086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650eacf8b1aca46f194d38ffd6469236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageHandler
-  prefab: {fileID: 11400000, guid: b8e4cd756f7e6414c98ca4870a6e8e98, type: 2}
+  prefab: {fileID: 11400000, guid: bf0fd6baf5eb54316835bb4b47c9cf4b, type: 2}
   maxHealth: 0
   healthBars:
   - {fileID: 1217785901}

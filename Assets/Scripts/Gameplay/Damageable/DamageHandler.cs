@@ -70,6 +70,10 @@ public class DamageHandler : MonoBehaviour
                     armor = 0;
                 }
                 break;
+            case "Paranormal": case "NegateArmor":
+                Debug.Log("Paranormal");
+                health -= amount;
+                break;
             default:
                 health -= amount * (1-armor);
                 break;

@@ -60,4 +60,9 @@ public class MitosisBallHandler : BallHandler
 
         } 
     }
+
+    override public float GetDamage()
+    {
+        return ballData.size * 2f;
+    }
 }

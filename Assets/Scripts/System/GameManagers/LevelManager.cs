@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        Physics2D.IgnoreLayerCollision(ballLayer, ballLayer, true);
+        //Physics2D.IgnoreLayerCollision(ballLayer, ballLayer, true);
     }
 
     void AbilityTick()

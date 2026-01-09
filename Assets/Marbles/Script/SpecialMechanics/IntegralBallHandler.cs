@@ -44,4 +44,9 @@ public class IntegralMarbleHandler : BallHandler
         numBounces++;
         debounce = 0f;
     }
+
+    override public float GetDamage()
+    {
+        return damage;
+    }
 }
