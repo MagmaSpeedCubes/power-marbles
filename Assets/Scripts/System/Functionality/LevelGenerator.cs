@@ -142,8 +142,8 @@ public class LevelGenerator : MonoBehaviour
         }
 
         float maxTime = (float)Math.Log(totalHealth / difficulty) * 10f;
-        LevelManager.instance.levelMaxTime = (int)maxTime;
-        LevelManager.instance.levelTimer = (int)maxTime;
+        LevelManager.instance.currentLevel.levelMaxTime = (int)maxTime;
+        LevelManager.instance.currentLevel.levelTimer = (int)maxTime;
 
         return lp;
     }

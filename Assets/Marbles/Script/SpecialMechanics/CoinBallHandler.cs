@@ -11,7 +11,7 @@ public class CoinMarbleHandler : BallHandler
     override public IEnumerator DamageCoroutine(float damage, DamageHandler damageable)
     {
         yield return null;
-        LevelManager.instance.AddEnergy((int)damage);
+        LevelManager.instance.currentLevel.AddEnergy((int)damage);
     }
 
     virtual public float GetDamage()

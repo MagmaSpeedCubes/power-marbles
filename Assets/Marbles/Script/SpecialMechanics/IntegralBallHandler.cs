@@ -27,7 +27,7 @@ public class IntegralMarbleHandler : BallHandler
     {
         base.Initialize();
         damage = 0f;
-        List<BallHandler> activeBalls = LevelManager.instance.activeBalls;
+        List<BallHandler> activeBalls = LevelManager.instance.currentLevel.activeBalls;
         foreach(BallHandler ball in activeBalls)
         {
             damage += Utility.CallReturnableFunction<float>("DamageFormulas", ball.ballData.name, ball);

@@ -6,7 +6,7 @@ public class WinHandler : MonoBehaviour
         BallHandler bh = other.GetComponent<BallHandler>();
         if(bh != null)
         {
-            LevelManager.instance.EndLevel();
+            LevelManager.instance.currentLevel.EndLevel();
         }
         
     }

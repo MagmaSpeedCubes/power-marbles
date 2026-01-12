@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private int ballLayer;
-    public static LevelManager instance;
-    public List<BallHandler> activeBalls;
-    public int levelMaxTime;
-    public float levelTimer;
-    public int levelNumber;
-    public GameObject currentLevel;
-    public bool active { get; private set; }
 
-    [SerializeField] private Infographic timeDisplay;
+    public static LevelManager instance;
+    
+    public LevelHandler currentLevel;
+    public GameObject[] kingdomLevels;
+    [SerializeField]private Canvas beginScreen, endScreen;
+
+    [SerializeField] private Infographic timeDisplay, energyDisplay;
 
     void Awake()
     {
@@ -28,84 +28,65 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        //Physics2D.IgnoreLayerCollision(ballLayer, ballLayer, true);
-    }
-
-    void AbilityTick()
-    {
-        foreach(BallHandler ball in activeBalls)
-        {
-            if(ball != null)
-            {
-                ball.OnAbilityTick();
-            }
-            else
-            {
-                activeBalls.Remove(ball);
-            }
-            
-        }
-    }
-
-    public void StartLevel()
-    {
-        active = true;
-        InvokeRepeating("AbilityTick", LevelStats.ABILITY_TICK_INTERVAL, LevelStats.ABILITY_TICK_INTERVAL);
-        LevelStats.energy = 50;
-        levelTimer = levelMaxTime;
-    }
 
     public void NextLevel()
     {
-        Destroy(currentLevel);
-        levelNumber++;
-        currentLevel = LevelGenerator.instance.GenerateLevel(levelNumber); 
+        Destroy(currentLevel.gameObject);
+
         
     }
 
     public void PreviousLevel()
     {
-        Destroy(currentLevel);
-        levelNumber--;
-        currentLevel = LevelGenerator.instance.GenerateLevel(levelNumber); 
+        Destroy(currentLevel.gameObject);
+
     }
 
-    public void LoadLevel(int number)
+    public void EndLevel(List<KeyValuePair<string, float>> levelStats)
     {
-        Destroy(currentLevel);
-        levelNumber = number;
-        currentLevel = LevelGenerator.instance.GenerateLevel(number); 
-    }
 
-    public void EndLevel()
-    {
-        Debug.Log("End Level");
-        active = false;
-        CancelInvoke("AbilityTick");
-    }
 
-    public void AddBall(BallHandler ball)
-    {
-        activeBalls.Add(ball);
-    }
-
-    public void AddEnergy(int amount)
-    {
         
     }
 
-
-    // Update is called once per frame
-    void Update()
+    IEnumerator EndLevelUIAnimation(List<KeyValuePair<string, float>> levelStats)
     {
- 
-        if (active)
+        OpenCloseAnimation anim = endScreen.GetComponent<OpenCloseAnimation>();
+        yield return StartCoroutine(anim.OpenCoroutine());
+        bool win = (levelStats.FirstOrDefault(kvp => kvp.Key == "win").Value)==0 ? false : true;
+        string title = win ? "Stage Complete" : "Try Again";
+
+        string mainText = "";
+
+        foreach(KeyValuePair<string, float> stat in levelStats)
         {
-            levelTimer -= Time.deltaTime;
+            string initialText = mainText;
+            
+
         }
+        yield break;
+
 
 
     }
+
+    public void LoadKingdomLevel(int number)
+    {
+        Destroy(currentLevel.gameObject);
+        GameObject levelPrefab = kingdomLevels[number-2];
+
+
+        GameObject levelObject = Instantiate(levelPrefab);
+        levelObject.transform.localPosition = new Vector3(0, 0, 0);
+    }
+
+
+
+
+
+
+
+
+    // Update is called once per frame 
+
 }

@@ -50,6 +50,11 @@ public class OpenCloseAnimation : MonoBehaviour
 
     virtual public void Open()
     {
+        StartCoroutine(OpenCoroutine());
+            }
+
+    virtual public IEnumerator OpenCoroutine()
+    {
         if (!isOpen)
         {
             Debug.Log("Beginning open animation");
@@ -71,10 +76,12 @@ public class OpenCloseAnimation : MonoBehaviour
                 parent.anchoredPosition = new Vector2(closePosition.x, closePosition.y);
                 // Start slide animation immediately (now that all layouts are updated)
                 currentAnimation = StartCoroutine(Slide(openPosition, duration));
+                yield return currentAnimation;
             }
             else if (openAnimation == AnimationType.Fade)
             {
                 currentAnimation = StartCoroutine(Fade(0, 1, duration));
+                yield return currentAnimation;
             }
 
         }

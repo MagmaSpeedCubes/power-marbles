@@ -87,22 +87,29 @@ public class LocalClickManager : MonoBehaviour
                     Debug.Log("Clicked on Spawn Zone");
                     switch(SceneManager.GetActiveScene().name){
                         case "MarbleKingdom":
-                            if(LevelManager.instance.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
+                            if(LevelManager.instance.currentLevel.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
                             {
                                 AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
                                 break;
                             }
-                            LevelStats.energy -= LevelStats.selectedBall.price;
+                            
 
                             if(LevelStats.selectedBall.price <= LevelStats.energy || Constants.DEBUG_MODE)
                             {
 
-                                if (!LevelManager.instance.active)
+                                if (!LevelManager.instance.currentLevel.IsActive())
                                 {
-                                    LevelManager.instance.StartLevel();
+                                    LevelManager.instance.currentLevel.StartLevel();
                                 }
                                 SpawnMarble(worldPos);
-                                
+                                LevelStats.energy -= LevelStats.selectedBall.price;
+
+                            }
+                            else
+                            {
+                                AlertManager.instance.ThrowUIWarning("Not enough energy", new string[]
+                                {"You have " + LevelStats.energy + "energy, but " + 
+                                LevelStats.selectedBall.name + " costs " + LevelStats.selectedBall.price + " energy"});
                             }
                             break;
                         case "TreasureHunt":
@@ -132,7 +139,7 @@ public class LocalClickManager : MonoBehaviour
         newBall.GetComponent<SpriteRenderer>().color = LevelStats.selectedBall.prefab.defaultColor;
         newBall.transform.parent = ballParent.transform;
         Vector3 liftPosition = new Vector3(newBall.transform.position.x, newBall.transform.position.y, 
-        newBall.transform.position.z - LevelManager.instance.activeBalls.Count * 0.01f);
+        newBall.transform.position.z - LevelManager.instance.currentLevel.activeBalls.Count * 0.01f);
         newBall.transform.position = liftPosition;
     }
 }

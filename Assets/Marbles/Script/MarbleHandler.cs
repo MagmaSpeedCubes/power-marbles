@@ -49,7 +49,7 @@ public class BallHandler : MonoBehaviour
         asc = GetComponent<AudioSource>();
         ApplyRandomForce();
         
-        LevelManager.instance.AddBall(this);
+        LevelManager.instance.currentLevel.AddBall(this);
 
 
     }

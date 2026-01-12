@@ -8,7 +8,7 @@ public class LevelButtonHandler : UIElementHandler{
     {
         GameObject textObject = transform.Find("LevelButtonText").gameObject;
         levelNumber = int.Parse(textObject.GetComponent<TextMeshProUGUI>().text);
-        LevelManager.instance.LoadLevel(levelNumber);
+        LevelManager.instance.LoadKingdomLevel(levelNumber);
 
         GameObject levelSelectCanvas = GameObject.Find("LevelSelect");
         levelSelectCanvas.GetComponent<Canvas>().enabled = false;
