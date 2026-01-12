@@ -1,0 +1,16 @@
+using UnityEngine;
+using System;
+using System.Collections.Generic;
+
+
+public class LevelStats
+{
+    public static float ABILITY_TICK_INTERVAL = 5f;
+    public static int MAX_BALL_COUNT = 100;
+
+    public static Ball selectedBall;
+
+    public static float energy = 75;  //debug
+
+
+}

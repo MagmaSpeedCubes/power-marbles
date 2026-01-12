@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0fe1326b17104874964b05d848dc690, type: 3}
+  m_Name: WinZone
+  m_EditorClassIdentifier: Assembly-CSharp::Damageable
+  armor: 1
+  maxHealth: 3.4028235e+38
+  regenRate: 3.402823e+38
+  damageSound: {fileID: 8300000, guid: 915d684e0757340378eb0912c36d95be, type: 3}
+  deathSound: {fileID: 8300000, guid: b7c442eeec4da4e1da7ce7b5971acbe8, type: 3}
+  sprites:
+  - {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
