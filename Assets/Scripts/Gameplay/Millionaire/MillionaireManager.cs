@@ -2,7 +2,8 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
-
+using MagmaLabs.Economy;
+using MagmaLabs.Economy.Security;
 public class MillionaireManager : MonoBehaviour
 {
     [SerializeField]private TextMeshPro dialogue;

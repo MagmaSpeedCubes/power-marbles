@@ -1,4 +1,5 @@
 using UnityEngine;
+using MagmaLabs.Economy;
 
 [System.Serializable]
 public class Ball : MonoBehaviour

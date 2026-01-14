@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MagmaLabs.Economy.Security;
+using MagmaLabs.Economy;
 public class XPManager : AuthorizedModifier
 {
     [SerializeField]private Ownable[][] levelRewards;

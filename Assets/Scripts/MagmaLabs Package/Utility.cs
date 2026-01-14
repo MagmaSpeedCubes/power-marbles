@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Linq;
 //using UnityEditor;
 
+namespace MagmaLabs.Utilities.Reflection{
+
 public class Utility : MonoBehaviour
 {
 
@@ -239,4 +241,5 @@ public class Utility : MonoBehaviour
     }
     */
     
+}
 }

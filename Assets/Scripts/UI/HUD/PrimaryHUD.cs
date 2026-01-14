@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using MagmaLabs.Economy.Security;
 public class PrimaryHUD : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI xpText, glassMarbleText;

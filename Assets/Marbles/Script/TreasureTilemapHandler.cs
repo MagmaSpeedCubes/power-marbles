@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 using System.Collections;
 using System;
 using TMPro;
-
+using MagmaLabs.Economy;
 public class TreasureTilemapHandler : DamageHandler
 {
     public Tilemap treasureTilemap;

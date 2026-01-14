@@ -1,6 +1,7 @@
 // CustomTile.cs (derive from Tile)
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using MagmaLabs.Economy;
 
 using UnityEngine;
 [CreateAssetMenu]

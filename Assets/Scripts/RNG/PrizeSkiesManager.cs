@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-
-
+using MagmaLabs.Economy.Security;
+using MagmaLabs.Economy;
 
 public class PrizeSkiesManager : AuthorizedModifier
 {

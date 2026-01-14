@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MagmaLabs.Economy.Security;
+using MagmaLabs.Economy;
 public class OwnableManager : MonoBehaviour
 {
     [SerializeField] private Ball[] marblePrefabs;

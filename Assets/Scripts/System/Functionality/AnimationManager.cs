@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using MagmaLabs.Animation;
+
 
 public class AnimationManager : MonoBehaviour
 {
@@ -32,7 +34,7 @@ public class AnimationManager : MonoBehaviour
         while (t < 1f)
         {
             t += Time.deltaTime / (duration * 0.6f);
-            subject.transform.localScale = Vector3.LerpUnclamped(start, peak, CustomFunctions.EaseOutBack(t));
+            subject.transform.localScale = Vector3.LerpUnclamped(start, peak, Easing.EaseOutBack(t));
             yield return null;
         }
 
@@ -56,7 +58,7 @@ public class AnimationManager : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            subject.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(startAlpha, endAlpha, CustomFunctions.EaseInOutCubic(elapsedTime / duration));
+            subject.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(startAlpha, endAlpha, Easing.EaseInOutCubic(elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -70,7 +72,7 @@ public class AnimationManager : MonoBehaviour
         {
 
             Color oc = subject.GetComponent<SpriteRenderer>().color;
-            float alpha = alpha = Mathf.Lerp(startAlpha, endAlpha, CustomFunctions.EaseInOutCubic(elapsedTime / duration));
+            float alpha = alpha = Mathf.Lerp(startAlpha, endAlpha, Easing.EaseInOutCubic(elapsedTime / duration));
             Color nc = new Color(oc.r, oc.g, oc.b, alpha);
             subject.GetComponent<SpriteRenderer>().color = nc;
 

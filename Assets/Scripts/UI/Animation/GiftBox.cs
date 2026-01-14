@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using MagmaLabs.Animation;
+using MagmaLabs.Economy;
 
 public class GiftBox : TiledElementManager
 {
@@ -76,7 +78,7 @@ public class GiftBox : TiledElementManager
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / time;
-            lid.transform.localPosition = Vector3.Lerp(startPosition, endPosition, CustomFunctions.EaseInOutCubic(t));
+            lid.transform.localPosition = Vector3.Lerp(startPosition, endPosition, Easing.EaseInOutCubic(t));
             yield return null;
         }
     }

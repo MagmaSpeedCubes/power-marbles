@@ -4,6 +4,9 @@ using System.Collections;
 using System;
 using TMPro;
 using System.Collections.Generic;
+using MagmaLabs.Economy.Security;
+using MagmaLabs.Utilities;
+using MagmaLabs.Economy;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class TreasureHuntManager : MonoBehaviour
 {

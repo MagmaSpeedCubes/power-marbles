@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using UnityEngine;
 
+namespace MagmaLabs.Utilities{
 [Serializable]
 public struct SerializableDateTime
 {
@@ -74,4 +75,6 @@ public struct SerializableDateTime
     {
         return string.Format("{0:D4}-{1:D2}-{2:D2} {3:D2}:{4:D2}:{5:D2} UTC", year, month, day, hour, minute, second);
     }
+}
+
 }

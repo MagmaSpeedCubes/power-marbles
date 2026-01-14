@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using MagmaLabs.Utilities;
 
 
 public class CountdownClock : Infographic

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
-
+using MagmaLabs.Economy;
 public class LootManager : MonoBehaviour
 {
     public LootTable[] lootTables;

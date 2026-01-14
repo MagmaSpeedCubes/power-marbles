@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using MagmaLabs.Utilities;
+using MagmaLabs.Utilities.Editor;
 
 
 public class RepeatingEvent : Infographic

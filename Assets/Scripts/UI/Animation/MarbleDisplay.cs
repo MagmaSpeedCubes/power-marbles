@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using MagmaLabs.Economy.Security;
+using MagmaLabs.Economy;
 public class MarbleDisplay : MonoBehaviour, IDragHandler, IEndDragHandler
 {
     [Header("Place marble in the center of intended bounce area")]

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MagmaLabs.Animation;
 public class SlideshowHandler : MonoBehaviour
 {
     [SerializeField]private GameObject[] slides;
@@ -73,7 +74,7 @@ public class SlideshowHandler : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            obj.transform.localPosition = Vector3.Lerp(startPosition, endPosition, CustomFunctions.EaseInOutCubic(elapsedTime / duration));
+            obj.transform.localPosition = Vector3.Lerp(startPosition, endPosition, Easing.EaseInOutCubic(elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return null;
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using MagmaLabs.Economy.Security;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class PaymentButton : ButtonHandler
 {

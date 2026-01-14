@@ -1,10 +1,12 @@
 using UnityEngine;
 using System;
+
+
+namespace MagmaLabs.Economy{
 [CreateAssetMenu(menuName = "LootTable")]
-
-
 public class LootTable : ScriptableObject
 {
+
     public string name;
     public Loot[] items;
     public Ownable GetLoot()
@@ -35,4 +37,5 @@ public struct Loot
 {
     public Ownable item;
     public float probability;
+}
 }

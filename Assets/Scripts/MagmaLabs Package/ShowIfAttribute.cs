@@ -1,5 +1,5 @@
 using UnityEngine;
-
+namespace MagmaLabs.Utilities.Editor{
 public class ShowIfAttribute : PropertyAttribute
 {
     public string conditionField;
@@ -29,4 +29,6 @@ public class ShowIfAttribute : PropertyAttribute
         this.stringValue = value;
         compareType = CompareType.String;
     }
+}
+
 }

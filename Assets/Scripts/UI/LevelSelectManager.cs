@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System;
+using MagmaLabs.Economy.Security;
 public class LevelSelectManager : TiledElementManager
 {
     [SerializeField] private NumberText efficiencyDisplay;

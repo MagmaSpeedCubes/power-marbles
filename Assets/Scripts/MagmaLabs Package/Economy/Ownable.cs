@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+namespace MagmaLabs.Economy{
 [System.Serializable]
 [CreateAssetMenu(fileName = "Ownable", menuName = "Scriptable Objects/Ownable")]
 public class Ownable : ScriptableObject
@@ -262,5 +263,7 @@ public class Ownable : ScriptableObject
 
 
     
+
+}
 
 }

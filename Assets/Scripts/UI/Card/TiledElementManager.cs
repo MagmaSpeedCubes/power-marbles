@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using MagmaLabs.Utilities.Editor;
 
 public class TiledElementManager : MonoBehaviour
 {

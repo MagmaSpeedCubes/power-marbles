@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+namespace MagmaLabs.Utilities{
 
 [CustomPropertyDrawer(typeof(SerializableDateTime))]
 public class SerializableDateTimeDrawer : PropertyDrawer
@@ -46,4 +47,6 @@ public class SerializableDateTimeDrawer : PropertyDrawer
     {
         return (EditorGUIUtility.singleLineHeight * 3) + (2f * 2f);
     }
+}
+
 }

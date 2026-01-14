@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using MagmaLabs.Utilities.Strings;
 public class LevelManager : MonoBehaviour
 {
 
@@ -60,7 +61,9 @@ public class LevelManager : MonoBehaviour
 
         foreach(KeyValuePair<string, float> stat in levelStats)
         {
-            string initialText = mainText;
+            string initialText = mainText;  
+
+
             
 
         }
