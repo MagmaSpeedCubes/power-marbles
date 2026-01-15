@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+namespace MagmaLabs.UI{
 [AddComponentMenu("UI/Effects/Text 4 Corners Gradient")]
 public class UITextCornersGradient : BaseMeshEffect {
-	public bool m_enabled = true;
 	public Color m_topLeftColor = Color.white;
 	public Color m_topRightColor = Color.white;
 	public Color m_bottomRightColor = Color.white;
@@ -13,7 +12,7 @@ public class UITextCornersGradient : BaseMeshEffect {
 
     public override void ModifyMesh(VertexHelper vh)
     {
-		if(enabled && m_enabled)
+		if(enabled)
 		{
 			Rect rect = graphic.rectTransform.rect;
 
@@ -26,4 +25,5 @@ public class UITextCornersGradient : BaseMeshEffect {
 			}
 		}
     }
+}
 }

@@ -51,6 +51,35 @@ public class AnimationManager : MonoBehaviour
         subject.transform.localScale = end;
     }
 
+    public IEnumerator PopOut(GameObject subject, float undershoot, float duration)
+    {
+        Vector3 start = Vector3.one;
+        Vector3 dip = Vector3.one * undershoot;
+        Vector3 end = Vector3.zero;
+
+        float t = 0f;
+
+        // Shrink + undershoot
+        while (t < 1f)
+        {
+            t += Time.deltaTime / (duration * 0.4f);
+            subject.transform.localScale = Vector3.LerpUnclamped(start, dip, Easing.EaseInOutCubic(t));
+            yield return null;
+        }
+
+        t = 0f;
+
+        // Shrink to zero
+        while (t < 1f)
+        {
+            t += Time.deltaTime / (duration * 0.6f);
+            subject.transform.localScale = Vector3.Lerp(dip, end, t);
+            yield return null;
+        }
+
+        subject.transform.localScale = end;
+    }
+
 
 
     public IEnumerator FadeUI(GameObject subject, float startAlpha, float endAlpha, float duration)

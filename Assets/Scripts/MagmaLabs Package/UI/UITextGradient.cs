@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[AddComponentMenu("UI/Effects/Text Gradient")]
+
+
+namespace MagmaLabs.UI{
+	[AddComponentMenu("UI/Effects/Text Gradient")]
 public class UITextGradient : BaseMeshEffect
 {
 	public Color m_color1 = Color.white;
@@ -30,4 +33,5 @@ public class UITextGradient : BaseMeshEffect
 			}
 		}
     }
+}
 }

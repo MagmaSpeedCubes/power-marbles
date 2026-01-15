@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 public class LevelHandler : MonoBehaviour
 {
-    [SerializeField]private string levelName;
-    [SerializeField]private int startingEnergy;
+    public string levelName;
+    public int startingEnergy;
+    public float levelDifficulty;
     public List<BallHandler> activeBalls;
     public int levelMaxTime;
     public float levelTimer, levelEnergy;
@@ -22,7 +23,7 @@ public class LevelHandler : MonoBehaviour
         levelTimer = levelMaxTime;
     }
 
-    public void EndLevel()
+    public List<KeyValuePair<string, float>> EndLevel()
     {
         
         Debug.Log("End Level");
@@ -40,12 +41,14 @@ public class LevelHandler : MonoBehaviour
         }
 
 
-        levelStats.Add(new KeyValuePair<string, float>("damageDealt", damageDealt));
-        levelStats.Add(new KeyValuePair<string, float>("marblesUsed", 0));
-        levelStats.Add(new KeyValuePair<string, float>("levelTime", levelTimer));
-        levelStats.Add(new KeyValuePair<string, float>("efficiency", levelMaxTime-levelTimer));
+        levelStats.Add(new KeyValuePair<string, float>("s_damageDealt", damageDealt));
+        levelStats.Add(new KeyValuePair<string, float>("s_marblesUsed", 0));
+        levelStats.Add(new KeyValuePair<string, float>("s_levelTime", levelTimer));
+        levelStats.Add(new KeyValuePair<string, float>("s_efficiency", levelMaxTime-levelTimer));
 
         levelStats.Add(new KeyValuePair<string, float>("xpReward", damageDealt));
+
+        return levelStats;
         
         //check for pb in manager, not handler
         //also check for global ranking in manager, not handler

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 namespace MagmaLabs.UI{
-    [AddComponentMenu("UI/Effects/Text Outline")]
+    [System.Serializable]
+    [AddComponentMenu("UI/Effects/Outline")]
     public class TextOutline : BaseMeshEffect
     {
-
+        public bool m_useOutline = true;
         public Color m_outlineColor = Color.white;
         public float m_outlineThickness = 1f;
         
         public override void ModifyMesh(VertexHelper vh)
         {
-            if (enabled)
+            if (enabled && m_useOutline)
             {
                 Rect rect = graphic.rectTransform.rect;
                 int initialVertCount = vh.currentVertCount;
