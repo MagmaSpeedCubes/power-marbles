@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using MagmaLabs.Animation;
 namespace MagmaLabs.UI{
+    [CreateAssetMenu(fileName = "TextMeshMaxUGUI", menuName = "MagmaLabs/UI/TextMeshMaxUGUI", order = 1)]
 public class TextMeshMaxUGUI : TextMeshProUGUI
     {
         public bool m_outlineText;

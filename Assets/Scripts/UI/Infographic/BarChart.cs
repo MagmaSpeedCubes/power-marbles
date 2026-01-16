@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using MagmaLabs.UI;
 public class BarChart : Infographic
 {
     [SerializeField] protected Image beginSegment, scaleSegment, endSegment;
@@ -12,7 +13,6 @@ public class BarChart : Infographic
 
     void Awake()
     {
-        type = "Bar";
         startPosition = beginSegment.transform.position;
         endPosition = endSegment.transform.position;
         float x = endPosition.x - startPosition.x; 

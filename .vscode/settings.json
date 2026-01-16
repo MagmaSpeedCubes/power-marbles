@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "power-marbles.sln"
+    "dotnet.defaultSolution": "power-marbles-recovery-2.slnx"
 }

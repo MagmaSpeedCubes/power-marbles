@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using MagmaLabs.Animation;
 public class NavigationButtonHandler : ButtonHandler
 {
     [SerializeField] protected float closeDelay = 0f;

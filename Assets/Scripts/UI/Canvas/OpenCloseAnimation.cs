@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
-[System.Serializable]
-public enum AnimationType
+
+namespace MagmaLabs.Animation{
+    [System.Serializable]
+    public enum AnimationType
 {
     Slide,
-    Fade
+    Fade, 
+    Pop
 
 }
 [RequireComponent(typeof(CanvasGroup))]
@@ -82,6 +85,10 @@ public class OpenCloseAnimation : MonoBehaviour
             {
                 currentAnimation = StartCoroutine(Fade(0, 1, duration));
                 yield return currentAnimation;
+            }else if( openAnimation == AnimationType.Pop)
+            {
+                currentAnimation = StartCoroutine(AnimationManager.instance.PopIn(this.gameObject, 1.2f, duration));
+                yield return currentAnimation;
             }
 
         }
@@ -104,6 +111,10 @@ public class OpenCloseAnimation : MonoBehaviour
             else if (closeAnimation == AnimationType.Fade)
             {
                 currentAnimation = StartCoroutine(Fade(1, 0, duration));
+            }else if (closeAnimation == AnimationType.Pop)
+            {
+                
+                currentAnimation = StartCoroutine(AnimationManager.instance.PopOut(this.gameObject, 0.8f, duration));
             }
 
         }
@@ -130,7 +141,7 @@ public class OpenCloseAnimation : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            parent.localPosition = Vector3.Lerp(startPosition, endPosition, EaseInOutCubic(elapsedTime / duration));
+            parent.localPosition = Vector3.Lerp(startPosition, endPosition, Easing.EaseInOutCubic(elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -148,7 +159,7 @@ public class OpenCloseAnimation : MonoBehaviour
         while (elapsedTime < duration)
         {
             if (canvasGroup != null)
-                canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, EaseInOutCubic(elapsedTime / duration));
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, Easing.EaseInOutCubic(elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -169,7 +180,7 @@ public class OpenCloseAnimation : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            canvas.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(startAlpha, endAlpha, EaseInOutCubic(elapsedTime / duration));
+            canvas.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(startAlpha, endAlpha, Easing.EaseInOutCubic(elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -177,14 +188,5 @@ public class OpenCloseAnimation : MonoBehaviour
     }
 
 
-
-
-
-    public static float EaseInOutCubic(float t)
-    {
-        if (t < 0.5) return InCubic(t * 2) / 2;
-        return 1 - InCubic((1 - t) * 2) / 2;
-    }
-    public static float InCubic(float t) => t * t * t;
-
+}
 }

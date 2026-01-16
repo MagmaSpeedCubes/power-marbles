@@ -5,7 +5,7 @@ using System;
 using MagmaLabs.Utilities;
 using MagmaLabs.Utilities.Editor;
 
-
+namespace MagmaLabs.UI{
 public class RepeatingEvent : Infographic
 {
     [SerializeField] private string prefix, suffix;
@@ -95,3 +95,4 @@ public class RepeatingEvent : Infographic
         // Next occurrence is: start date + (intervals passed + 1) * repeat interval
         nextOccurrenceUtc = startUtc.AddDays((intervalsPasssed + 1) * repeatIntervalDays);
     }}
+}

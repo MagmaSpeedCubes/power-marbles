@@ -3,15 +3,12 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+namespace MagmaLabs.UI{
 public class NumberText : Infographic
 {
     [SerializeField] protected TextMeshProUGUI text;
     [SerializeField] protected string prefix, suffix;
 
-    void Awake()
-    {
-        type = "Text";
-    }
     
     override protected void UpdateInfo(float oldValue)
     {
@@ -56,4 +53,4 @@ public class NumberText : Infographic
 
 
 }
-
+}

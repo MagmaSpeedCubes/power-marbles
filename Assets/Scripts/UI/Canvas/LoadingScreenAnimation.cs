@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+namespace MagmaLabs.Animation{
 public class LoadingScreenAnimation : OpenCloseAnimation
 {
     [SerializeField] private Canvas openLoadingScreen;
@@ -104,4 +105,5 @@ public class LoadingScreenAnimation : OpenCloseAnimation
     }
 
     
+}
 }

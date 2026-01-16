@@ -4,6 +4,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using MagmaLabs.UI;
 public class ImageInfographic : Infographic
 {
 

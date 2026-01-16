@@ -4,12 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+namespace MagmaLabs.UI{
 
 [System.Serializable]
 public class Infographic : MonoBehaviour
 {
-
-    [HideInInspector]public string type;
     protected float value;
     [SerializeField] protected List<Tag> roundingPrecisionList;
 
@@ -47,5 +46,7 @@ public class Infographic : MonoBehaviour
         }
         return 1;
     }
+}
+
 }
 

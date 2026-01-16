@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using MagmaLabs.Economy.Security;
 using MagmaLabs.Economy;
+using MagmaLabs.Animation;
 
 public class PrizeSkiesManager : AuthorizedModifier
 {

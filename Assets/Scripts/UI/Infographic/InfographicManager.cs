@@ -1,5 +1,6 @@
 using UnityEngine;
 using MagmaLabs.Utilities.Reflection;
+using MagmaLabs.UI;
 public class InfographicManager : MonoBehaviour
 {
     [SerializeField] protected Infographic[] infographics;

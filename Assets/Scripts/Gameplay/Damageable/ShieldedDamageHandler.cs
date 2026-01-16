@@ -1,4 +1,5 @@
 using UnityEngine;
+using MagmaLabs.UI;
 
 public class ShieldedDamageHandler : DamageHandler
 {

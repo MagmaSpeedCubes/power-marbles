@@ -26,11 +26,12 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
             audioSource = GetComponent<AudioSource>();
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Debug.LogWarning("Multiple instances detected. Destroying duplicate");
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
