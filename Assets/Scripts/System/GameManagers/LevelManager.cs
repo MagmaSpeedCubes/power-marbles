@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System;
 using MagmaLabs.Utilities.Strings;
 using MagmaLabs.UI;
 using MagmaLabs.Economy.Security;
@@ -15,7 +16,6 @@ public class LevelManager : MonoBehaviour
     
     public LevelHandler currentLevel;
     public GameObject[] kingdomLevels;
-    [SerializeField]private Canvas beginScreen, endScreen;
     
 
     [SerializeField] private Infographic timeDisplay, energyDisplay;
@@ -55,7 +55,7 @@ public class LevelManager : MonoBehaviour
     {
         
         beginLevelTitle.SetText(currentLevel.levelName);
-        beginLevelInfo.SetText("Energy: " + currentLevel.startingEnergy + "\nTime Limit: " + currentLevel.levelMaxTime + "s");
+        beginLevelInfo.SetText("Energy: " + currentLevel.levelStartingEnergy + "\nTime Limit: " + currentLevel.levelMaxTime + "s");
         string difficultyDesc = levelDifficultyDescriptions.GetValueAtPosition(currentLevel.levelDifficulty);
         beginLevelDifficulty.SetText("" + difficultyDesc);
         beginLevelDifficulty.SetColor(levelDifficultyColors[levelDifficultyDescriptions.IndexOf(difficultyDesc)]);
@@ -80,40 +80,55 @@ public class LevelManager : MonoBehaviour
     {
 
         ingame.enabled = true;
+        yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 0), new Vector2(0, 2000), 1f));
+
 
         int countdown = 3;
         while(countdown > 0)
         {
             countdownText.SetText(countdown.ToString());
-            AudioManager.instance.PlaySoundWithPitchShift("beep", ProfileCustomization.uiVolume, 0.2f);
+            AudioManager.instance.PlaySound("beep", ProfileCustomization.uiVolume);
             yield return StartCoroutine(countdownText.PopIn(1.2f, 0.5f));
             yield return new WaitForSeconds(0.5f);
             countdown--;
         }
         countdownText.SetText("Go!");
-        AudioManager.instance.PlaySoundWithPitchShift("start", ProfileCustomization.uiVolume, 0.2f);
+        AudioManager.instance.PlaySoundWithPitchShift("whoosh", ProfileCustomization.uiVolume, 0.2f);
         yield return StartCoroutine(countdownText.PopIn(1.2f, 0.5f));
         yield return new WaitForSeconds(0.5f);
+        countdownText.SetText("");
     
         currentLevel.StartLevel();
          yield break;
+    }
+
+    void Update()
+    {
+        if(currentLevel != null && currentLevel.active)
+        {
+            timeDisplay.SetValue(LevelStats.timeRemaining);
+            energyDisplay.SetValue(LevelStats.energy);
+        }        
     }
 
     public void EndLevel()
     {
         Debug.Log("Ending Level UI Animation");
         List<KeyValuePair<string, float>> levelStats = currentLevel.EndLevel();
+        if (levelStats == null)
+        {
+            Debug.LogError("LevelHandler.EndLevel() returned null!");
+            return;
+        }
         StartCoroutine(EndLevelUIAnimation(levelStats));
-
-
-        
     }
 
     IEnumerator EndLevelUIAnimation(List<KeyValuePair<string, float>> levelStats)
     {
         
         //StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, end, 1f));
-        bool win = (levelStats.FirstOrDefault(kvp => kvp.Key == "win").Value)==0 ? false : true;
+        var winStat = levelStats.FirstOrDefault(kvp => kvp.Key == "win");
+        bool win = winStat.Key != null && winStat.Value == 0 ? false : true;
         string title = win ? "Stage Complete" : "Try Again";
 
         endTitle.SetText(title);
@@ -163,7 +178,7 @@ public class LevelManager : MonoBehaviour
         {
             SecureProfileStats.instance.ModifyEfficiencyScore(levelIndex, efficiency, GetComponent<AuthorizedModifier>());
             endBottom.SetText("New Personal Best!");
-            endBottom.PopIn(1.2f, 0.5f);
+            yield return StartCoroutine(endBottom.PopIn(1.2f, 0.5f));
         }
 
         

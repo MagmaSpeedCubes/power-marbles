@@ -88,11 +88,11 @@ public class BallHandler : MonoBehaviour
         {
             Vector2 velocity = rb.linearVelocity;
             rb.linearVelocity = Vector3.zero;
-            Debug.Log("Stopped ball, handling collision");
+            //Debug.Log("Stopped ball, handling collision");
             HandleCollisions(damageable);
-            Debug.Log("Reinitializing movement with corrected velocity");
+            //Debug.Log("Reinitializing movement with corrected velocity");
             Vector2 corrected = velocity.normalized * 7.5f * ballData.movementSpeed;
-            Debug.Log("New velocity: " + corrected);
+            //Debug.Log("New velocity: " + corrected);
             corrected.y = -corrected.y;
             rb.AddForce(corrected, ForceMode2D.Impulse);  
             debounce = 0;

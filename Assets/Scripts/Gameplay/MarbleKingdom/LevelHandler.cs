@@ -4,12 +4,11 @@ using System.Collections.Generic;
 public class LevelHandler : MonoBehaviour
 {
     public string levelName;
-    public int startingEnergy;
     public float levelDifficulty;
     public List<BallHandler> activeBalls;
-    public int levelMaxTime;
-    public float levelTimer, levelEnergy;
-    private bool active;
+    public int levelMaxTime, levelStartingEnergy;
+
+    public bool active;
 
 
     private int damageDealt;
@@ -19,8 +18,9 @@ public class LevelHandler : MonoBehaviour
     {
        active = true; 
        InvokeRepeating("AbilityTick", LevelStats.ABILITY_TICK_INTERVAL, LevelStats.ABILITY_TICK_INTERVAL);
-        LevelStats.energy = levelEnergy;
-        levelTimer = levelMaxTime;
+        LevelStats.energy = levelStartingEnergy;
+        LevelStats.timeRemaining = levelMaxTime;
+
     }
 
     public List<KeyValuePair<string, float>> EndLevel()
@@ -31,7 +31,7 @@ public class LevelHandler : MonoBehaviour
         active = false;
 
         List<KeyValuePair<string, float>> levelStats = new List<KeyValuePair<string, float>>();
-        if(levelTimer <= levelMaxTime)
+        if(LevelStats.timeRemaining <= levelMaxTime)
         {
             levelStats.Add(new KeyValuePair<string, float>("win", 1));
         }
@@ -43,10 +43,11 @@ public class LevelHandler : MonoBehaviour
 
         levelStats.Add(new KeyValuePair<string, float>("s_damageDealt", damageDealt));
         levelStats.Add(new KeyValuePair<string, float>("s_marblesUsed", 0));
-        levelStats.Add(new KeyValuePair<string, float>("s_levelTime", levelTimer));
-        levelStats.Add(new KeyValuePair<string, float>("s_efficiency", levelMaxTime-levelTimer));
+        levelStats.Add(new KeyValuePair<string, float>("s_levelTime", LevelStats.timeRemaining));
+        levelStats.Add(new KeyValuePair<string, float>("s_efficiency", levelMaxTime-LevelStats.timeRemaining));
 
         levelStats.Add(new KeyValuePair<string, float>("xpReward", damageDealt));
+        Debug.Log("Returned Level Stats " + levelStats.ToString());
 
         return levelStats;
         
@@ -75,7 +76,7 @@ public class LevelHandler : MonoBehaviour
  
         if (active)
         {
-            levelTimer -= Time.deltaTime;
+            LevelStats.timeRemaining -= Time.deltaTime;
         }
 
 

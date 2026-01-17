@@ -6,6 +6,7 @@ public class LocalClickManager : MonoBehaviour
 {
 
     public GameObject ballParent;
+    public GameObject spawnZone;
 
     public static LocalClickManager localInstance;
     void Awake()
@@ -23,7 +24,7 @@ public class LocalClickManager : MonoBehaviour
         // Try to locate a ballParent if it wasn't assigned in the inspector
         if (ballParent == null)
         {
-            var found = GameObject.Find("BallParent");
+            var found = GameObject.Find("MarbleParent");
             if (found != null) ballParent = found;
         }
         Debug.Log("Click Manager Created");
@@ -40,7 +41,9 @@ public class LocalClickManager : MonoBehaviour
         {
             Debug.Log("Mouse Left Click");
             Vector2 screenPos = Mouse.current.position.ReadValue();
+            Debug.Log("Screen Pos: " + screenPos);
             Vector3 worldPos = ScreenToWorld(screenPos);
+            Debug.Log("World Pos: " + worldPos);
             OnTap(worldPos, screenPos);
         }
 
@@ -75,21 +78,29 @@ public class LocalClickManager : MonoBehaviour
 
     void OnTap(Vector3 worldPos, Vector2 screenPos)
     {
+        Debug.Log("Tap at World Pos: " + worldPos + " Screen Pos: " + screenPos);
         if(LevelStats.selectedBall != null)
         {
+            Debug.Log("Selected Ball: " + LevelStats.selectedBall.name);
             Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
 
             foreach (Collider2D hit in hits)
             {
                 
-                if(hit.name == "SpawnZone")
+                if(hit.gameObject == spawnZone)
                 {
                     Debug.Log("Clicked on Spawn Zone");
                     switch(SceneManager.GetActiveScene().name){
                         case "MarbleKingdom":
                             if(LevelManager.instance.currentLevel.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
                             {
-                                AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
+                                //AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
+                                break;
+                            }
+
+                            if(LevelManager.instance.currentLevel.active == false)
+                            {
+                
                                 break;
                             }
                             
@@ -107,9 +118,11 @@ public class LocalClickManager : MonoBehaviour
                             }
                             else
                             {
+                                /*
                                 AlertManager.instance.ThrowUIWarning("Not enough energy", new string[]
                                 {"You have " + LevelStats.energy + "energy, but " + 
                                 LevelStats.selectedBall.name + " costs " + LevelStats.selectedBall.price + " energy"});
+                                */
                             }
                             break;
                         case "TreasureHunt":
