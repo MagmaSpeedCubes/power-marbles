@@ -1,13 +1,17 @@
 using UnityEngine;
 
 using System.Collections.Generic;
-[RequireComponent(typeof(AudioSource))]
+
+namespace MagmaLabs.Audio{
+    [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
     private AudioSource audioSource;
     public static AudioManager instance;
 
     public AudioClip[] reusableSounds;
+    public AudioClip[] musicTracks;
+    public List<GameObject> activeMusicPlayers = new List<GameObject>();
     /*
     SOUNDS REQUIRED
     pop
@@ -40,7 +44,7 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(sound, volume);
     }
 
-    public void PlaySoundWithPitchShift(string soundName, float volume, float range = 0.2f)
+    public void PlaySoundWithRandomPitchShift(string soundName, float volume, float range = 0.2f)
     {
         foreach (AudioClip sound in reusableSounds)
         {
@@ -70,10 +74,38 @@ public class AudioManager : MonoBehaviour
         Debug.LogError("Sound not found: " + soundName);
     }
 
-    
-    
+    public void PlayMusic(string trackName, float volume, bool loop = true)
+    {
+        foreach (AudioClip track in musicTracks)
+        {
+            if (track.name == trackName)
+            {
+                GameObject musicPlayer = new GameObject("MusicPlayer_" + trackName);
+                AudioSource musicSource = musicPlayer.AddComponent<AudioSource>();
+                musicSource.clip = track;
+                musicSource.volume = volume;
+                musicSource.loop = loop;
+                musicSource.Play();
+                activeMusicPlayers.Add(musicPlayer);
+                DontDestroyOnLoad(musicPlayer);
+                return;
+            }
+        }
+        Debug.LogError("Music track not found: " + trackName);
+    }
 
-
+    public void StopMusic(string trackName)
+    {
+        for (int i = activeMusicPlayers.Count - 1; i >= 0; i--)
+        {
+            AudioSource musicSource = activeMusicPlayers[i].GetComponent<AudioSource>();
+            if (musicSource.clip.name == trackName)
+            {
+                Destroy(activeMusicPlayers[i]);
+                activeMusicPlayers.RemoveAt(i);
+            }
+        }
+    }    
+}
     
 }
-

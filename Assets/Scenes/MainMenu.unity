@@ -1497,6 +1497,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b6d454b19817b4aff885d42684e2345f, type: 3}
   - {fileID: 8300000, guid: 5f52471bde3e14de9b6818b07820cda5, type: 3}
   - {fileID: 8300000, guid: a3d12f4de87b04b79a3c9ab8889c7fd3, type: 3}
+  musicTracks: []
+  activeMusicPlayers: []
 --- !u!82 &33629822
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10082,8 +10084,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 54
+  m_fontSizeBase: 54
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -13493,8 +13495,6 @@ MonoBehaviour:
   kingdomLevels:
   - {fileID: 2666805314709527566, guid: 45cfbb079e19b49eb9e02970feeb9b31, type: 3}
   - {fileID: 2666805314709527566, guid: 8db16c35d3273428f909721537d4ada4, type: 3}
-  beginScreen: {fileID: 0}
-  endScreen: {fileID: 0}
   timeDisplay: {fileID: 536922560}
   energyDisplay: {fileID: 2135837614}
   beginLevelTitle: {fileID: 45940552}
@@ -13505,7 +13505,7 @@ MonoBehaviour:
   endMainLeft: {fileID: 295191325}
   endMainRight: {fileID: 1902239846}
   endBottom: {fileID: 1131418318}
-  nextLevelButton: {fileID: 1226271606}
+  nextLevelButton: {fileID: 1207661000}
   main: {fileID: 308896209}
   ingame: {fileID: 1898534079}
   loading: {fileID: 937049872}
@@ -39219,7 +39219,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Personal Worst!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d0fdd1ba6e13f47f69ba185927145f65, type: 2}
   m_sharedMaterial: {fileID: -4669254910428576356, guid: d0fdd1ba6e13f47f69ba185927145f65, type: 2}
@@ -39853,7 +39853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 57284148}
+  m_AnchoredPosition: {x: 0, y: 57480536}
   m_SizeDelta: {x: 0, y: 1824.051}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1138430134
@@ -41390,7 +41390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -85012660}
+  m_AnchoredPosition: {x: 0, y: -85440410}
   m_SizeDelta: {x: 0, y: 2100}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1173993716
@@ -48026,7 +48026,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -20167618, y: 0}
+  m_AnchoredPosition: {x: -20333454, y: 0}
   m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1319300780
@@ -53179,7 +53179,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -129015700}
+  m_AnchoredPosition: {x: 0, y: -129665680}
   m_SizeDelta: {x: 1200, y: 2000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1432895604
@@ -64410,7 +64410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: -107004220}
+  m_AnchoredPosition: {x: -0.000061035156, y: -107543260}
   m_SizeDelta: {x: 0, y: 2100}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1764375112
@@ -71543,8 +71543,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 54
+  m_fontSizeBase: 54
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

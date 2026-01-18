@@ -13,6 +13,8 @@ public class LevelStats
     public static float energy = 89;  //debug
 
     public static float timeRemaining = 0f;
+    public static int marblesUsed = 0;
+    public static float damageDealt = 0f;
 
 
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Text;
 using System.Globalization;
-namespace MagmaLabs.Utilities.Strings{
+namespace MagmaLabs.Utilities.Primitives{
 public class Strings : MonoBehaviour
 {
 

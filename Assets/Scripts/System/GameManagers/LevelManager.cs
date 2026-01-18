@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System;
-using MagmaLabs.Utilities.Strings;
+using MagmaLabs.Utilities.Primitives;
 using MagmaLabs.UI;
 using MagmaLabs.Economy.Security;
 using MagmaLabs.Utilities;
 using MagmaLabs.Animation;
+using MagmaLabs.Audio;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class LevelManager : MonoBehaviour
 {
@@ -19,10 +20,12 @@ public class LevelManager : MonoBehaviour
     
 
     [SerializeField] private Infographic timeDisplay, energyDisplay;
-    [SerializeField] private TextMeshMaxUGUI beginLevelTitle, beginLevelInfo, beginLevelDifficulty, countdownText;
-    [SerializeField] private TextMeshMaxUGUI endTitle, endMainLeft, endMainRight, endBottom;
+    [SerializeField] private TMPEnhanced beginLevelTitle, beginLevelInfo, beginLevelDifficulty, countdownText;
+    [SerializeField] private TMPEnhanced endTitle, endMainLeft, endMainRight, endBottom;
     [SerializeField] private GameObject nextLevelButton;
     [SerializeField] private Canvas main, ingame, loading;
+    private string state = "main";
+    //main, ingame, loading
     [SerializeField] private GameObject beginWrapper, endWrapper;
 
     public BoundedEnum levelDifficultyDescriptions;
@@ -36,6 +39,7 @@ public class LevelManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
 
         }
         else
@@ -45,30 +49,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void OpenLevel()
-    {
-        Debug.Log("Opening Level UI");
-        StartCoroutine(OpenLevelUIAnimation());
-    }
 
-    IEnumerator OpenLevelUIAnimation()
-    {
-        
-        beginLevelTitle.SetText(currentLevel.levelName);
-        beginLevelInfo.SetText("Energy: " + currentLevel.levelStartingEnergy + "\nTime Limit: " + currentLevel.levelMaxTime + "s");
-        string difficultyDesc = levelDifficultyDescriptions.GetValueAtPosition(currentLevel.levelDifficulty);
-        beginLevelDifficulty.SetText("" + difficultyDesc);
-        beginLevelDifficulty.SetColor(levelDifficultyColors[levelDifficultyDescriptions.IndexOf(difficultyDesc)]);
-
-        
-        yield return StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(main, loading, ingame, 2f));
-        yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 2000), new Vector2(0, 0), 1f));
-
-
-        yield break;
-
-        
-    }
 
     public void StartLevel()
     {
@@ -76,31 +57,6 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(StartLevelUIAnimation());
     }
 
-    IEnumerator StartLevelUIAnimation()
-    {
-
-        ingame.enabled = true;
-        yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 0), new Vector2(0, 2000), 1f));
-
-
-        int countdown = 3;
-        while(countdown > 0)
-        {
-            countdownText.SetText(countdown.ToString());
-            AudioManager.instance.PlaySound("beep", ProfileCustomization.uiVolume);
-            yield return StartCoroutine(countdownText.PopIn(1.2f, 0.5f));
-            yield return new WaitForSeconds(0.5f);
-            countdown--;
-        }
-        countdownText.SetText("Go!");
-        AudioManager.instance.PlaySoundWithPitchShift("whoosh", ProfileCustomization.uiVolume, 0.2f);
-        yield return StartCoroutine(countdownText.PopIn(1.2f, 0.5f));
-        yield return new WaitForSeconds(0.5f);
-        countdownText.SetText("");
-    
-        currentLevel.StartLevel();
-         yield break;
-    }
 
     void Update()
     {
@@ -113,8 +69,17 @@ public class LevelManager : MonoBehaviour
 
     public void EndLevel()
     {
-        Debug.Log("Ending Level UI Animation");
-        List<KeyValuePair<string, float>> levelStats = currentLevel.EndLevel();
+        if (currentLevel == null)
+        {
+            Debug.LogError("EndLevel called but currentLevel is null!");
+            return;
+        }
+        if(!currentLevel.active)
+        {
+            Debug.LogWarning("EndLevel called but currentLevel is not active!");
+            return;
+        }
+        List<Tag> levelStats = currentLevel.EndLevel();
         if (levelStats == null)
         {
             Debug.LogError("LevelHandler.EndLevel() returned null!");
@@ -123,74 +88,16 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(EndLevelUIAnimation(levelStats));
     }
 
-    IEnumerator EndLevelUIAnimation(List<KeyValuePair<string, float>> levelStats)
+
+    public void ExitInGame()
     {
-        
-        //StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, end, 1f));
-        var winStat = levelStats.FirstOrDefault(kvp => kvp.Key == "win");
-        bool win = winStat.Key != null && winStat.Value == 0 ? false : true;
-        string title = win ? "Stage Complete" : "Try Again";
-
-        endTitle.SetText(title);
-        endTitle.SetColor(win ? winColor : loseColor);
-
-
-        endMainLeft.SetText("");
-        endMainLeft.SetWriteOn(0f);
-        endMainRight.SetText("");
-        endMainRight.SetWriteOn(0f);
-
-        if (win)
-        {
-            nextLevelButton.SetActive(true);
-            nextLevelButton.GetComponent<TextMeshMaxUGUI>().SetText("Level " + (levelIndex + 1));
-
-        }
-        else
-        {
-            nextLevelButton.SetActive(false);
-        }
-        
-
-
-        foreach(KeyValuePair<string, float> stat in levelStats)
-        {
-            string key;
-            float value;
-            stat.Deconstruct(out key, out value);
-            if(key.Substring(0,2) == "s_") key = key.Substring(2);
-            else continue;
-            endMainLeft.AddText(Strings.CamelCaseToWords(key) + ": \n");
-            endMainRight.AddText(value.ToString() + "\n");
-        }
-        
-
-        while (endMainLeft.GetWriteOn() < 1f)
-        {
-            yield return StartCoroutine(endMainLeft.WriteLine(0.5f));
-            yield return StartCoroutine(endMainRight.WriteLine(0.5f));
-        }
-
-        float efficiency = levelStats.FirstOrDefault(kvp => kvp.Key == "s_efficiency").Value;
-        float pb = SecureProfileStats.instance.GetEfficiencyAtLevel(levelIndex);
-
-        if(efficiency < pb || pb == 0)
-        {
-            SecureProfileStats.instance.ModifyEfficiencyScore(levelIndex, efficiency, GetComponent<AuthorizedModifier>());
-            endBottom.SetText("New Personal Best!");
-            yield return StartCoroutine(endBottom.PopIn(1.2f, 0.5f));
-        }
-
-        
-        //actions = replay, next level, main menu
-        yield break;
-
-        
-
+        CloseLevel();
+        //StartCoroutine(CloseLevelUIAnimation());
+        AudioManager.instance.PlaySoundWithRandomPitchShift("pop", ProfileCustomization.uiVolume, 0.3f);
+        StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, main, 2f));
     }
 
-    
-    public void NextKingdomLevel()
+    public void NextLevel()
     {
 
         levelIndex++;
@@ -205,19 +112,27 @@ public class LevelManager : MonoBehaviour
     }
     public void LoadKingdomLevel(int number)
     {
+        //StartCoroutine(CloseLevelUIAnimation());
         Debug.Log("Loading Level " + number);
-        if(currentLevel!=null)
-        Destroy(currentLevel.gameObject);
-
-        currentLevel = null;
+        CloseLevel();
         GameObject levelPrefab = kingdomLevels[number-1];
 
 
         GameObject levelObject = Instantiate(levelPrefab);
         levelObject.transform.localPosition = new Vector3(0, 0, 0);
         currentLevel = levelObject.GetComponent<LevelHandler>();
-
-        OpenLevel();
+        LoadLevelData();
+        if(state.Equals("main"))
+        {
+            Debug.Log("Entering from menu");
+            StartCoroutine(EnterInGameUIAnimation());   
+        }
+        else if(state.Equals("ingame"))
+        {
+            Debug.Log("Transitioning levels ingame");
+            StartCoroutine(LevelTransitionUIAnimation());   
+        }
+        
     }
 
     public void CloseLevel()
@@ -227,18 +142,132 @@ public class LevelManager : MonoBehaviour
 
         currentLevel = null;
 
-        AudioManager.instance.PlaySoundWithPitchShift("pop", ProfileCustomization.uiVolume, 0.3f);
-        StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, main, 2f));
+
 
     }
+    IEnumerator EndLevelUIAnimation(List<Tag> levelStats)
+    {
+        
+        //StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, end, 1f));
+        var winStat = levelStats.FirstOrDefault(kvp => kvp.name == "win");
+        bool win = winStat.name != null && winStat.value == "0" ? false : true;
+        string title = win ? "Stage Complete" : "Try Again";
+        AudioManager.instance.PlaySound(win ? "level-pass" : "level-fail", ProfileCustomization.uiVolume);
+
+        endTitle.SetText(title);
+        endTitle.SetColor(win ? winColor : loseColor);
+
+        endMainLeft.SetWriteOn(0f);
+        endMainRight.SetWriteOn(0f);
+        endMainLeft.SetText("");
+        endMainRight.SetText("");
 
 
 
+        yield return StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, -2000), new Vector2(0, 0), 1f));
+
+        if (win)
+        {
+            nextLevelButton.SetActive(true);
+            nextLevelButton.GetComponent<TMPEnhanced>().SetText("Level " + (levelIndex + 2));
+            //note+ +2 is +1 for index, +1 for next level
+            yield return StartCoroutine(AnimationManager.instance.PopIn(nextLevelButton, 1.2f, 0.5f));
+        }
+        else
+        {
+            nextLevelButton.SetActive(false);
+        }
+        
 
 
+        foreach(Tag stat in levelStats)
+        {
+            string key = stat.name;
+            string value = stat.value;
+
+            if(key.Substring(0,2) == "s_") key = key.Substring(2);
+            else continue;
+            endMainLeft.AddText(Strings.CamelCaseToWords(key) + ": \n");
+            endMainRight.AddText(value + "\n");
+        }
+        
+
+        while (endMainLeft.GetWriteOn() < 1f && endMainRight.GetWriteOn() < 1f)
+        {
+            yield return StartCoroutine(endMainLeft.WriteLine(0.5f));
+            yield return StartCoroutine(endMainRight.WriteLine(0.5f));
+        }
+
+        float efficiency = float.Parse(levelStats.FirstOrDefault(kvp => kvp.name == "s_efficiency").value);
+        float pb = SecureProfileStats.instance.GetEfficiencyAtLevel(levelIndex);
+
+        if(efficiency < pb || pb == 0)
+        {
+            SecureProfileStats.instance.ModifyEfficiencyScore(levelIndex, efficiency, GetComponent<AuthorizedModifier>());
+            endBottom.SetText("Personal Best!");
+            yield return StartCoroutine(endBottom.PopIn(1.2f, 0.5f));
+        }else{
+            endBottom.SetText("");
+        }
+
+        //actions = replay, next level, main menu
+        yield break;
+    }
+
+    IEnumerator EnterInGameUIAnimation()
+    {
+        ingame.enabled = true;
+        LoadLevelData();
+        yield return StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(main, loading, ingame, 2f));
+        state = "ingame";
+        yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 2000), new Vector2(0, 0), 1f));
+    }
+
+    IEnumerator LevelTransitionUIAnimation()
+    {
+
+        StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, ingame, 2f));
+        state = "ingame";
+        Debug.Log("Level Transition Animation");
+        Debug.Log("Sliding out end wrapper");
+        yield return StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
+        Debug.Log("Sliding in begin wrapper");
+        yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 2000), new Vector2(0, 0), 1f));
+    }
+    IEnumerator StartLevelUIAnimation()
+    {
+
+        ingame.enabled = true;
+        state = "ingame";
+        yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 0), new Vector2(0, 2000), 1f));
 
 
+        int countdown = 3;
+        while(countdown > 0)
+        {
+            countdownText.SetText(countdown.ToString());
+            AudioManager.instance.PlaySound("beep", ProfileCustomization.uiVolume);
+            yield return StartCoroutine(countdownText.PopIn(1.2f, 0.5f));
+            yield return new WaitForSeconds(0.5f);
+            countdown--;
+        }
+        countdownText.SetText("Go!");
+        AudioManager.instance.PlaySoundWithRandomPitchShift("whoosh", ProfileCustomization.uiVolume, 0.2f);
+        yield return StartCoroutine(countdownText.PopIn(1.2f, 0.5f));
+        yield return new WaitForSeconds(0.5f);
+        countdownText.SetText("");
+    
+        currentLevel.StartLevel();
+        yield break;
+    }
 
-    // Update is called once per frame 
+    void LoadLevelData()
+    {
+        beginLevelTitle.SetText(currentLevel.levelName);
+        beginLevelInfo.SetText("Energy: " + currentLevel.levelStartingEnergy + "\nTime Limit: " + currentLevel.levelMaxTime + "s");
+        string difficultyDesc = levelDifficultyDescriptions.GetValueAtPosition(currentLevel.levelDifficulty);
+        beginLevelDifficulty.SetText("" + difficultyDesc);
+        beginLevelDifficulty.SetColor(levelDifficultyColors[levelDifficultyDescriptions.IndexOf(difficultyDesc)]);
+    }
 
 }

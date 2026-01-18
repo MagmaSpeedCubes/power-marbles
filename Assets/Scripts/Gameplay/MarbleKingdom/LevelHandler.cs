@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 public class LevelHandler : MonoBehaviour
 {
     public string levelName;
@@ -11,43 +12,46 @@ public class LevelHandler : MonoBehaviour
     public bool active;
 
 
-    private int damageDealt;
-    private int marblesUsed;
-
     public void StartLevel()
     {
        active = true; 
        InvokeRepeating("AbilityTick", LevelStats.ABILITY_TICK_INTERVAL, LevelStats.ABILITY_TICK_INTERVAL);
         LevelStats.energy = levelStartingEnergy;
         LevelStats.timeRemaining = levelMaxTime;
+        LevelStats.marblesUsed = 0;
 
     }
 
-    public List<KeyValuePair<string, float>> EndLevel()
+    public List<Tag> EndLevel()
     {
         
         Debug.Log("End Level");
         CancelInvoke("AbilityTick");
         active = false;
 
-        List<KeyValuePair<string, float>> levelStats = new List<KeyValuePair<string, float>>();
-        if(LevelStats.timeRemaining <= levelMaxTime)
+        List<Tag> levelStats = new List<Tag>();
+        if(LevelStats.timeRemaining > 0)
         {
-            levelStats.Add(new KeyValuePair<string, float>("win", 1));
+            levelStats.Add(new Tag("win", "1"));
         }
         else
         {
-            levelStats.Add(new KeyValuePair<string, float>("win", 0));
+            levelStats.Add(new Tag("win", "0"));
         }
 
 
-        levelStats.Add(new KeyValuePair<string, float>("s_damageDealt", damageDealt));
-        levelStats.Add(new KeyValuePair<string, float>("s_marblesUsed", 0));
-        levelStats.Add(new KeyValuePair<string, float>("s_levelTime", LevelStats.timeRemaining));
-        levelStats.Add(new KeyValuePair<string, float>("s_efficiency", levelMaxTime-LevelStats.timeRemaining));
+        levelStats.Add(new Tag("s_damageDealt", "" + LevelStats.damageDealt));
+        //Debug.Log("Damage Dealt: " + LevelStats.damageDealt);
+        levelStats.Add(new Tag("s_marblesUsed","" +  LevelStats.marblesUsed));
+        //Debug.Log("Marbles Used: " + LevelStats.marblesUsed);
+        levelStats.Add(new Tag("s_levelTime", "" + Math.Round((levelMaxTime-LevelStats.timeRemaining), 2)));
 
-        levelStats.Add(new KeyValuePair<string, float>("xpReward", damageDealt));
-        Debug.Log("Returned Level Stats " + levelStats.ToString());
+        levelStats.Add(new Tag("s_efficiency", "" + Math.Round(LevelStats.timeRemaining, 2)));
+
+
+        levelStats.Add(new Tag("xpReward", "" + LevelStats.damageDealt));
+        //Debug.Log("XP Reward: " + LevelStats.damageDealt);
+        //Debug.Log("Returned Level Stats " + levelStats.ToString());
 
         return levelStats;
         
@@ -77,6 +81,10 @@ public class LevelHandler : MonoBehaviour
         if (active)
         {
             LevelStats.timeRemaining -= Time.deltaTime;
+            if(LevelStats.timeRemaining < 0f)
+            {
+                LevelManager.instance.EndLevel();
+            }
         }
 
 

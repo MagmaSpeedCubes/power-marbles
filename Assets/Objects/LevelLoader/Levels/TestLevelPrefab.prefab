@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageHandler
   prefab: {fileID: 11400000, guid: b8e4cd756f7e6414c98ca4870a6e8e98, type: 2}
-  maxHealth: 0
+  maxHealth: 10
   healthBars:
   - {fileID: 8903392567063831149}
   armorBars:
@@ -779,7 +779,7 @@ MonoBehaviour:
   levelName: TestLevel
   levelDifficulty: 0
   activeBalls: []
-  levelMaxTime: 100
+  levelMaxTime: 20
   levelStartingEnergy: 20
   active: 0
 --- !u!114 &1041405416116943735
@@ -1525,7 +1525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageHandler
   prefab: {fileID: 11400000, guid: b8e4cd756f7e6414c98ca4870a6e8e98, type: 2}
-  maxHealth: 0
+  maxHealth: 20
   healthBars:
   - {fileID: 4340487591378227711}
   armorBars:
@@ -2729,7 +2729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageHandler
   prefab: {fileID: 11400000, guid: b8e4cd756f7e6414c98ca4870a6e8e98, type: 2}
-  maxHealth: 0
+  maxHealth: 1
   healthBars:
   - {fileID: 2567360905542339402}
   armorBars:

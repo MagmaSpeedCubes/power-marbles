@@ -42,7 +42,12 @@ public class OwnableManager : MonoBehaviour
                 string testName = prefab.name.ToLower();
                 if (name.Equals(testName))
                 {
+                    Debug.Log("Adding owned marble prefab: " + prefab.name);
                     ownedMarbles.Add(prefab);
+                }
+                else
+                {
+                    Debug.Log("Player does not own marble prefab: " + prefab.name);
                 }
             }
 

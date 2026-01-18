@@ -7,6 +7,7 @@ public class WinHandler : MonoBehaviour
         if(bh != null)
         {
             LevelManager.instance.EndLevel();
+            Destroy(this);
         }
         
     }

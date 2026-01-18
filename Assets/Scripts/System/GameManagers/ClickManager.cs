@@ -27,7 +27,7 @@ public class LocalClickManager : MonoBehaviour
             var found = GameObject.Find("MarbleParent");
             if (found != null) ballParent = found;
         }
-        Debug.Log("Click Manager Created");
+        //Debug.Log("Click Manager Created");
     }
 
 
@@ -39,11 +39,11 @@ public class LocalClickManager : MonoBehaviour
         // Mouse left click
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Debug.Log("Mouse Left Click");
+            //Debug.Log("Mouse Left Click");
             Vector2 screenPos = Mouse.current.position.ReadValue();
-            Debug.Log("Screen Pos: " + screenPos);
+            //Debug.Log("Screen Pos: " + screenPos);
             Vector3 worldPos = ScreenToWorld(screenPos);
-            Debug.Log("World Pos: " + worldPos);
+            //Debug.Log("World Pos: " + worldPos);
             OnTap(worldPos, screenPos);
         }
 
@@ -78,10 +78,10 @@ public class LocalClickManager : MonoBehaviour
 
     void OnTap(Vector3 worldPos, Vector2 screenPos)
     {
-        Debug.Log("Tap at World Pos: " + worldPos + " Screen Pos: " + screenPos);
+        //Debug.Log("Tap at World Pos: " + worldPos + " Screen Pos: " + screenPos);
         if(LevelStats.selectedBall != null)
         {
-            Debug.Log("Selected Ball: " + LevelStats.selectedBall.name);
+            //Debug.Log("Selected Ball: " + LevelStats.selectedBall.name);
             Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
 
             foreach (Collider2D hit in hits)
@@ -89,7 +89,7 @@ public class LocalClickManager : MonoBehaviour
                 
                 if(hit.gameObject == spawnZone)
                 {
-                    Debug.Log("Clicked on Spawn Zone");
+                    //Debug.Log("Clicked on Spawn Zone");
                     switch(SceneManager.GetActiveScene().name){
                         case "MarbleKingdom":
                             if(LevelManager.instance.currentLevel.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
@@ -108,12 +108,9 @@ public class LocalClickManager : MonoBehaviour
                             if(LevelStats.selectedBall.price <= LevelStats.energy || Constants.DEBUG_MODE)
                             {
 
-                                if (!LevelManager.instance.currentLevel.IsActive())
-                                {
-                                    LevelManager.instance.currentLevel.StartLevel();
-                                }
                                 SpawnMarble(worldPos);
                                 LevelStats.energy -= LevelStats.selectedBall.price;
+                                LevelStats.marblesUsed++;
 
                             }
                             else

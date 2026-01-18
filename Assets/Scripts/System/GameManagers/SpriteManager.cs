@@ -1,7 +1,13 @@
 using UnityEngine;
 
+namespace MagmaLabs.Economy
+{
+    ///
 public class SpriteManager : MonoBehaviour
 {
+    /// <summary>
+    /// MonoBehaviour script that manages sprites used by <see cref="Ownable"/> objects
+    /// </summary>
     [SerializeField]private Sprite[] sprites;
     public Sprite placeholder;
     public static SpriteManager instance;
@@ -30,4 +36,5 @@ public class SpriteManager : MonoBehaviour
         }
         return null;
     }
+}
 }

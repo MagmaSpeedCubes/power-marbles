@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using MagmaLabs.Economy.Security;
 using MagmaLabs.Economy;
 using MagmaLabs.Animation;
+using MagmaLabs.Audio;
 
 public class PrizeSkiesManager : AuthorizedModifier
 {
@@ -265,7 +266,7 @@ public class PrizeSkiesManager : AuthorizedModifier
         foreach(Ownable reward in collectedRewards)
         {
             rewardDisplay.sprite = reward.sprite;
-            AudioManager.instance.PlaySoundWithPitchShift("reward", ProfileCustomization.uiVolume);
+            AudioManager.instance.PlaySoundWithRandomPitchShift("reward", ProfileCustomization.uiVolume);
             yield return new WaitForSeconds(0.75f);
         }
         rewardDisplay.color = new Color(1,1,1,0);

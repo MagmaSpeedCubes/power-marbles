@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using MagmaLabs.Animation;
 using MagmaLabs.Economy;
+using MagmaLabs.Audio;
 
 public class GiftBox : TiledElementManager
 {

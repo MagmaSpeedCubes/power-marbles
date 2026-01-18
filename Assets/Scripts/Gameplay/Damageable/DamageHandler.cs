@@ -1,5 +1,6 @@
 using UnityEngine;
 using MagmaLabs.UI;
+using MagmaLabs.Audio;
 public class DamageHandler : MonoBehaviour
 {
     public DamageablePrefab prefab;
@@ -9,7 +10,7 @@ public class DamageHandler : MonoBehaviour
     protected float regenRate;
 
     protected AudioClip damageSound, deathSound;
-    [Tooltip("Sprites in order of damaged first one is full health and slowly get more damaged")]
+    [Tooltip("Sprites in order of damage, first one is full health and slowly get more damaged")]
     protected Sprite[] sprites;
 
     public Infographic[] healthBars;
@@ -35,8 +36,6 @@ public class DamageHandler : MonoBehaviour
         deathSound = prefab.deathSound;
 
         sprites = prefab.sprites;
-
-        maxHealth = prefab.maxHealth;
         health = maxHealth;
         UpdateInfographics();
 
@@ -73,9 +72,11 @@ public class DamageHandler : MonoBehaviour
             case "Paranormal": case "NegateArmor":
                 Debug.Log("Paranormal");
                 health -= amount;
+                LevelStats.damageDealt += amount;
                 break;
             default:
                 health -= amount * (1-armor);
+                LevelStats.damageDealt += amount * (1 - armor);
                 break;
         }
         

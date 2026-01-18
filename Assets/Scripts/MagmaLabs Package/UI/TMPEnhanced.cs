@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using TMPro;
 using MagmaLabs.Animation;
 namespace MagmaLabs.UI{
-    [CreateAssetMenu(fileName = "TextMeshMaxUGUI", menuName = "MagmaLabs/UI/TextMeshMaxUGUI", order = 1)]
-public class TextMeshMaxUGUI : TextMeshProUGUI
+    [CreateAssetMenu(fileName = "TMPEnhanced", menuName = "MagmaLabs/UI/TMPEnhanced", order = 1)]
+
+public class TMPEnhanced : TextMeshProUGUI
     {
         public bool m_outlineText;
-        private string fullText;
+        private string fullText = "";
         private float writeOn = 1f;
+
+        private void Refresh()
+        {
+            int characterCutoff = (int) (writeOn * fullText.Length);
+            base.text = fullText.Substring(0, characterCutoff);
+        }
         
         public void SetColor(Color newColor)
         {
@@ -48,18 +55,13 @@ public class TextMeshMaxUGUI : TextMeshProUGUI
         public void SetText(string text)
         {
             fullText = text;
-            base.text = text;
+            Refresh();
         }
 
         public void AddText(string text)
         {
             fullText += text;
-            base.text = fullText;
-        }
-
-        public string GetText()
-        {
-            return base.text;
+            Refresh();
         }
 
         public string GetFullText()
@@ -67,12 +69,15 @@ public class TextMeshMaxUGUI : TextMeshProUGUI
             return fullText;
         }
 
+        public string GetDisplayedText()
+        {
+            return base.text;
+        }
+
         public void SetWriteOn(float nw)
         {
             writeOn = nw;
-            float percentage = text.Length / writeOn;
-            int characterCutoff = (int) (percentage * text.Length);
-            base.text = fullText.Substring(0, characterCutoff);
+            Refresh();
         }
 
         public float GetWriteOn()
@@ -103,7 +108,7 @@ public class TextMeshMaxUGUI : TextMeshProUGUI
             }
 
             float startWriteOn = writeOn;
-            float targetWriteOn = (float)lineEndIndex / (float)fullText.Length;
+            float targetWriteOn = (float)lineEndIndex / (float)fullText.Length + 1;//include the newline so the writeon does not get stuck
             float elapsedTime = 0f;
 
             while (elapsedTime < duration)
@@ -113,6 +118,11 @@ public class TextMeshMaxUGUI : TextMeshProUGUI
                 SetWriteOn(newWriteOn);
                 yield return null;
             }
+            writeOn = targetWriteOn;
+            Debug.Log("WriteOn complete: " + writeOn);
+            Debug.Log("Full text length: " + fullText.Length);
+            Debug.Log("Displayed text length: " + base.text.Length);
+
         }
 
         public IEnumerator PopIn(float overshoot=1.2f, float duration=0.5f)

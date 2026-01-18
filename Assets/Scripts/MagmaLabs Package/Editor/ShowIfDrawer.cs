@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEditor;
-using MagmaLabs.Utilities.Editor;
+
+namespace MagmaLabs.Utilities.Editor
+{
 
 [CustomPropertyDrawer(typeof(ShowIfAttribute))]
 public class ShowIfDrawer : PropertyDrawer
@@ -45,4 +47,5 @@ public class ShowIfDrawer : PropertyDrawer
 
         return true;
     }
+}
 }

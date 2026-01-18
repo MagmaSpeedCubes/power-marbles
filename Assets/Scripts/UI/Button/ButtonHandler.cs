@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using MagmaLabs.Utilities.Editor;
+using MagmaLabs.Audio;
 public class ButtonHandler : UIElementHandler
 {
     [SerializeField] protected bool popOnClick = true;
@@ -36,7 +37,7 @@ public class ButtonHandler : UIElementHandler
 
     protected IEnumerator PopCoroutine()
     {
-        AudioManager.instance.PlaySoundWithPitchShift("pop", ProfileCustomization.uiVolume);
+        AudioManager.instance.PlaySoundWithRandomPitchShift("pop", ProfileCustomization.uiVolume);
         Vector3 originalScale = transform.localScale;
         Vector3 targetScale = originalScale * popScale;
 
