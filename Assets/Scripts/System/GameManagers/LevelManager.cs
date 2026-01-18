@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System;
 using MagmaLabs.Utilities.Primitives;
+using MagmaLabs.Utilities.Editor;
 using MagmaLabs.UI;
 using MagmaLabs.Economy.Security;
 using MagmaLabs.Utilities;
@@ -12,7 +13,7 @@ using MagmaLabs.Audio;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class LevelManager : MonoBehaviour
 {
-
+    [SerializeField] private int debugInfoLevel = Constants.DEBUG_INFO_LEVEL;
     public static LevelManager instance;
     
     public LevelHandler currentLevel;
@@ -53,17 +54,18 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel()
     {
-        Debug.Log("Starting Level UI Animation");
+        DebugEnhanced.LogInfoLevel("Starting Level UI Animation", 1, debugInfoLevel);
         StartCoroutine(StartLevelUIAnimation());
     }
 
 
     void Update()
     {
-        if(currentLevel != null && currentLevel.active)
+        if(currentLevel != null && state == "ingame")
         {
             timeDisplay.SetValue(LevelStats.timeRemaining);
             energyDisplay.SetValue(LevelStats.energy);
+
         }        
     }
 
@@ -101,49 +103,53 @@ public class LevelManager : MonoBehaviour
     {
 
         levelIndex++;
-        LoadKingdomLevel(levelIndex);
+        LoadKingdomLevel(levelIndex + 1);
 
         
     }
     public void ReplayLevel()
     {
-        
-        LoadKingdomLevel(levelIndex);
+
+        LoadKingdomLevel(levelIndex + 1);
     }
+
     public void LoadKingdomLevel(int number)
     {
+        StartCoroutine(LoadKingdomLevelCoroutine(number));
+    }
+
+    public IEnumerator LoadKingdomLevelCoroutine(int number)
+    {
         //StartCoroutine(CloseLevelUIAnimation());
-        Debug.Log("Loading Level " + number);
-        CloseLevel();
+        DebugEnhanced.LogInfoLevel("Loading Level " + number, 1, debugInfoLevel);
+        yield return StartCoroutine(CloseLevel());
+
         GameObject levelPrefab = kingdomLevels[number-1];
-
-
         GameObject levelObject = Instantiate(levelPrefab);
         levelObject.transform.localPosition = new Vector3(0, 0, 0);
         currentLevel = levelObject.GetComponent<LevelHandler>();
         LoadLevelData();
         if(state.Equals("main"))
         {
-            Debug.Log("Entering from menu");
+            DebugEnhanced.LogInfoLevel("Entering from menu", 1, debugInfoLevel);
             StartCoroutine(EnterInGameUIAnimation());   
         }
         else if(state.Equals("ingame"))
         {
-            Debug.Log("Transitioning levels ingame");
+            DebugEnhanced.LogInfoLevel("Transitioning levels ingame", 1, debugInfoLevel);
             StartCoroutine(LevelTransitionUIAnimation());   
         }
         
     }
 
-    public void CloseLevel()
+    public IEnumerator CloseLevel()
     {
-        if(currentLevel!=null)
-        Destroy(currentLevel.gameObject);
-
-        currentLevel = null;
-
-
-
+        if(currentLevel!=null){
+            DebugEnhanced.LogInfoLevel("Destroying current level", 1, debugInfoLevel);
+            Destroy(currentLevel.gameObject);
+            currentLevel = null;
+        }
+        yield break;
     }
     IEnumerator EndLevelUIAnimation(List<Tag> levelStats)
     {
@@ -228,10 +234,10 @@ public class LevelManager : MonoBehaviour
 
         StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, ingame, 2f));
         state = "ingame";
-        Debug.Log("Level Transition Animation");
-        Debug.Log("Sliding out end wrapper");
+        DebugEnhanced.LogInfoLevel("Level Transition Animation", 1, debugInfoLevel);
+        DebugEnhanced.LogInfoLevel("Sliding out end wrapper", 2, debugInfoLevel);//more detailed messages get higher level
         yield return StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
-        Debug.Log("Sliding in begin wrapper");
+        DebugEnhanced.LogInfoLevel("Sliding in begin wrapper", 2, debugInfoLevel);
         yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 2000), new Vector2(0, 0), 1f));
     }
     IEnumerator StartLevelUIAnimation()
