@@ -93,10 +93,12 @@ public class LevelManager : MonoBehaviour
 
     public void ExitInGame()
     {
-        CloseLevel();
+        StartCoroutine(CloseLevel());
         //StartCoroutine(CloseLevelUIAnimation());
         AudioManager.instance.PlaySoundWithRandomPitchShift("pop", ProfileCustomization.uiVolume, 0.3f);
         StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, main, 2f));
+        StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
+        state = "main";
     }
 
     public void NextLevel()
