@@ -13,7 +13,7 @@ using MagmaLabs.Audio;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private int debugInfoLevel = Constants.DEBUG_INFO_LEVEL;
+    private const int DEBUG_INFO_LEVEL = 2;
     public static LevelManager instance;
     
     public LevelHandler currentLevel;
@@ -54,7 +54,7 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel()
     {
-        DebugEnhanced.LogInfoLevel("Starting Level UI Animation", 1, debugInfoLevel);
+        DebugEnhanced.LogInfoLevel("Starting Level UI Animation", 1, DEBUG_INFO_LEVEL);
         StartCoroutine(StartLevelUIAnimation());
     }
 
@@ -123,7 +123,7 @@ public class LevelManager : MonoBehaviour
     public IEnumerator LoadKingdomLevelCoroutine(int number)
     {
         //StartCoroutine(CloseLevelUIAnimation());
-        DebugEnhanced.LogInfoLevel("Loading Level " + number, 1, debugInfoLevel);
+        DebugEnhanced.LogInfoLevel("Loading Level " + number, 1, DEBUG_INFO_LEVEL);
         yield return StartCoroutine(CloseLevel());
 
         GameObject levelPrefab = kingdomLevels[number-1];
@@ -133,12 +133,12 @@ public class LevelManager : MonoBehaviour
         LoadLevelData();
         if(state.Equals("main"))
         {
-            DebugEnhanced.LogInfoLevel("Entering from menu", 1, debugInfoLevel);
+            DebugEnhanced.LogInfoLevel("Entering from menu", 1, DEBUG_INFO_LEVEL);
             StartCoroutine(EnterInGameUIAnimation());   
         }
         else if(state.Equals("ingame"))
         {
-            DebugEnhanced.LogInfoLevel("Transitioning levels ingame", 1, debugInfoLevel);
+            DebugEnhanced.LogInfoLevel("Transitioning levels ingame", 1, DEBUG_INFO_LEVEL);
             StartCoroutine(LevelTransitionUIAnimation());   
         }
         
@@ -147,7 +147,7 @@ public class LevelManager : MonoBehaviour
     public IEnumerator CloseLevel()
     {
         if(currentLevel!=null){
-            DebugEnhanced.LogInfoLevel("Destroying current level", 1, debugInfoLevel);
+            DebugEnhanced.LogInfoLevel("Destroying current level", 1, DEBUG_INFO_LEVEL);
             Destroy(currentLevel.gameObject);
             currentLevel = null;
         }
@@ -193,8 +193,10 @@ public class LevelManager : MonoBehaviour
         }
         
 
-        while (endMainLeft.GetWriteOnNormalized() < 1f && endMainRight.GetWriteOnNormalized() < 1f)
+        while (endMainLeft.GetWriteOnNormalized() < 0.97f)
         {
+            DebugEnhanced.LogInfoLevel("Left write on: " + endMainLeft.GetWriteOnNormalized(), 2, DEBUG_INFO_LEVEL);
+            DebugEnhanced.LogInfoLevel("Right write on: " + endMainRight.GetWriteOnNormalized(), 2, DEBUG_INFO_LEVEL);
             AudioManager.instance.PlaySound("triple-beep", ProfileCustomization.uiVolume);
             yield return StartCoroutine(endMainLeft.WriteLineEarly(0.3f));
             yield return new WaitForSeconds(0.7f);
@@ -248,10 +250,10 @@ public class LevelManager : MonoBehaviour
 
         StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, ingame, 2f));
         state = "ingame";
-        DebugEnhanced.LogInfoLevel("Level Transition Animation", 1, debugInfoLevel);
-        DebugEnhanced.LogInfoLevel("Sliding out end wrapper", 2, debugInfoLevel);//more detailed messages get higher level
+        DebugEnhanced.LogInfoLevel("Level Transition Animation", 1, DEBUG_INFO_LEVEL);
+        DebugEnhanced.LogInfoLevel("Sliding out end wrapper", 2, DEBUG_INFO_LEVEL);//more detailed messages get higher level
         yield return StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
-        DebugEnhanced.LogInfoLevel("Sliding in begin wrapper", 2, debugInfoLevel);
+        DebugEnhanced.LogInfoLevel("Sliding in begin wrapper", 2, DEBUG_INFO_LEVEL);
         yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 2000), new Vector2(0, 0), 1f));
     }
     IEnumerator StartLevelUIAnimation()

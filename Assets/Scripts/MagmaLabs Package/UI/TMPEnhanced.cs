@@ -119,14 +119,15 @@ public class TMPEnhanced : TextMeshProUGUI
 
         public float GetWriteOnNormalized()
         {
-            return writeOn / fullText.Length;
+            DebugEnhanced.LogInfoLevel("GetWriteOnNormalized called: writeOn=" + writeOn + ", fullText.Length=" + fullText.Length, 2, DEBUG_INFO_LEVEL);
+            
+            if(writeOn==fullText.Length)
+            {
+                return 1f;
+            }
+            return (float)writeOn / fullText.Length;
         }
-        /// <summary>
-        /// Writes the next line over the given duration showing each character at the end of its interval.
-        /// </summary>
-        /// <param name="targetWriteOn"></param>
-        /// <param name="duration"></param>
-        /// <returns></returns>
+
         public IEnumerator WriteOn(int targetWriteOn, float duration)
         {
             if(writeActive)
@@ -181,11 +182,6 @@ public class TMPEnhanced : TextMeshProUGUI
                 yield return null;
             }
             writeOn = targetWriteOn;
-            while (writeOn < fullText.Length - 1 && fullText[writeOn + 1] == '\n')
-            {
-                DebugEnhanced.LogInfoLevel("New line character detected at " + writeOn, 2, DEBUG_INFO_LEVEL);
-                writeOn += (int)(1f / fullText.Length);
-            }
             DebugEnhanced.LogInfoLevel("Final writeOn set to target: " + writeOn, 2, DEBUG_INFO_LEVEL);
             Refresh();
 
@@ -229,11 +225,6 @@ public class TMPEnhanced : TextMeshProUGUI
                 yield return null;
             }
             writeOn = targetWriteOn;
-            while (writeOn < fullText.Length - 1 && fullText[writeOn + 1] == '\n')
-            {
-                DebugEnhanced.LogInfoLevel("New line character detected at " + writeOn, 2, DEBUG_INFO_LEVEL);
-                writeOn += (int)(1f / fullText.Length);
-            }
             DebugEnhanced.LogInfoLevel("Final writeOn set to target: " + writeOn, 2, DEBUG_INFO_LEVEL);
             Refresh();
 
