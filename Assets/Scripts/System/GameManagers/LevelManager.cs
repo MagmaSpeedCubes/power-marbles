@@ -165,8 +165,8 @@ public class LevelManager : MonoBehaviour
         endTitle.SetText(title);
         endTitle.SetColor(win ? winColor : loseColor);
 
-        endMainLeft.SetWriteOn(0f);
-        endMainRight.SetWriteOn(0f);
+        endMainLeft.SetWriteOn(0);
+        endMainRight.SetWriteOn(0);
         endMainLeft.SetText("");
         endMainRight.SetText("");
 
@@ -174,17 +174,10 @@ public class LevelManager : MonoBehaviour
 
         yield return StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, -2000), new Vector2(0, 0), 1f));
 
-        if (win)
-        {
-            nextLevelButton.SetActive(true);
-            nextLevelButton.GetComponent<TMPEnhanced>().SetText("Level " + (levelIndex + 2));
-            //note+ +2 is +1 for index, +1 for next level
-            yield return StartCoroutine(AnimationManager.instance.PopIn(nextLevelButton, 1.2f, 0.5f));
-        }
-        else
-        {
-            nextLevelButton.SetActive(false);
-        }
+
+
+        endBottom.SetText("");
+
         
 
 
@@ -195,28 +188,47 @@ public class LevelManager : MonoBehaviour
 
             if(key.Substring(0,2) == "s_") key = key.Substring(2);
             else continue;
-            endMainLeft.AddText(Strings.CamelCaseToWords(key) + ": \n");
-            endMainRight.AddText(value + "\n");
+            endMainLeft.AddHiddenText(Strings.CamelCaseToWords(key) + ": \n");
+            endMainRight.AddHiddenText(value + "\n");
         }
         
 
-        while (endMainLeft.GetWriteOn() < 1f && endMainRight.GetWriteOn() < 1f)
+        while (endMainLeft.GetWriteOnNormalized() < 1f && endMainRight.GetWriteOnNormalized() < 1f)
         {
-            yield return StartCoroutine(endMainLeft.WriteLine(0.5f));
-            yield return StartCoroutine(endMainRight.WriteLine(0.5f));
+            AudioManager.instance.PlaySound("triple-beep", ProfileCustomization.uiVolume);
+            yield return StartCoroutine(endMainLeft.WriteLineEarly(0.3f));
+            yield return new WaitForSeconds(0.7f);
+            AudioManager.instance.PlaySound("prize-small", ProfileCustomization.uiVolume);
+            yield return StartCoroutine(endMainRight.WriteLineEarly(0.3f));
+            yield return new WaitForSeconds(0.7f);
         }
 
         float efficiency = float.Parse(levelStats.FirstOrDefault(kvp => kvp.name == "s_efficiency").value);
         float pb = SecureProfileStats.instance.GetEfficiencyAtLevel(levelIndex);
-
-        if(efficiency < pb || pb == 0)
+        if(efficiency > pb || pb == 0)
         {
             SecureProfileStats.instance.ModifyEfficiencyScore(levelIndex, efficiency, GetComponent<AuthorizedModifier>());
-            endBottom.SetText("Personal Best!");
+            endBottom.AddHiddenText("Personal Best!");
+            AudioManager.instance.PlaySound("prize-large", ProfileCustomization.uiVolume);
             yield return StartCoroutine(endBottom.PopIn(1.2f, 0.5f));
-        }else{
-            endBottom.SetText("");
         }
+
+
+        if (win)
+        {
+            nextLevelButton.transform.parent.gameObject.SetActive(true);
+            nextLevelButton.GetComponent<TMPEnhanced>().SetText("Level " + (levelIndex + 2));
+            //note+ +2 is +1 for index, +1 for next level
+            yield return StartCoroutine(AnimationManager.instance.PopIn(nextLevelButton, 1.2f, 0.5f));
+        }
+        else
+        {
+            nextLevelButton.transform.parent.gameObject.SetActive(false);
+        }
+        
+
+
+        
 
         //actions = replay, next level, main menu
         yield break;

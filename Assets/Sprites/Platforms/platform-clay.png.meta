@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b439017834ee344f79ffb7637b35b4be
+guid: 3ed20de3cc44e4884b829747aaca6584
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3207855836547489762
-    second: platform-clay_0
+      213: 5237308054453034914
+    second: Clay_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 160
-  spriteBorder: {x: 10, y: 10, z: 10, w: 10}
+  spritePixelsToUnits: 500
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -97,19 +97,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -139,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: platform-clay_0
+      name: Clay_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 160
-        height: 160
+        width: 1920
+        height: 1002
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e106ce3dc186b73d0800000000000000
-      internalID: -3207855836547489762
+      spriteID: 2af17f45de7aea840800000000000000
+      internalID: 5237308054453034914
       vertices: []
       indices: 
       edges: []
@@ -164,8 +151,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -174,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      platform-clay_0: -3207855836547489762
+      Clay_0: 5237308054453034914
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
