@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using MagmaLabs.Utilities;
+using MagmaLabs.Editor;
 using MagmaLabs.UI;
 
 

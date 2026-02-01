@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MagmaLabs.Utilities.Editor;
+using MagmaLabs.Editor;
 using MagmaLabs.Audio;
 public class ButtonHandler : UIElementHandler
 {

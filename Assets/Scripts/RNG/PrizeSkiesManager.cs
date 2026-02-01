@@ -265,7 +265,7 @@ public class PrizeSkiesManager : AuthorizedModifier
         rewardDisplay.color = new Color(1,1,1,1);
         foreach(Ownable reward in collectedRewards)
         {
-            rewardDisplay.sprite = reward.sprite;
+            rewardDisplay.sprite = reward.GetSprite();
             AudioManager.instance.PlaySoundWithRandomPitchShift("reward", ProfileCustomization.uiVolume);
             yield return new WaitForSeconds(0.75f);
         }

@@ -4,12 +4,13 @@ using System.Collections;
 using System.Linq;
 using System;
 using MagmaLabs.Utilities.Primitives;
-using MagmaLabs.Utilities.Editor;
+using MagmaLabs.Editor;
 using MagmaLabs.UI;
 using MagmaLabs.Economy.Security;
 using MagmaLabs.Utilities;
 using MagmaLabs.Animation;
 using MagmaLabs.Audio;
+using MagmaLabs.Economy;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class LevelManager : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
     
     public LevelHandler currentLevel;
-    public GameObject[] kingdomLevels;
+    public Dictionary<string, GameObject> kingdomLevels = new Dictionary<string, GameObject>();
+    public List<string> levelOrder = new List<string>(); // Defines the order of levels
     
 
     [SerializeField] private Infographic timeDisplay, energyDisplay;
@@ -33,14 +35,13 @@ public class LevelManager : MonoBehaviour
 
     public List<Color> levelDifficultyColors = new List<Color>();
     public Color winColor, loseColor;
-    private int levelIndex=0;
+    private string currentLevelName = "";
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
 
         }
         else
@@ -63,8 +64,8 @@ public class LevelManager : MonoBehaviour
     {
         if(currentLevel != null && state == "ingame")
         {
-            timeDisplay.SetValue(LevelStats.timeRemaining);
-            energyDisplay.SetValue(LevelStats.energy);
+            timeDisplay.SetValue(LevelHandler.instance.timeRemaining);
+            energyDisplay.SetValue(LevelHandler.instance.energy);
 
         }        
     }
@@ -103,33 +104,40 @@ public class LevelManager : MonoBehaviour
 
     public void NextLevel()
     {
-
-        levelIndex++;
-        LoadKingdomLevel(levelIndex + 1);
-
-        
+        int currentIndex = levelOrder.IndexOf(currentLevelName);
+        if (currentIndex >= 0 && currentIndex < levelOrder.Count - 1)
+        {
+            string nextLevelName = levelOrder[currentIndex + 1];
+            LoadKingdomLevel(nextLevelName);
+        }
     }
     public void ReplayLevel()
     {
-
-        LoadKingdomLevel(levelIndex + 1);
+        LoadKingdomLevel(currentLevelName);
     }
 
-    public void LoadKingdomLevel(int number)
+    public void LoadKingdomLevel(string levelName)
     {
-        StartCoroutine(LoadKingdomLevelCoroutine(number));
+        StartCoroutine(LoadKingdomLevelCoroutine(levelName));
     }
 
-    public IEnumerator LoadKingdomLevelCoroutine(int number)
+    public IEnumerator LoadKingdomLevelCoroutine(string levelName)
     {
         //StartCoroutine(CloseLevelUIAnimation());
-        DebugEnhanced.LogInfoLevel("Loading Level " + number, 1, DEBUG_INFO_LEVEL);
+        DebugEnhanced.LogInfoLevel("Loading Level " + levelName, 1, DEBUG_INFO_LEVEL);
         yield return StartCoroutine(CloseLevel());
 
-        GameObject levelPrefab = kingdomLevels[number-1];
+        if (!kingdomLevels.ContainsKey(levelName))
+        {
+            Debug.LogError("Level '" + levelName + "' not found in kingdomLevels dictionary!");
+            yield break;
+        }
+
+        GameObject levelPrefab = kingdomLevels[levelName];
         GameObject levelObject = Instantiate(levelPrefab);
         levelObject.transform.localPosition = new Vector3(0, 0, 0);
         currentLevel = levelObject.GetComponent<LevelHandler>();
+        currentLevelName = levelName;
         LoadLevelData();
         if(state.Equals("main"))
         {
@@ -206,10 +214,11 @@ public class LevelManager : MonoBehaviour
         }
 
         float efficiency = float.Parse(levelStats.FirstOrDefault(kvp => kvp.name == "s_efficiency").value);
-        float pb = SecureProfileStats.instance.GetEfficiencyAtLevel(levelIndex);
+        int levelIndex = levelOrder.IndexOf(currentLevelName);
+        float pb = 0f;//patch
+        
         if(efficiency > pb || pb == 0)
         {
-            SecureProfileStats.instance.ModifyEfficiencyScore(levelIndex, efficiency, GetComponent<AuthorizedModifier>());
             endBottom.AddHiddenText("Personal Best!");
             AudioManager.instance.PlaySound("prize-large", ProfileCustomization.uiVolume);
             yield return StartCoroutine(endBottom.PopIn(1.2f, 0.5f));
@@ -219,8 +228,16 @@ public class LevelManager : MonoBehaviour
         if (win)
         {
             nextLevelButton.transform.parent.gameObject.SetActive(true);
-            nextLevelButton.GetComponent<TMPEnhanced>().SetText("Level " + (levelIndex + 2));
-            //note+ +2 is +1 for index, +1 for next level
+            int currentIndex = levelOrder.IndexOf(currentLevelName);
+            if (currentIndex >= 0 && currentIndex < levelOrder.Count - 1)
+            {
+                string nextLevelName = levelOrder[currentIndex + 1];
+                nextLevelButton.GetComponent<TMPEnhanced>().SetText(nextLevelName);
+            }
+            else
+            {
+                nextLevelButton.GetComponent<TMPEnhanced>().SetText("Complete!");
+            }
             yield return StartCoroutine(AnimationManager.instance.PopIn(nextLevelButton, 1.2f, 0.5f));
         }
         else
@@ -285,9 +302,9 @@ public class LevelManager : MonoBehaviour
 
     void LoadLevelData()
     {
-        beginLevelTitle.SetText(currentLevel.levelName);
-        beginLevelInfo.SetText("Energy: " + currentLevel.levelStartingEnergy + "\nTime Limit: " + currentLevel.levelMaxTime + "s");
-        string difficultyDesc = levelDifficultyDescriptions.GetValueAtPosition(currentLevel.levelDifficulty);
+        beginLevelTitle.SetText(currentLevel.levelData.name);
+        beginLevelInfo.SetText("Energy: " + currentLevel.levelData.GetInt("startingEnergy") + "\nTime Limit: " + currentLevel.levelData.GetFloat("maxTime") + "s");
+        string difficultyDesc = levelDifficultyDescriptions.GetValueAtPosition(currentLevel.levelData.GetFloat("difficulty"));
         beginLevelDifficulty.SetText("" + difficultyDesc);
         beginLevelDifficulty.SetColor(levelDifficultyColors[levelDifficultyDescriptions.IndexOf(difficultyDesc)]);
     }

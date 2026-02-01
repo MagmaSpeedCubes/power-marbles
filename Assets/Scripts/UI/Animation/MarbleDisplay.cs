@@ -29,7 +29,7 @@ public class MarbleDisplay : MonoBehaviour, IDragHandler, IEndDragHandler
         List<Ownable> ownedMarbles = SecureProfileStats.instance.GetMarbles();
         foreach (Ownable ownable in ownedMarbles)
         {
-            marbleSprites.Add(ownable.sprite); 
+            marbleSprites.Add(ownable.GetSprite()); 
         }
         initialized = true;
         StartCoroutine(LoopSprites(10f, 1f));

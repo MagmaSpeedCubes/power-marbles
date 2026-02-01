@@ -67,7 +67,7 @@ public class Ball : MonoBehaviour
 
         price = Mathf.Max(0, (int)(prefab.price * priceMultiplier));
 
-        mainSprite = ownable != null ? ownable.sprite : null; 
+        mainSprite = ownable != null ? ownable.GetSprite() : null; 
 
         ballSprite = ProfileCustomization.instance.defaultBall;
         spriteColor = prefab.defaultColor;

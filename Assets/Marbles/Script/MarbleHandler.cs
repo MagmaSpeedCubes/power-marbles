@@ -129,7 +129,7 @@ public class BallHandler : MonoBehaviour
 
     virtual public float GetDamage()
     {
-        return ballData.power * numBounces;
+        return ballData.power * (numBounces+1);
     }
 
 

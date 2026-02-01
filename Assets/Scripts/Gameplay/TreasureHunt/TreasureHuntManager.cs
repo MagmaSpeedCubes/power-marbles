@@ -5,7 +5,7 @@ using System;
 using TMPro;
 using System.Collections.Generic;
 using MagmaLabs.Economy.Security;
-using MagmaLabs.Utilities;
+using MagmaLabs.Editor;
 using MagmaLabs.Economy;
 [RequireComponent(typeof(AuthorizedModifier))]
 public class TreasureHuntManager : MonoBehaviour
@@ -398,7 +398,7 @@ public class TreasureHuntManager : MonoBehaviour
 
         Ownable lootWon = lt.GetLoot();
         GameObject lootObject = Instantiate(lootPrefab, tilemap.transform);
-        lootObject.GetComponent<SpriteRenderer>().sprite = lootWon.sprite;
+        lootObject.GetComponent<SpriteRenderer>().sprite = lootWon.GetSprite();
         lootObject.AddComponent<CanvasGroup>();
 
 

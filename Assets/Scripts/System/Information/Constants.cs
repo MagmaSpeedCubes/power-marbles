@@ -14,4 +14,8 @@ public class Constants : MonoBehaviour
 
     public static readonly float CAMERA_DEFAULT_SIZE = 10f;
 
+    public const float ABILITY_TICK_INTERVAL = 5f;
+
+    public const int MAX_BALL_COUNT = 100;
+
 }

@@ -72,11 +72,11 @@ public class DamageHandler : MonoBehaviour
             case "Paranormal": case "NegateArmor":
                 Debug.Log("Paranormal");
                 health -= amount;
-                LevelStats.damageDealt += amount;
+                LevelHandler.instance.damageDealt += amount;
                 break;
             default:
                 health -= amount * (1-armor);
-                LevelStats.damageDealt += amount * (1 - armor);
+                LevelHandler.instance.damageDealt += amount * (1 - armor);
                 break;
         }
         

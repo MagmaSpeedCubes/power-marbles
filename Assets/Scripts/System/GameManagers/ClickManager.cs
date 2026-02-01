@@ -79,6 +79,7 @@ public class LocalClickManager : MonoBehaviour
     void OnTap(Vector3 worldPos, Vector2 screenPos)
     {
         //Debug.Log("Tap at World Pos: " + worldPos + " Screen Pos: " + screenPos);
+        LevelHandler lh = LevelHandler.instance;
         if(LevelStats.selectedBall != null)
         {
             //Debug.Log("Selected Ball: " + LevelStats.selectedBall.name);
@@ -92,25 +93,24 @@ public class LocalClickManager : MonoBehaviour
                     //Debug.Log("Clicked on Spawn Zone");
                     switch(SceneManager.GetActiveScene().name){
                         case "MarbleKingdom":
-                            if(LevelManager.instance.currentLevel.activeBalls.Count-1 >= LevelStats.MAX_BALL_COUNT)
+                            if(lh.activeBalls.Count-1 >= Constants.MAX_BALL_COUNT)
                             {
                                 //AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
                                 break;
                             }
 
-                            if(LevelManager.instance.currentLevel.active == false)
+                            if(lh.active == false)
                             {
                 
                                 break;
                             }
                             
 
-                            if(LevelStats.selectedBall.price <= LevelStats.energy || Constants.DEBUG_MODE)
+                            if(LevelStats.selectedBall.price <= lh.energy || Constants.DEBUG_MODE)
                             {
 
                                 SpawnMarble(worldPos);
-                                LevelStats.energy -= LevelStats.selectedBall.price;
-                                LevelStats.marblesUsed++;
+                                lh.UseEnergy(LevelStats.selectedBall.price);
 
                             }
                             else

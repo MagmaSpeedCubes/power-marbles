@@ -2139,6 +2139,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: Level XXYY
+  writeOn: 10
 --- !u!1 &47199396
 GameObject:
   m_ObjectHideFlags: 0
@@ -7504,6 +7506,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: send bug report
+  writeOn: 15
 --- !u!222 &193801740
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10135,6 +10139,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 'If you
+
+    See this
+
+    Then the
+
+    Developer
+
+    Is an
+
+    Idiot'
+  writeOn: 46
 --- !u!222 &295191326
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13497,17 +13513,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   currentLevel: {fileID: 0}
-  levelOrder: []
+  kingdomLevels:
+  - {fileID: 2666805314709527566, guid: 45cfbb079e19b49eb9e02970feeb9b31, type: 3}
+  - {fileID: 2666805314709527566, guid: 8db16c35d3273428f909721537d4ada4, type: 3}
   timeDisplay: {fileID: 536922560}
   energyDisplay: {fileID: 2135837614}
-  beginLevelTitle: {fileID: 0}
-  beginLevelInfo: {fileID: 0}
-  beginLevelDifficulty: {fileID: 0}
-  countdownText: {fileID: 0}
-  endTitle: {fileID: 0}
-  endMainLeft: {fileID: 0}
-  endMainRight: {fileID: 0}
-  endBottom: {fileID: 0}
+  beginLevelTitle: {fileID: 45940552}
+  beginLevelInfo: {fileID: 2076906524}
+  beginLevelDifficulty: {fileID: 1888834688}
+  countdownText: {fileID: 2001265616}
+  endTitle: {fileID: 193801739}
+  endMainLeft: {fileID: 295191325}
+  endMainRight: {fileID: 1902239846}
+  endBottom: {fileID: 1131418318}
   nextLevelButton: {fileID: 1207661000}
   main: {fileID: 308896209}
   ingame: {fileID: 1898534079}
@@ -14665,7 +14683,7 @@ Transform:
   m_GameObject: {fileID: 399111726}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -422.48285, y: -74.29568, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18704,7 +18722,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 13
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -19051,7 +19069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagmaLabs.UI.NumberText
   roundingPrecisionList: []
-  text: {fileID: 0}
+  text: {fileID: 536922561}
   prefix: 
   suffix: ' s'
 --- !u!114 &536922561
@@ -19146,6 +19164,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: report bug
+  writeOn: 10
 --- !u!222 &536922562
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -29812,7 +29832,7 @@ Transform:
   m_GameObject: {fileID: 857129678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5833, y: -4.67895, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39293,6 +39313,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 
+  writeOn: 0
 --- !u!1 &1136452429
 GameObject:
   m_ObjectHideFlags: 0
@@ -39854,7 +39876,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 63666564}
+  m_AnchoredPosition: {x: 0, y: 60633684}
   m_SizeDelta: {x: 0, y: 1824.051}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1138430134
@@ -41075,6 +41097,97 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165143241}
   m_CullTransparentMesh: 1
+--- !u!1 &1165324652
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1165324654}
+  - component: {fileID: 1165324653}
+  m_Layer: 0
+  m_Name: Square
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &1165324653
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165324652}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: 3233afe4c448d4eb198cfb1ca54feb3b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!4 &1165324654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165324652}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.7, y: 2.66, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1167921970
 GameObject:
   m_ObjectHideFlags: 0
@@ -41300,7 +41413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -98865410}
+  m_AnchoredPosition: {x: 0, y: -92359980}
   m_SizeDelta: {x: 0, y: 2100}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1173993716
@@ -44014,6 +44127,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 'Level [next]'
+  writeOn: 12
 --- !u!222 &1207661003
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47741,6 +47856,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 'Difficulty:'
+  writeOn: 11
 --- !u!222 &1314105438
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47783,7 +47900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3424413, y: 0}
+  m_AnchoredPosition: {x: -896392.8, y: 0}
   m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1315196739
@@ -47934,7 +48051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -25542404, y: 0}
+  m_AnchoredPosition: {x: -23016058, y: 0}
   m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1319300780
@@ -53087,7 +53204,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -149906200}
+  m_AnchoredPosition: {x: 0, y: -140122530}
   m_SizeDelta: {x: 1200, y: 2000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1432895604
@@ -60027,7 +60144,7 @@ Transform:
   m_GameObject: {fileID: 1630519870}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -4.07117, y: 4.67895, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -64318,7 +64435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: -124462370}
+  m_AnchoredPosition: {x: -0.000061035156, y: -116263370}
   m_SizeDelta: {x: 0, y: 2100}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1764375112
@@ -69234,6 +69351,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: If you see this
+  writeOn: 15
 --- !u!222 &1873522962
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -70299,6 +70418,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: Trivial
+  writeOn: 7
 --- !u!222 &1888834689
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -71500,6 +71621,16 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 'please
+
+    send a
+
+    bug report
+
+    to Alex
+
+    :heavysob:'
+  writeOn: 43
 --- !u!1 &1902991768
 GameObject:
   m_ObjectHideFlags: 0
@@ -73011,7 +73142,7 @@ Transform:
   m_GameObject: {fileID: 1931759694}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 422.48285, y: 74.29568, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -73045,9 +73176,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SecureProfileStats
   startingItems:
   - {fileID: 11400000, guid: b21abbe740ec74b338b5cbb1cdc9f7cf, type: 2}
+  encryptedEfficiencyList: 
   encryptedXP: 
   encryptedGlassMarbles: 
   encryptedJoinDate: 
+  encryptedDevSupport: 
   resetStats: 0
   encryptedOwnables: []
 --- !u!114 &1931759700
@@ -75175,6 +75308,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 
+  writeOn: 0
 --- !u!1 &2003984533
 GameObject:
   m_ObjectHideFlags: 0
@@ -77786,6 +77921,10 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 'XX Energy
+
+    XX Time'
+  writeOn: 17
 --- !u!1 &2078092710
 GameObject:
   m_ObjectHideFlags: 0
@@ -80865,7 +81004,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagmaLabs.UI.NumberText
   roundingPrecisionList: []
-  text: {fileID: 0}
+  text: {fileID: 2135837615}
   prefix: 
   suffix: 
 --- !u!114 &2135837615
@@ -80960,6 +81099,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: please
+  writeOn: 6
 --- !u!222 &2135837616
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -81309,6 +81450,8 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  fullText: 1
+  writeOn: 1
 --- !u!222 &2142696757
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -81430,6 +81573,7 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1076130823}
   - {fileID: 147659513}
+  - {fileID: 1165324654}
   - {fileID: 519420032}
   - {fileID: 387919103}
   - {fileID: 857129680}

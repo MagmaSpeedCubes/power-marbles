@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using MagmaLabs.Utilities;
-using MagmaLabs.Utilities.Editor;
+using MagmaLabs.Editor;
 
 namespace MagmaLabs.UI{
 public class RepeatingEvent : Infographic

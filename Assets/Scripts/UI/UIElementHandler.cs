@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
-using MagmaLabs.Utilities.Editor;
+using MagmaLabs.Editor;
 
 [System.Serializable]
 public enum UIElement

@@ -122,7 +122,7 @@ public class GiftBox : TiledElementManager
             GameObject rewardIcon = Instantiate(rewardIconPrefab);
             rewardIcon.transform.SetParent(wrapper.transform, false);
             rewardIcon.name = rewards[i].name + " Icon";
-            rewardIcon.GetComponent<Image>().sprite = rewards[i].sprite;
+            rewardIcon.GetComponent<Image>().sprite = rewards[i].GetSprite();
             RectTransform newItemRect = rewardIcon.GetComponent<RectTransform>();
             // Position using anchoredPosition relative to wrapper center
             newItemRect.anchoredPosition = offset;

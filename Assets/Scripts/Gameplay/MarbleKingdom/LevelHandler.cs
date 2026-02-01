@@ -2,23 +2,44 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using MagmaLabs.Economy;
+using MagmaLabs.Editor;
 public class LevelHandler : MonoBehaviour
 {
-    public string levelName;
-    public float levelDifficulty;
+    public const int DEBUG_INFO_LEVEL = 0;
+
+    public static LevelHandler instance;
+    public ProgressionNode levelData;
     public List<BallHandler> activeBalls;
-    public int levelMaxTime, levelStartingEnergy;
 
     public bool active;
 
+    public Vector2 levelSize = new Vector2(12,26);
 
+    public int energy { get; private set; }
+    public float timeRemaining { get; private set; }
+    public int marblesUsed { get; private set; }
+    public float damageDealt;
+
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Multiple instances of LevelHandler detected. Destroying duplicate.");
+            Destroy(this.gameObject);
+        }
+    }
     public void StartLevel()
     {
        active = true; 
-       InvokeRepeating("AbilityTick", LevelStats.ABILITY_TICK_INTERVAL, LevelStats.ABILITY_TICK_INTERVAL);
-        LevelStats.energy = levelStartingEnergy;
-        LevelStats.timeRemaining = levelMaxTime;
-        LevelStats.marblesUsed = 0;
+       InvokeRepeating("AbilityTick", Constants.ABILITY_TICK_INTERVAL, Constants.ABILITY_TICK_INTERVAL);
+        energy = levelData.GetInt("startingEnergy");
+        timeRemaining = levelData.GetFloat("maxTime");
+        marblesUsed = 0;
 
     }
 
@@ -30,7 +51,7 @@ public class LevelHandler : MonoBehaviour
         active = false;
 
         List<Tag> levelStats = new List<Tag>();
-        if(LevelStats.timeRemaining > 0)
+        if(timeRemaining > 0)
         {
             levelStats.Add(new Tag("win", "1"));
         }
@@ -39,17 +60,20 @@ public class LevelHandler : MonoBehaviour
             levelStats.Add(new Tag("win", "0"));
         }
 
+        float levelMaxTime = levelData.GetFloat("maxTime");
 
-        levelStats.Add(new Tag("s_damageDealt", "" + LevelStats.damageDealt));
-        //Debug.Log("Damage Dealt: " + LevelStats.damageDealt);
-        levelStats.Add(new Tag("s_marblesUsed","" +  LevelStats.marblesUsed));
-        //Debug.Log("Marbles Used: " + LevelStats.marblesUsed);
-        levelStats.Add(new Tag("s_levelTime", "" + Math.Round((levelMaxTime-LevelStats.timeRemaining), 2)));
+        levelStats.Add(new Tag("s_damageDealt", "" + damageDealt));
+        DebugEnhanced.LogInfoLevel("Damage Dealt: " + damageDealt, 2, DEBUG_INFO_LEVEL);
 
-        levelStats.Add(new Tag("s_efficiency", "" + Math.Round(LevelStats.timeRemaining, 2)));
+        levelStats.Add(new Tag("s_marblesUsed","" +  marblesUsed));
+        DebugEnhanced.LogInfoLevel("Marbles Used: " + marblesUsed, 2, DEBUG_INFO_LEVEL);
+
+        levelStats.Add(new Tag("s_levelTime", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
+
+        levelStats.Add(new Tag("s_efficiency", "" + Math.Round(timeRemaining, 2)));
 
 
-        levelStats.Add(new Tag("xpReward", "" + LevelStats.damageDealt));
+        levelStats.Add(new Tag("xpReward", "" + damageDealt));
         //Debug.Log("XP Reward: " + LevelStats.damageDealt);
         //Debug.Log("Returned Level Stats " + levelStats.ToString());
 
@@ -68,11 +92,17 @@ public class LevelHandler : MonoBehaviour
     public void AddBall(BallHandler ball)
     {
         activeBalls.Add(ball);
+        marblesUsed++;
     }
 
     public void AddEnergy(int amount)
     {
-        
+        energy += amount;
+    }
+
+    public void UseEnergy(int amount)
+    {
+        energy -= amount;
     }
 
     void Update()
@@ -80,8 +110,8 @@ public class LevelHandler : MonoBehaviour
  
         if (active)
         {
-            LevelStats.timeRemaining -= Time.deltaTime;
-            if(LevelStats.timeRemaining < 0f)
+            timeRemaining -= Time.deltaTime;
+            if(timeRemaining < 0f)
             {
                 LevelManager.instance.EndLevel();
             }
