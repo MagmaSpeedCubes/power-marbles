@@ -10,17 +10,17 @@ public class InfographicManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        object value = Utility.GetVariableValue(scriptValueIsStoredIn, nameOfValue);
+        float value = (float)Utility.GetVariableValue(scriptValueIsStoredIn, nameOfValue);
         UpdateInfographics(value);
     }
 
-    protected void UpdateInfographics(object value)
+    protected void UpdateInfographics(float value)
     {
 
-        float fv = (float)value;
+
         foreach (Infographic graph in infographics)
         {
-            graph?.SetValue(fv);
+            graph?.SetValue(value);
 
         }
         

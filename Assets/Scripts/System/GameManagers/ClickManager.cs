@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+using MagmaLabs.Editor;
 public class LocalClickManager : MonoBehaviour
 {
-
+    private int DEBUG_INFO_LEVEL = 2;
     public GameObject ballParent;
     public GameObject spawnZone;
 
@@ -82,7 +83,7 @@ public class LocalClickManager : MonoBehaviour
         LevelHandler lh = LevelHandler.instance;
         if(LevelStats.selectedBall != null)
         {
-            //Debug.Log("Selected Ball: " + LevelStats.selectedBall.name);
+            Debug.Log("Selected Ball: " + LevelStats.selectedBall.name);
             Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
 
             foreach (Collider2D hit in hits)
@@ -90,50 +91,38 @@ public class LocalClickManager : MonoBehaviour
                 
                 if(hit.gameObject == spawnZone)
                 {
-                    //Debug.Log("Clicked on Spawn Zone");
-                    switch(SceneManager.GetActiveScene().name){
-                        case "MarbleKingdom":
-                            if(lh.activeBalls.Count-1 >= Constants.MAX_BALL_COUNT)
-                            {
-                                //AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
-                                break;
-                            }
 
-                            if(lh.active == false)
-                            {
-                
-                                break;
-                            }
-                            
-
-                            if(LevelStats.selectedBall.price <= lh.energy || Constants.DEBUG_MODE)
-                            {
-
-                                SpawnMarble(worldPos);
-                                lh.UseEnergy(LevelStats.selectedBall.price);
-
-                            }
-                            else
-                            {
-                                /*
-                                AlertManager.instance.ThrowUIWarning("Not enough energy", new string[]
-                                {"You have " + LevelStats.energy + "energy, but " + 
-                                LevelStats.selectedBall.name + " costs " + LevelStats.selectedBall.price + " energy"});
-                                */
-                            }
-                            break;
-                        case "TreasureHunt":
-                            if(TreasureHuntManager.instance.UseEnergy(LevelStats.selectedBall.price))
-                            {
-                                SpawnMarble(worldPos); 
-                            }
-                            break;
-                        default:
-                            break;
-                        
+                    if(lh.activeBalls.Count-1 >= Constants.MAX_BALL_COUNT)
+                    {
+                        DebugEnhanced.LogInfoLevel("too many balls", 2, DEBUG_INFO_LEVEL);
+                        //AlertManager.instance.ThrowUIWarning("Marble cap reached", new string[]{"Marbles capped at " + LevelStats.MAX_BALL_COUNT + ". Destroying extras."});
+                        break;
                     }
 
+                    if(lh.active == false)
+                    {
+                        DebugEnhanced.LogInfoLevel("not active", 2, DEBUG_INFO_LEVEL);
+                        break;
+                    }
                     
+                    if(LevelStats.selectedBall.price <= lh.energy || Constants.DEBUG_MODE)
+                    {
+                        DebugEnhanced.LogInfoLevel("spawning", 2, DEBUG_INFO_LEVEL);
+                        SpawnMarble(worldPos);
+                        lh.UseEnergy(LevelStats.selectedBall.price);
+
+
+                    }
+                    else
+                    {
+                        /*
+                        AlertManager.instance.ThrowUIWarning("Not enough energy", new string[]
+                        {"You have " + LevelStats.energy + "energy, but " + 
+                        LevelStats.selectedBall.name + " costs " + LevelStats.selectedBall.price + " energy"});
+                        */
+
+                        DebugEnhanced.LogInfoLevel("not enough energy", 2, DEBUG_INFO_LEVEL);
+                    }
                 }
             }
 
@@ -149,7 +138,7 @@ public class LocalClickManager : MonoBehaviour
         newBall.GetComponent<SpriteRenderer>().color = LevelStats.selectedBall.prefab.defaultColor;
         newBall.transform.parent = ballParent.transform;
         Vector3 liftPosition = new Vector3(newBall.transform.position.x, newBall.transform.position.y, 
-        newBall.transform.position.z - LevelManager.instance.currentLevel.activeBalls.Count * 0.01f);
+        newBall.transform.position.z);// - LevelHandler.instance.currentLevel.activeBalls.Count * 0.01f);
         newBall.transform.position = liftPosition;
     }
 }

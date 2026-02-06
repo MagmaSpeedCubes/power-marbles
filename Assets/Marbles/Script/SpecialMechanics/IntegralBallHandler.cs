@@ -28,10 +28,10 @@ public class IntegralMarbleHandler : BallHandler
     {
         base.Initialize();
         damage = 0f;
-        List<BallHandler> activeBalls = LevelManager.instance.currentLevel.activeBalls;
+        List<BallHandler> activeBalls = LevelHandler.instance.activeBalls;
         foreach(BallHandler ball in activeBalls)
         {
-            damage += Utility.CallReturnableFunction<float>("DamageFormulas", ball.ballData.name, ball);
+            damage += ball.GetDamage();
         }
     }
 

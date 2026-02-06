@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     [HideInInspector] public Sprite ballSprite;
     [HideInInspector] public Color spriteColor;
     public BallPrefab prefab;
-    public Ownable ownable;
+    public Savable ownable;
     
 
     [HideInInspector]public float gravity;

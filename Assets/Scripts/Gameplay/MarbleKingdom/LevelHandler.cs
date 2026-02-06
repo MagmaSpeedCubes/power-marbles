@@ -21,11 +21,20 @@ public class LevelHandler : MonoBehaviour
     public int marblesUsed { get; private set; }
     public float damageDealt;
 
+    public GameObject background;
+
     void Awake()
     {
         if(instance == null)
         {
             instance = this;
+            LevelUIManager.instance.currentLevel = this;
+            LevelUIManager.instance.OpenLevel();
+            LevelUIManager.instance.LoadLevelData();
+            energy = levelData.GetInt("startingEnergy");
+            timeRemaining = levelData.GetInt("maxTime");
+            marblesUsed = 0;
+
         }
         else
         {
@@ -35,15 +44,12 @@ public class LevelHandler : MonoBehaviour
     }
     public void StartLevel()
     {
-       active = true; 
-       InvokeRepeating("AbilityTick", Constants.ABILITY_TICK_INTERVAL, Constants.ABILITY_TICK_INTERVAL);
-        energy = levelData.GetInt("startingEnergy");
-        timeRemaining = levelData.GetFloat("maxTime");
-        marblesUsed = 0;
+        active = true; 
+        InvokeRepeating("AbilityTick", Constants.ABILITY_TICK_INTERVAL, Constants.ABILITY_TICK_INTERVAL);
 
     }
 
-    public List<Tag> EndLevel()
+    public void EndLevel()
     {
         
         Debug.Log("End Level");
@@ -60,24 +66,40 @@ public class LevelHandler : MonoBehaviour
             levelStats.Add(new Tag("win", "0"));
         }
 
-        float levelMaxTime = levelData.GetFloat("maxTime");
+        
+
+        float levelMaxTime = levelData.GetInt("maxTime");
+        levelStats.Add(new Tag("s_levelTime", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
+        float efficiencyScore = (float)Math.Round(levelMaxTime);
+        //levelStats.Add(new Tag("s_efficiency_0", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
 
         levelStats.Add(new Tag("s_damageDealt", "" + damageDealt));
         DebugEnhanced.LogInfoLevel("Damage Dealt: " + damageDealt, 2, DEBUG_INFO_LEVEL);
+        //efficiencyScore = (float)Math.Round(levelMaxTime);
+        levelStats.Add(new Tag("s_efficiency_1", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
+
 
         levelStats.Add(new Tag("s_marblesUsed","" +  marblesUsed));
         DebugEnhanced.LogInfoLevel("Marbles Used: " + marblesUsed, 2, DEBUG_INFO_LEVEL);
-
-        levelStats.Add(new Tag("s_levelTime", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
+        efficiencyScore -= marblesUsed*0.1f;
+        //levelStats.Add(new Tag("s_efficiency_2", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
+        
+        
 
         levelStats.Add(new Tag("s_efficiency", "" + Math.Round(timeRemaining, 2)));
+
+        if(levelData.GetFloat("highScore") < efficiencyScore)
+        {
+            levelData.SetTag("highScore", ""+efficiencyScore);
+            levelData.Save();
+        }
 
 
         levelStats.Add(new Tag("xpReward", "" + damageDealt));
         //Debug.Log("XP Reward: " + LevelStats.damageDealt);
         //Debug.Log("Returned Level Stats " + levelStats.ToString());
 
-        return levelStats;
+        StartCoroutine(LevelUIManager.instance.EndLevelUIAnimation(levelStats));
         
         //check for pb in manager, not handler
         //also check for global ranking in manager, not handler
@@ -113,7 +135,7 @@ public class LevelHandler : MonoBehaviour
             timeRemaining -= Time.deltaTime;
             if(timeRemaining < 0f)
             {
-                LevelManager.instance.EndLevel();
+                EndLevel();
             }
         }
 

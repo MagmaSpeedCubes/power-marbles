@@ -1,8 +1,14 @@
-using UnityEngine;
+//System
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System;
+
+//Unity
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+//MagmaLabs
 using MagmaLabs.Utilities.Primitives;
 using MagmaLabs.Editor;
 using MagmaLabs.UI;
@@ -11,11 +17,12 @@ using MagmaLabs.Utilities;
 using MagmaLabs.Animation;
 using MagmaLabs.Audio;
 using MagmaLabs.Economy;
+using MagmaLabs.SceneManagement;
 [RequireComponent(typeof(AuthorizedModifier))]
-public class LevelManager : MonoBehaviour
+public class LevelUIManager : MonoBehaviour
 {
     private const int DEBUG_INFO_LEVEL = 2;
-    public static LevelManager instance;
+    public static LevelUIManager instance;
     
     public LevelHandler currentLevel;
     public Dictionary<string, GameObject> kingdomLevels = new Dictionary<string, GameObject>();
@@ -25,7 +32,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Infographic timeDisplay, energyDisplay;
     [SerializeField] private TMPEnhanced beginLevelTitle, beginLevelInfo, beginLevelDifficulty, countdownText;
     [SerializeField] private TMPEnhanced endTitle, endMainLeft, endMainRight, endBottom;
-    [SerializeField] private GameObject nextLevelButton;
     [SerializeField] private Canvas main, ingame, loading;
     private string state = "main";
     //main, ingame, loading
@@ -42,6 +48,7 @@ public class LevelManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(this.gameObject);
 
         }
         else
@@ -52,7 +59,10 @@ public class LevelManager : MonoBehaviour
     }
 
 
-
+    public void OpenLevel()
+    {
+        StartCoroutine(EnterInGameUIAnimation());
+    }
     public void StartLevel()
     {
         DebugEnhanced.LogInfoLevel("Starting Level UI Animation", 1, DEBUG_INFO_LEVEL);
@@ -64,104 +74,34 @@ public class LevelManager : MonoBehaviour
     {
         if(currentLevel != null && state == "ingame")
         {
-            timeDisplay.SetValue(LevelHandler.instance.timeRemaining);
-            energyDisplay.SetValue(LevelHandler.instance.energy);
+            timeDisplay.SetValue(currentLevel.timeRemaining);
+            energyDisplay.SetValue(currentLevel.energy);
 
         }        
     }
 
-    public void EndLevel()
-    {
-        if (currentLevel == null)
-        {
-            Debug.LogError("EndLevel called but currentLevel is null!");
-            return;
-        }
-        if(!currentLevel.active)
-        {
-            Debug.LogWarning("EndLevel called but currentLevel is not active!");
-            return;
-        }
-        List<Tag> levelStats = currentLevel.EndLevel();
-        if (levelStats == null)
-        {
-            Debug.LogError("LevelHandler.EndLevel() returned null!");
-            return;
-        }
-        StartCoroutine(EndLevelUIAnimation(levelStats));
-    }
-
-
     public void ExitInGame()
     {
-        StartCoroutine(CloseLevel());
-        //StartCoroutine(CloseLevelUIAnimation());
         AudioManager.instance.PlaySoundWithRandomPitchShift("pop", ProfileCustomization.uiVolume, 0.3f);
-        StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, main, 2f));
-        StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
+        CloseLevel();
         state = "main";
     }
 
-    public void NextLevel()
-    {
-        int currentIndex = levelOrder.IndexOf(currentLevelName);
-        if (currentIndex >= 0 && currentIndex < levelOrder.Count - 1)
-        {
-            string nextLevelName = levelOrder[currentIndex + 1];
-            LoadKingdomLevel(nextLevelName);
-        }
-    }
+
     public void ReplayLevel()
     {
-        LoadKingdomLevel(currentLevelName);
+        StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
+        SceneManagerEnhanced.instance.LoadSceneWithLoadingScreen(SceneManager.GetActiveScene().name, ingame, loading, ingame, 2f);
+
+
     }
 
-    public void LoadKingdomLevel(string levelName)
+    public void CloseLevel()
     {
-        StartCoroutine(LoadKingdomLevelCoroutine(levelName));
+        StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
+        SceneManagerEnhanced.instance.LoadSceneWithLoadingScreen("MainMenu", ingame, loading, main, 2f);
     }
-
-    public IEnumerator LoadKingdomLevelCoroutine(string levelName)
-    {
-        //StartCoroutine(CloseLevelUIAnimation());
-        DebugEnhanced.LogInfoLevel("Loading Level " + levelName, 1, DEBUG_INFO_LEVEL);
-        yield return StartCoroutine(CloseLevel());
-
-        if (!kingdomLevels.ContainsKey(levelName))
-        {
-            Debug.LogError("Level '" + levelName + "' not found in kingdomLevels dictionary!");
-            yield break;
-        }
-
-        GameObject levelPrefab = kingdomLevels[levelName];
-        GameObject levelObject = Instantiate(levelPrefab);
-        levelObject.transform.localPosition = new Vector3(0, 0, 0);
-        currentLevel = levelObject.GetComponent<LevelHandler>();
-        currentLevelName = levelName;
-        LoadLevelData();
-        if(state.Equals("main"))
-        {
-            DebugEnhanced.LogInfoLevel("Entering from menu", 1, DEBUG_INFO_LEVEL);
-            StartCoroutine(EnterInGameUIAnimation());   
-        }
-        else if(state.Equals("ingame"))
-        {
-            DebugEnhanced.LogInfoLevel("Transitioning levels ingame", 1, DEBUG_INFO_LEVEL);
-            StartCoroutine(LevelTransitionUIAnimation());   
-        }
-        
-    }
-
-    public IEnumerator CloseLevel()
-    {
-        if(currentLevel!=null){
-            DebugEnhanced.LogInfoLevel("Destroying current level", 1, DEBUG_INFO_LEVEL);
-            Destroy(currentLevel.gameObject);
-            currentLevel = null;
-        }
-        yield break;
-    }
-    IEnumerator EndLevelUIAnimation(List<Tag> levelStats)
+    public IEnumerator EndLevelUIAnimation(List<Tag> levelStats)
     {
         
         //StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, end, 1f));
@@ -225,25 +165,6 @@ public class LevelManager : MonoBehaviour
         }
 
 
-        if (win)
-        {
-            nextLevelButton.transform.parent.gameObject.SetActive(true);
-            int currentIndex = levelOrder.IndexOf(currentLevelName);
-            if (currentIndex >= 0 && currentIndex < levelOrder.Count - 1)
-            {
-                string nextLevelName = levelOrder[currentIndex + 1];
-                nextLevelButton.GetComponent<TMPEnhanced>().SetText(nextLevelName);
-            }
-            else
-            {
-                nextLevelButton.GetComponent<TMPEnhanced>().SetText("Complete!");
-            }
-            yield return StartCoroutine(AnimationManager.instance.PopIn(nextLevelButton, 1.2f, 0.5f));
-        }
-        else
-        {
-            nextLevelButton.transform.parent.gameObject.SetActive(false);
-        }
         
 
 
@@ -256,23 +177,13 @@ public class LevelManager : MonoBehaviour
     IEnumerator EnterInGameUIAnimation()
     {
         ingame.enabled = true;
-        LoadLevelData();
+        
         yield return StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(main, loading, ingame, 2f));
         state = "ingame";
         yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 2000), new Vector2(0, 0), 1f));
     }
 
-    IEnumerator LevelTransitionUIAnimation()
-    {
 
-        StartCoroutine(CanvasAnimation.LoadingScreenCoroutine(ingame, loading, ingame, 2f));
-        state = "ingame";
-        DebugEnhanced.LogInfoLevel("Level Transition Animation", 1, DEBUG_INFO_LEVEL);
-        DebugEnhanced.LogInfoLevel("Sliding out end wrapper", 2, DEBUG_INFO_LEVEL);//more detailed messages get higher level
-        yield return StartCoroutine(CanvasAnimation.Slide(endWrapper, new Vector2(0, 0), new Vector2(0, -2000), 1f));
-        DebugEnhanced.LogInfoLevel("Sliding in begin wrapper", 2, DEBUG_INFO_LEVEL);
-        yield return StartCoroutine(CanvasAnimation.Slide(beginWrapper, new Vector2(0, 2000), new Vector2(0, 0), 1f));
-    }
     IEnumerator StartLevelUIAnimation()
     {
 
@@ -300,10 +211,10 @@ public class LevelManager : MonoBehaviour
         yield break;
     }
 
-    void LoadLevelData()
+    public void LoadLevelData()
     {
         beginLevelTitle.SetText(currentLevel.levelData.name);
-        beginLevelInfo.SetText("Energy: " + currentLevel.levelData.GetInt("startingEnergy") + "\nTime Limit: " + currentLevel.levelData.GetFloat("maxTime") + "s");
+        beginLevelInfo.SetText("Energy: " + currentLevel.levelData.GetInt("startingEnergy") + "\nTime Limit: " + currentLevel.levelData.GetInt("maxTime") + "s");
         string difficultyDesc = levelDifficultyDescriptions.GetValueAtPosition(currentLevel.levelData.GetFloat("difficulty"));
         beginLevelDifficulty.SetText("" + difficultyDesc);
         beginLevelDifficulty.SetColor(levelDifficultyColors[levelDifficultyDescriptions.IndexOf(difficultyDesc)]);

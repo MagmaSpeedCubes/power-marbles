@@ -4,7 +4,7 @@ public class DerivativeMarbleHandler : BallHandler
 {
     override public float GetDamage()
     {
-        List<BallHandler> activeBalls = LevelManager.instance.currentLevel.activeBalls;
+        List<BallHandler> activeBalls = LevelHandler.instance.activeBalls;
         float minDamage = float.MaxValue;
         float maxDamage = float.MinValue;
 
