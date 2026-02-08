@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-using MagmaLabs.Editor;
+using MagmaLabs;
 public class LocalClickManager : MonoBehaviour
 {
     private int DEBUG_INFO_LEVEL = 2;

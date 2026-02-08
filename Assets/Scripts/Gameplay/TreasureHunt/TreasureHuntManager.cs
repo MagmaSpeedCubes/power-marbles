@@ -26,7 +26,7 @@ public class TreasureHuntManager : MonoBehaviour
 
     public GameObject tileMap;
     public GameObject gridPrefab;
-    public Ownable treasureHuntData, treasureHuntWorldMap, treasureHuntRelicMap;
+    public Savable treasureHuntData, treasureHuntWorldMap, treasureHuntRelicMap;
     private int season;
     private Coroutine minuteUpdater;
 
@@ -113,7 +113,7 @@ public class TreasureHuntManager : MonoBehaviour
         
         AuthorizedModifier source = GetComponent<AuthorizedModifier>();
         SecureProfileStats sps = SecureProfileStats.instance;
-        sps.OverwriteOwnable(treasureHuntData, source);
+        sps.SaveString(""treasureHuntData);
 
         sps.OverwriteOwnable(treasureHuntWorldMap, source);
 
@@ -136,7 +136,7 @@ public class TreasureHuntManager : MonoBehaviour
 
     
 
-    public Ownable GenerateTreasureHuntWorldMap()
+    public Savable GenerateTreasureHuntWorldMap()
     {
         /*
         Tile 0 = grass
@@ -150,7 +150,7 @@ public class TreasureHuntManager : MonoBehaviour
         
         
         */
-        Ownable output = new Ownable("treasureHuntWorldMapSeason" + season, SpriteManager.instance.placeholder);
+        Savable output = new Savable("treasureHuntWorldMapSeason" + season, SpriteManager.instance.placeholder);
         int goldPerMap = 30;
         int diamondPerMap = 15;
         int treasurePerMap = 10;
@@ -221,9 +221,9 @@ public class TreasureHuntManager : MonoBehaviour
     }
 
 
-    public Ownable GenerateTreasureHuntRelicMap()
+    public Savable GenerateTreasureHuntRelicMap()
     {
-        Ownable output = new Ownable("treasureHuntRelicMapSeason" + season, SpriteManager.instance.placeholder);
+        Savable output = new Savable("treasureHuntRelicMapSeason" + season, SpriteManager.instance.placeholder);
         int relicsPerWorld = 50;
         do
         {
@@ -240,7 +240,7 @@ public class TreasureHuntManager : MonoBehaviour
         return output;
     }
 
-    public GameObject LoadWorldFromOwnable(Ownable worldMap, Ownable relicMap)
+    public GameObject LoadWorldFromOwnable(Savable worldMap, Savable relicMap)
     {
         GameObject gridGO = new GameObject("HexGrid");
         Grid grid = gridGO.AddComponent<Grid>();

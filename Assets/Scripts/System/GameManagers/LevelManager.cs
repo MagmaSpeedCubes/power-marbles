@@ -8,7 +8,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//MagmaLabs
+using MagmaLabs;
 using MagmaLabs.Utilities.Primitives;
 using MagmaLabs.Editor;
 using MagmaLabs.UI;
@@ -18,6 +18,7 @@ using MagmaLabs.Animation;
 using MagmaLabs.Audio;
 using MagmaLabs.Economy;
 using MagmaLabs.SceneManagement;
+
 [RequireComponent(typeof(AuthorizedModifier))]
 public class LevelUIManager : MonoBehaviour
 {
@@ -62,6 +63,7 @@ public class LevelUIManager : MonoBehaviour
     public void OpenLevel()
     {
         StartCoroutine(EnterInGameUIAnimation());
+
     }
     public void StartLevel()
     {

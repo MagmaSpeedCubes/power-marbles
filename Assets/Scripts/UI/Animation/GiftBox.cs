@@ -13,7 +13,7 @@ public class GiftBox : TiledElementManager
     [SerializeField] private GameObject rewardIconPrefab;
     [SerializeField] private float maxHorizontalSize;
 
-    [SerializeField] private Ownable[] rewards;
+    [SerializeField] private Savable[] rewards;
     private GameObject rewardIconsWrapper;
     [SerializeField] private float openDistance = 2400f;
     [SerializeField] private float openTime = 1f;
@@ -141,12 +141,12 @@ public class GiftBox : TiledElementManager
         lidRibbonImage.color = ribbonColor;
     }
 
-    public void SetRewards(Ownable[] newRewards)
+    public void SetRewards(Savable[] newRewards)
     {
         rewards = newRewards;
     }
 
-    public Ownable[] GetRewards()
+    public Savable[] GetRewards()
     {
         return rewards;
     }

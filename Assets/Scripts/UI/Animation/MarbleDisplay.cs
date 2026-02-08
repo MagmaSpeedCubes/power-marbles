@@ -26,8 +26,8 @@ public class MarbleDisplay : MonoBehaviour, IDragHandler, IEndDragHandler
     {
         defaultPosition = transform.localPosition;
         marbleSprites = new List<Sprite>();
-        List<Ownable> ownedMarbles = SecureProfileStats.instance.GetMarbles();
-        foreach (Ownable ownable in ownedMarbles)
+        List<Savable> ownedMarbles = SecureProfileStats.instance.GetMarbles();
+        foreach (Savable ownable in ownedMarbles)
         {
             marbleSprites.Add(ownable.GetSprite()); 
         }

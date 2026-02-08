@@ -216,7 +216,7 @@ public class PrizeSkiesManager : AuthorizedModifier
     }
 
     public void ReviveWithReviveOwnable(){
-        Ownable revive = sps.FindFirstOwnableOfName("revive");
+        Savable revive = sps.FindFirstOwnableOfName("revive");
         if(revive != null){
             sps.RemoveFirstOwnableOfName("revive", this);
             InputPlayerDecision("continue");

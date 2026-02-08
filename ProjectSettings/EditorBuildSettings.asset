@@ -21,8 +21,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Millionaire.unity
     guid: a01068dd7de0e4fb3aa0a8748ffb888d
   - enabled: 1
-    path: Assets/Objects/LevelLoader/Levels/Basic 1.unity
+    path: Assets/Objects/LevelLoader/Levels/Basic/Basic 1.unity
     guid: 46844de89bfff4c8caf7433363bc1b2f
+  - enabled: 1
+    path: Assets/Objects/LevelLoader/Levels/Basic/Basic 2.unity
+    guid: d82b5648cbc72493fb48afeaa8dba9e4
+  - enabled: 1
+    path: Assets/Objects/LevelLoader/Levels/Basic/Basic 3.unity
+    guid: 0ca24529fb4394149a12c10681c35315
+  - enabled: 1
+    path: Assets/Objects/LevelLoader/Levels/Basic/Basic 4.unity
+    guid: f160d5daaf6a64c6dbcb74d0ef761781
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

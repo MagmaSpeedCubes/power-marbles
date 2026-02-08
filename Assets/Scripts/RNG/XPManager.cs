@@ -5,9 +5,9 @@ using MagmaLabs.Economy.Security;
 using MagmaLabs.Economy;
 public class XPManager : AuthorizedModifier
 {
-    [SerializeField]private Ownable[][] levelRewards;
+    [SerializeField]private Savable[][] levelRewards;
     [SerializeField]private GiftBox giftbox;
-    private Ownable profile;
+    private Savable profile;
     private Coroutine levelUpCoroutine;
     // Update is called once per frame
     void Start()
@@ -20,7 +20,7 @@ public class XPManager : AuthorizedModifier
         profile = SecureProfileStats.instance.FindFirstOwnableOfName("profile");
         if(profile == null)
         {
-            profile = ScriptableObject.CreateInstance<Ownable>();
+            profile = ScriptableObject.CreateInstance<Savable>();
             profile.AddTag("level", ""+GetLevel());
             profile.AddTag("hideInInventory", "true");
         }
@@ -41,16 +41,16 @@ public class XPManager : AuthorizedModifier
         int previousLevel = int.Parse(profile.FindTag("Level"));
         int levelUp = GetLevel();
 
-        List<Ownable> levelUpRewards = new List<Ownable>();
+        List<Savable> levelUpRewards = new List<Savable>();
         for(int i=previousLevel+1; i<=levelUp; i++)
         {
-            Ownable[] rewards = levelRewards[i];
+            Savable[] rewards = levelRewards[i];
             levelUpRewards.AddRange(rewards);
         }
         giftbox.SetRewards(levelUpRewards.ToArray());
         yield return StartCoroutine(giftbox.Open());
 
-        foreach(Ownable reward in levelUpRewards)
+        foreach(Savable reward in levelUpRewards)
         {
             SecureProfileStats.instance.AddOwnable(reward, this);
         }

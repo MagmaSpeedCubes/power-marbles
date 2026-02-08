@@ -30,8 +30,8 @@ public class OwnableManager : MonoBehaviour
     IEnumerator LateStart()
     {
         yield return new WaitForEndOfFrame();
-        List<Ownable> marbles = SecureProfileStats.instance.GetMarbles();
-        foreach(Ownable marble in marbles)
+        List<Savable> marbles = SecureProfileStats.instance.GetMarbles();
+        foreach(Savable marble in marbles)
         {
 
                 

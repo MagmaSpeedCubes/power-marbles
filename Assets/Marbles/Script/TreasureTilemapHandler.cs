@@ -12,7 +12,7 @@ public class TreasureTilemapHandler : DamageHandler
     public TextMeshPro[,] healthGrid;
     public GameObject[,] relicGrid;
 
-    public Ownable worldMap;
+    public Savable worldMap;
 
     public Color damaged, low;
     public Vector3Int lastHitCell;

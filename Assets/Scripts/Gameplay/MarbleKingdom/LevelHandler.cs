@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+
+using MagmaLabs;
 using MagmaLabs.Economy;
 using MagmaLabs.Editor;
 public class LevelHandler : MonoBehaviour
@@ -22,6 +24,8 @@ public class LevelHandler : MonoBehaviour
     public float damageDealt;
 
     public GameObject background;
+
+    public List<GameObject> winZones = new List<GameObject>();
 
     void Awake()
     {
@@ -60,6 +64,9 @@ public class LevelHandler : MonoBehaviour
         if(timeRemaining > 0)
         {
             levelStats.Add(new Tag("win", "1"));
+
+            levelData.status = NodeStatus.Activated;
+            ProgressionNode.Refresh();
         }
         else
         {
@@ -161,6 +168,23 @@ public class LevelHandler : MonoBehaviour
     public bool IsActive()
     {
         return active;
+    }
+
+    public void OnWinZoneToggled(WinHandler source)
+    {
+        GameObject wzo = source.gameObject;
+        for(int i=winZones.Count-1; i>=0; i--)
+        {
+            if (winZones[i].Equals(wzo))
+            {
+                winZones.RemoveAt(i);
+                break;
+            }
+        }
+        if (winZones.Count == 0)
+        {
+            EndLevel();
+        }
     }
 
 }
