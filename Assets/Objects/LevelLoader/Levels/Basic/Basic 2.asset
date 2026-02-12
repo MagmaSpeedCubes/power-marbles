@@ -22,12 +22,9 @@ MonoBehaviour:
     value: 0
   - name: highScore
     value: 0
-  - name: highScore
-    value: 19.8
-  - name: highScore
-    value: 19.8
-  status: 0
+  status: 1
   usePrerequisitesInsteadOfContinuations: 0
-  continuationNodes: []
+  continuationNodes:
+  - {fileID: 11400000, guid: 9c41bdf1a0212416293371a19db441a8, type: 2}
   prerequisiteNodes: []
   mutuallyExclusiveNodes: []

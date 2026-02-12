@@ -7,7 +7,7 @@ public class DamageHandler : MonoBehaviour
 
     protected float armor;
     public float maxHealth;
-    protected float regenRate;
+    public float regenRate;
 
     protected AudioClip damageSound, deathSound;
     [Tooltip("Sprites in order of damage, first one is full health and slowly get more damaged")]
@@ -16,6 +16,7 @@ public class DamageHandler : MonoBehaviour
     public Infographic[] healthBars;
     public Infographic[] armorBars;
     protected float health;
+    
     
 
 

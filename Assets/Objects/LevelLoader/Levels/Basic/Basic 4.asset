@@ -22,12 +22,5 @@ MonoBehaviour:
     value: 0.1
   - name: highScore
     value: 0
-  - name: highScore
-    value: 19.8
-  - name: highScore
-    value: 19.8
   status: 0
   usePrerequisitesInsteadOfContinuations: 0
-  continuationNodes: []
-  prerequisiteNodes: []
-  mutuallyExclusiveNodes: []

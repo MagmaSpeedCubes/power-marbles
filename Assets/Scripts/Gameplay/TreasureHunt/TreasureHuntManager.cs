@@ -113,7 +113,7 @@ public class TreasureHuntManager : MonoBehaviour
         
         AuthorizedModifier source = GetComponent<AuthorizedModifier>();
         SecureProfileStats sps = SecureProfileStats.instance;
-        sps.SaveString(""treasureHuntData);
+        sps.OverwriteOwnable(treasureHuntData, source);
 
         sps.OverwriteOwnable(treasureHuntWorldMap, source);
 

@@ -8,7 +8,7 @@ using MagmaLabs.Economy;
 using MagmaLabs.Editor;
 public class LevelHandler : MonoBehaviour
 {
-    public const int DEBUG_INFO_LEVEL = 0;
+    public const int DEBUG_INFO_LEVEL = 1;
 
     public static LevelHandler instance;
     public ProgressionNode levelData;
@@ -65,7 +65,7 @@ public class LevelHandler : MonoBehaviour
         {
             levelStats.Add(new Tag("win", "1"));
 
-            levelData.status = NodeStatus.Activated;
+            levelData.Activate();
             ProgressionNode.Refresh();
         }
         else
@@ -76,14 +76,14 @@ public class LevelHandler : MonoBehaviour
         
 
         float levelMaxTime = levelData.GetInt("maxTime");
-        levelStats.Add(new Tag("s_levelTime", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
-        float efficiencyScore = (float)Math.Round(levelMaxTime);
+        levelStats.Add(new Tag("s_levelTime", "" + Math.Round(timeRemaining, 2)));
+        float efficiencyScore = (float)Math.Round(timeRemaining, 2);
         //levelStats.Add(new Tag("s_efficiency_0", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
 
         levelStats.Add(new Tag("s_damageDealt", "" + damageDealt));
         DebugEnhanced.LogInfoLevel("Damage Dealt: " + damageDealt, 2, DEBUG_INFO_LEVEL);
         //efficiencyScore = (float)Math.Round(levelMaxTime);
-        levelStats.Add(new Tag("s_efficiency_1", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
+        //levelStats.Add(new Tag("s_efficiency_1", "" + Math.Round(levelMaxTime-timeRemaining, 2)));
 
 
         levelStats.Add(new Tag("s_marblesUsed","" +  marblesUsed));
@@ -94,9 +94,11 @@ public class LevelHandler : MonoBehaviour
         
 
         levelStats.Add(new Tag("s_efficiency", "" + Math.Round(timeRemaining, 2)));
+        DebugEnhanced.LogInfoLevel("New score " + efficiencyScore, 1, DEBUG_INFO_LEVEL);
 
         if(levelData.GetFloat("highScore") < efficiencyScore)
         {
+            
             levelData.SetTag("highScore", ""+efficiencyScore);
             levelData.Save();
         }
