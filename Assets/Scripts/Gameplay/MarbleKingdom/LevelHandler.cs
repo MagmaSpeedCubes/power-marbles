@@ -66,7 +66,9 @@ public class LevelHandler : MonoBehaviour
             levelStats.Add(new Tag("win", "1"));
 
             levelData.Activate();
+            levelData.RefreshInstance();
             ProgressionNode.Refresh();
+            //Debug.Log("Attempted to activate node");
         }
         else
         {
@@ -98,9 +100,9 @@ public class LevelHandler : MonoBehaviour
 
         if(levelData.GetFloat("highScore") < efficiencyScore)
         {
-            
             levelData.SetTag("highScore", ""+efficiencyScore);
             levelData.Save();
+
         }
 
 

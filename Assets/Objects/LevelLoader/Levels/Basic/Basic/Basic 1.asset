@@ -21,10 +21,11 @@ MonoBehaviour:
   - name: difficulty
     value: 0
   - name: highScore
-    value: 4.9
-  status: 2
+    value: 0
+  status: 1
   usePrerequisitesInsteadOfContinuations: 0
   continuationNodes:
   - {fileID: 11400000, guid: 8cf55eb84258c46a88e776e49490755c, type: 2}
   prerequisiteNodes: []
   mutuallyExclusiveNodes: []
+  activationRewards: []

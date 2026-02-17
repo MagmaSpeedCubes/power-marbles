@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30e81cc7fc52342e4a02a2c98a2b252b, type: 3}
-  m_Name: Speedy 2
+  m_Name: Basic 3
   m_EditorClassIdentifier: Assembly-CSharp::MagmaLabs.Economy.ProgressionNode
   sprite: {fileID: 21300000, guid: f82b0d6b1231f4dbab7f9f8648377795, type: 3}
   tags:
@@ -24,3 +24,10 @@ MonoBehaviour:
     value: 0
   status: 0
   usePrerequisitesInsteadOfContinuations: 0
+  continuationNodes:
+  - {fileID: 11400000, guid: 82eb68afee13945b9be99c89d5d8ef39, type: 2}
+  - {fileID: 11400000, guid: 771f2a8d74ca34c46864bcf0738d93df, type: 2}
+  prerequisiteNodes: []
+  mutuallyExclusiveNodes: []
+  activationRewards:
+  - {fileID: 11400000, guid: ef2f4bb596a894b2a9f42e4612670cef, type: 2}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a84defe65c547949e602a3e153e82e, type: 3}
   m_Name: SpeedyBall
   m_EditorClassIdentifier: Assembly-CSharp::Ownable
-  sprite: {fileID: -3852117235588928371, guid: b24a4992523d94a7d8fcc494ccb2e2a2, type: 3}
+  sprite: {fileID: 1919552585803895945, guid: f6d7ae205c3df4f0cb6b800926a760c5, type: 3}
   tags:
   - name: rarity
     value: common
